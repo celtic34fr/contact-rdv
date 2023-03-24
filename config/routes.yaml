@@ -1,0 +1,4 @@
+reference_extension:
+  resource: '../../vendor/celtic34fr/contact-rdv/src/Controller/Backend/'
+  prefix: '%bolt.backend_url%'
+  type: annotation

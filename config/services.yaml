@@ -1,0 +1,7 @@
+# An example of a services.yaml file in an extension
+
+services:
+  Celtic34fr\ContactRendezVous\AdminMenu:
+    class: Celtic34fr\ContactRendezVous\AdminMenu
+    arguments: [ '@Symfony\Component\Routing\Generator\UrlGeneratorInterface' ]
+    tags: [ 'bolt.extension_backend_menu' ]
