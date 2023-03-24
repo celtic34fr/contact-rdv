@@ -1,2 +1,2 @@
 # contact-rdv
-Bolt Cms Extension Contact Managment - Rendez-vous module
+Contact Bolt CMS Extension Managment - Rendez-vous module
