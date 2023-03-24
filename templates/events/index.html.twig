@@ -1,0 +1,60 @@
+{% extends '@contact-core/layout_backend.html.twig' %}
+{% import '@contact-core/macros/form_classic.html.twig' as forms %}
+{% import "@contact-core/macros/paginate.html.twig" as navigate %}
+{% import "@contact-core/macros/form_classic.html.twig" as forms %}
+
+{% block shoulder %}
+    {{ 'Evènements dans le calendrier' }}
+{% endblock shoulder %}
+
+{% block title %}
+    <i class="fas mr-2 link--icon fa-clipboard-question"></i>
+    Liste des futurs évènements
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <div class="table-request w-full">
+        <div class="w-full r-table">
+            <div class="w-full r-thead">
+                <div class="w-full r-tr">
+                    <div class="w-full r-tr">
+                        <div class="col-2 text-center r-th">Pour le</div>
+                        <div class="col-3 text-start r-th">Type</div>
+                        <div class="col-3 text-start r-th">Avec</div>
+                        <div class="col-2 text-center r-th hei mb-2">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="w-full  r-tbody">
+                    {% for event in events %}
+                        <div class="w-full r-tr">
+                            <div class="col-2 text-center r-th">{{ event.getTypeAt()|date("d/m/Y") }}</div>
+                            <div class="col-3 text-start r-th"></div>
+                            <div class="col-3 text-start r-th"></div>
+                            <div class="col-2 text-center r-th hei mb-2">
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ navigate.page_navigate({
+        'currentPage': currentPage,
+        'pages': pages,
+        'prefix': 'r',
+        'route': 'request_list',
+        'class': 'col-12 row',
+    }) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('contact-assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('contact-assets/js/_paginate.js') }}"></script>
+    <script src="{{ asset('contact-assets/js/_goPage.js') }}"></script>
+{% endblock %}

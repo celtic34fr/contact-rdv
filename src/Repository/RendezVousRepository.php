@@ -2,7 +2,9 @@
 
 namespace Celtic34fr\ContactRendezVous\Repository;
 
+use Celtic34fr\ContactCore\Trait\DbPaginateTrait;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,6 +18,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RendezVousRepository extends ServiceEntityRepository
 {
+    use DbPaginateTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RendezVous::class);
@@ -35,6 +39,16 @@ class RendezVousRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findEventsAll(int $currentPage = 1, int $limit = 10): array
+    {
+        $dJour = new DateTime('now');
+        $qb = $this->createQueryBuilder("rdv")
+            ->where('rdv.time_at >= :dJour')
+            ->orderBy('rdv.time_at', 'ASC')
+            ->getQuery();
+        return $this->paginateDoctrine($qb, $currentPage, $limit);
     }
 
 //    /**
