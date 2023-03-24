@@ -13,14 +13,11 @@ use Twig\Environment;
 class EventsController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private Environment $twigEnvironment;
     protected $container;
 
-    public function __construct(EntityManagerInterface $entityManager, Environment $twigEnvironment,
-                                ContainerInterface $container)
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
-        $this->twigEnvironment = $twigEnvironment;
         $this->container = $container;
     }
 
