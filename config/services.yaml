@@ -1,5 +1,18 @@
 # An example of a services.yaml file in an extension
 
+doctrine:
+  orm:
+    auto_generate_proxy_classes: '%kernel.debug%'
+    naming_strategy: doctrine.orm.naming_strategy.underscore
+    auto_mapping: true
+    mappings:
+      CRM_Contact:
+        is_bundle: false
+        type: attribute
+        dir: '%kernel.project_dir%/vendor/celtic34fr/contact-rdv/src/Entity'
+        prefix: 'Celtic34fr\ContactRendezVous'
+        alias: ContactRendezVous
+
 services:
   Celtic34fr\ContactRendezVous\AdminMenu:
     class: Celtic34fr\ContactRendezVous\AdminMenu
