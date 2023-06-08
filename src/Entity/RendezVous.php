@@ -2,11 +2,13 @@
 
 namespace Celtic34fr\ContactRendezVous\Entity;
 
-use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactRendezVous\Entity\CompteRendu;
+use Celtic34fr\ContactRendezVous\Enum\RendezVousEnums;
+use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
 
 #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
 #[ORM\Table('rendezvous')]
@@ -18,13 +20,22 @@ class RendezVous
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?DateTime $time_at = null;
+    private ?DateTime $start_at = null;
+
+    #[ORM\Column]
+    private ?DateTime $end_at = null;
 
     #[ORM\Column(length: 255)]
     private ?string $objet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
+    private $all_day;
+
+    #[ORM\Column(type: 'string', nullable: false)]
+    private ?string $nature = null;                     // nature, type du rendez-vous, cf Enum\RendezVousEnumes
 
     #[ORM\ManyToOne(inversedBy: 'entretiens')]
     #[ORM\JoinColumn(nullable: false)]
@@ -38,14 +49,25 @@ class RendezVous
         return $this->id;
     }
 
-    public function getTimeAt(): ?DateTime
+    public function getStartAt(): ?DateTime
     {
-        return $this->time_at;
+        return $this->start_at;
     }
 
-    public function setTimeAt(DateTime $time_at): self
+    public function setStartAt(DateTime $start_at): self
     {
-        $this->time_at = $time_at;
+        $this->start_at = $start_at;
+        return $this;
+    }
+
+    public function getEndAt(): ?DateTime
+    {
+        return $this->end_at;
+    }
+
+    public function setEndAt(DateTime $end_at): self
+    {
+        $this->end_at = $end_at;
         return $this;
     }
 
@@ -91,5 +113,30 @@ class RendezVous
     {
         $this->compte_rendu = $compte_rendu;
         return $this;
+    }
+
+    public function getAllDay()
+    {
+        return (bool) $this->all_day;
+    }
+
+    public function setAllDay(bool $all_day): self
+    {
+        $this->all_day = $all_day;
+        return $this;
+    }
+
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setNature(string $nature): bool|self
+    {
+        if (RendezVousEnums::isValid($nature)) {
+            $this->nature = $nature;
+            return $this;
+        }
+        return false;
     }
 }

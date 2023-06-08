@@ -51,28 +51,39 @@ class RendezVousRepository extends ServiceEntityRepository
         return $this->paginateDoctrine($qb, $currentPage, $limit);
     }
 
-//    /**
-//     * @return RendezVous[] Returns an array of RendezVous objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /** recherche première date de rendez-vous */
+    public function findFirstSavedDate()
+    {
+        $qb = $this->createQueryBuilder("rdv")
+            ->orderBy('rdv.time_at', 'ASC')
+            ->getQuery()
+            ->getResult();
+        if (!$qb) return false;
+        return $qb[0]->getTimeAt();
+    }
 
-//    public function findOneBySomeField($value): ?RendezVous
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return RendezVous[] Returns an array of RendezVous objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?RendezVous
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

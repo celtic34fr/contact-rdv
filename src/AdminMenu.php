@@ -2,86 +2,67 @@
 
 namespace Celtic34fr\ContactRendezVous;
 
-use Bolt\Menu\ExtensionBackendMenuInterface;
 use Knp\Menu\MenuItem;
+use Bolt\Menu\ExtensionBackendMenuInterface;
+use Celtic34fr\ContactCore\Trait\AdminMenuTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdminMenu implements ExtensionBackendMenuInterface
 {
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
+
+    use AdminMenuTrait;
 
     public function addItems(MenuItem $menu): void
     {
-        if (!$menu->getChild("Gestion des Contacts")) {
-            $menu->addChild('Gestion des Contacts', [
-                'extras' => [
-                    'name' => 'Gestion des Contacts',
-                    'type' => 'separator',
-                    'group' => 'CRM',
+        /* 1/ décomposition de $menu en $menuBefor, $menuContacts et $menu after */
+        list($menuBefore, $menuContacts, $menuAfter) = $this->extractsMenus($menu);
+
+        /* 2/ ajout des menu de gestion du module Rendez-Vous */
+        $rendezVous = [
+            'Gestion des Rendez-Vous', [
+                'type' => 'menu',
+                'item' => [
+                    'uri' => $this->urlGenerator->generate('bolt_menupage', [
+                        'slug' => 'rendez_vous',
+                    ]),
+                    'extras' => [
+                        'group' => 'CRM',
+                        'name' => 'Gestion des Rendez-Vous',
+                        'slug' => 'rendez_vous',
+                    ]
                 ]
-            ]);
-        }
-
-        $children = $menu->getChildren();
-        $childrenUpdated = [];
-        $crm = false;
-        $saveName = "";
-        $idx = 0;
-
-        foreach ($children as $name => $child) {
-            if ((!$child->getExtra('group') || $child->getExtra('group') != 'CRM') && !$crm) {
-                $childrenUpdated[$name] = $child;
-                $idx += 1;
-            } elseif (!$crm) {
-                $crm = true;
-                $childrenUpdated[$name] = $child;
-                $idx += 1;
-            } else {
-                $saveName = $name;
-                break;
-            }
-        }
-        $menu->setChildren($childrenUpdated);
-
-        $menu->addChild('Gestion des Rendez-Vous', [
-            'uri' => $this->urlGenerator->generate('bolt_menupage', [
-                'slug' => 'rendez_vous',
-            ]),
-            'extras' => [
-                'group' => 'CRM',
-                'name' => 'Gestion des Rendez-Vous',
-                'slug' => 'rendez_vous',
+            ],
+            'Futurs rendez-vous, évènements', [
+                'type' => 'smenu',
+                'parent' => 'Gestion des Rendez-Vous',
+                'item' => [
+                    'uri' => $this->urlGenerator->generate('next_events'),
+                    'extras' => [
+                        'icon' => 'fa-clipboard-question',
+                        'group' => 'CRM',
+                    ]
+                ]
+            ],
+            'Saisir un rendez-vous, une évènement', [
+                'type' => 'smenu',
+                'parent' => 'Gestion des Rendez-Vous',
+                'item' => [
+                    'uri' => $this->urlGenerator->generate('evt_input'),
+                    'extras' => [
+                        'icon' => 'fa-clipboard-question',
+                        'group' => 'CRM',
+                    ]
+                ]
             ]
-        ]);
+        ];
+        $menuContacts = $this->addMenu($rendezVous, $menuContacts);
 
-        $menu['Gestion des Rendez-Vous']->addChild('Futurs rendez-vous, évènements', [
-            'uri' => $this->urlGenerator->generate('evt_list'),
-            'extras' => [
-                'icon' => 'fa-clipboard-question',
-                'group' => 'CRM',
-            ]
-        ]);
-        $menu['Gestion des Rendez-Vous']->addChild('Saisir un rendez-vous, une évènement', [
-            'uri' => $this->urlGenerator->generate('evt_input'),
-            'extras' => [
-                'icon' => 'fa-clipboard-question',
-                'group' => 'CRM',
-            ]
-        ]);
 
-        if ($saveName) {
-            $childrenUpdated = $menu->getChildren();
-            $find = false;
-            foreach ($children as $name => $child) {
-                if ($name === $saveName || $find) {
-                    $childrenUpdated[$name] = $child;
-                    $find = true;
-                }
-            }
-            $menu->setChildren($childrenUpdated);
-        }
+        /* 4/ recontruction de $menu avec $menuBefore, $menuContacts et $menuAfter */
+        $menu = $this->rebuildMenu($menu, $menuBefore, $menuContacts, $menuAfter);
     }
 }

@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
 #[Route('events')]
 class EventsController extends AbstractController
@@ -21,18 +20,44 @@ class EventsController extends AbstractController
         $this->container = $container;
     }
 
-    #[Route('/list/{currentPage}', name: 'evt_list')]
+    #[Route('/events/{display_mode}-{year}-{month}-{week}-{day}', name: 'next_events')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
      * @param Utilities $utility
      * @param int $currentPage
      */
-    public function index(Utilities $utility, $currentPage = 1): Response
-    {
+    public function index(
+        Utilities $utility,
+        $display_mode = "m",
+        $year = null,
+        $month = null,
+        $week = null,
+        $day = null
+    ): Response {
         $events = [];
         $dbPrefix = $this->getParameter('bolt.table_prefix');
 
-        if ($utility->existsTable($dbPrefix.'rendezvous') == true) {
+        if ($utility->existsTable($dbPrefix . 'rendezvous') == true) {
+            /** traitement de la date en paramètre de la route */
+            if ($year && !$month) {
+                $month = 1;
+            }
+            if (!$year) {
+                $year = (new DateTime('now'))->format('Y');
+            }
+            if (!$month) {
+                $month = (new DateTime('now'))->format('m');
+            }
+            if ($display_mode === "w" && !$week) {
+                $today = (new DateTime('now'))->format("Y-m-d");
+                $today = explode('-', $today);
+                $mktime = mktime(0, 0, 0, $today[2], $today[1], $today[0]);
+                $week = (int) date("W", $mktime);
+            }
+            if ($display_mode === "d" && !$day) {
+                $month = (new DateTime('now'))->format('d');
+            }
+
             $events = $this->entityManager->getRepository(RendezVous::class)
                 ->findEventsAll($currentPage);
             /**
@@ -58,6 +83,5 @@ class EventsController extends AbstractController
      */
     public function input(Utilities $utility, $currentPage = 1)
     {
-
     }
 }
