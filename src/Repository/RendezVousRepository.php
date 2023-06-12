@@ -43,10 +43,16 @@ class RendezVousRepository extends ServiceEntityRepository
 
     public function findEventsAll(int $currentPage = 1, int $limit = 10): array
     {
-        $dJour = new DateTime('now');
+        $dJour = $this->findFirstSavedDate();
+        return $this->findEventsAllFromDate($currentPage, $limit, $dJour)
+    }
+
+    public function findEventsAllFromDate(int $currentPage = 1, int $limit = 10, DateTime $from): array
+    {
         $qb = $this->createQueryBuilder("rdv")
-            ->where('rdv.time_at >= :dJour')
+            ->where('rdv.time_at >= :from')
             ->orderBy('rdv.time_at', 'ASC')
+            ->setParameter('from', $from->format('Y-m-d'))
             ->getQuery();
         return $this->paginateDoctrine($qb, $currentPage, $limit);
     }

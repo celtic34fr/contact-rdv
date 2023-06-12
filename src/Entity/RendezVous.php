@@ -42,6 +42,7 @@ class RendezVous
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(inversedBy: 'rendezVous')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?CompteRendu $compte_rendu = null;
 
     public function getId(): ?int

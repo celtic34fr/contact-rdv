@@ -17,13 +17,13 @@ class CompteRendu
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true, type: Types::DATE_IMMUTABLE)]
     private ?DateTime $write_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true, type: Types::INTEGER)]
     private ?int $duree = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $compte_rendu = null;
 
     #[ORM\ManyToOne]
@@ -31,6 +31,7 @@ class CompteRendu
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(mappedBy: 'compte_rendu')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?RendezVous $rendezVous = null;
 
 

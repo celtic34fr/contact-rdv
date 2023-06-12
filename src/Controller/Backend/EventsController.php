@@ -1,26 +1,27 @@
 <?php
 
-use Celtic34fr\ContactCore\Service\Utilities;
-use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactCore\Trait\Utilities;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactRendezVous\Entity\RendezVous;
+use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('events')]
 class EventsController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-    protected $container;
+    private RendezVousRepository $rendezVousRepo;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
+    public function __construct(private EntityManagerInterface $entityManager, private ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
+        $this->rendezVousRepo = $entityManager->getRepository(RendezVous::class);
     }
 
-    #[Route('/events/{display_mode}-{year}-{month}-{week}-{day}', name: 'next_events')]
+    #[Route('/events/{display_mode}-{base_day}/{current_page}-{plimit}', name: 'next_events')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
      * @param Utilities $utility
@@ -29,37 +30,52 @@ class EventsController extends AbstractController
     public function index(
         Utilities $utility,
         $display_mode = "m",
-        $year = null,
-        $month = null,
-        $week = null,
-        $day = null
+        $base_day = null,
+        $currentPage = 1,
+        $plimit = 10
     ): Response {
         $events = [];
         $dbPrefix = $this->getParameter('bolt.table_prefix');
 
         if ($utility->existsTable($dbPrefix . 'rendezvous') == true) {
-            /** traitement de la date en paramètre de la route */
-            if ($year && !$month) {
-                $month = 1;
-            }
-            if (!$year) {
-                $year = (new DateTime('now'))->format('Y');
-            }
-            if (!$month) {
-                $month = (new DateTime('now'))->format('m');
-            }
-            if ($display_mode === "w" && !$week) {
-                $today = (new DateTime('now'))->format("Y-m-d");
-                $today = explode('-', $today);
-                $mktime = mktime(0, 0, 0, $today[2], $today[1], $today[0]);
-                $week = (int) date("W", $mktime);
-            }
-            if ($display_mode === "d" && !$day) {
-                $month = (new DateTime('now'))->format('d');
+            if (!$base_day) {
+                $date_ref = new DateTime('now');
+            } else {
+                /** $base_date : chaine au format SSAAMMJJ */
+                $base_date = substr($base_day, 0, 4) . '-' . substr($base_day, 4, 2) . '-' . substr($base_day, 6);
+                $date_ref = new DateTime($base_date);
             }
 
-            $events = $this->entityManager->getRepository(RendezVous::class)
-                ->findEventsAll($currentPage);
+            $start_year = (int) $date_ref->format("Y");
+            $start_month = (int) $date_ref->format('m');
+            $start_day = (int) $date_ref->format("d");
+            $date = mktime(
+                0,
+                0,
+                0,
+                $start_day,
+                $start_month,
+                $start_year
+            );
+            $start_week = (int)date('W', $date);
+
+            /** $display_mode : 
+             *      'm'     mois de $base_day,
+             *      'w'     semaine de,$base_day
+             *      'd'     jour de base_day
+             */
+            switch ($display_mode) {
+                case 'y':
+                case 'm':
+                case 'd':
+                    continue;
+                    break;
+                default:
+                    throw new Exception("mode affichage $display_mode non traité");
+                    break;
+            }
+
+            $events = $this->rendezVousRepo->findEventsAllFromDate($currentPage, $plimit, $date_ref);
             /**
              * avoir une case à cocher pour montrer les demandes déjà traitées
              * module de recherche dans les requêtes : date (format français), nom de l'internaute, sujet

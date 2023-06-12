@@ -42,7 +42,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'item' => [
                     'uri' => $this->urlGenerator->generate('next_events'),
                     'extras' => [
-                        'icon' => 'fa-clipboard-question',
+                        'icon' => 'fa-calendar',
                         'group' => 'CRM',
                     ]
                 ]
@@ -53,7 +53,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt_input'),
                     'extras' => [
-                        'icon' => 'fa-clipboard-question',
+                        'icon' => 'fa-calendar-lines-pen',
                         'group' => 'CRM',
                     ]
                 ]
