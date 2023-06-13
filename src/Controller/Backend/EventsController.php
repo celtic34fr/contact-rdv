@@ -88,6 +88,9 @@ class EventsController extends AbstractController
             'events' => $events['datas'] ?? [],
             'currentPage' => $events['page'] ?? 0,
             'pages' => $events['pages'] ?? 0,
+            'locale' => 'fr',
+            'initialView' => 'dayGridMonth',
+            'date_ref' => $date_ref,
         ]);
     }
 

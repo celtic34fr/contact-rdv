@@ -7,7 +7,8 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script src="{{ asset('conyacy_assets/js/fullcalendar.6.1.8.global.js') }}"></script>
-	<script src="{{ asset('conyacy_assets/js/fullcalendar.6.1.8.bootstrap5.global.js') }}"></script>
-	<script src="{{ asset('conyacy_assets/js/lcalendar.js') }}"></script>
+	<script src="{{ asset('contact_assets/js/fullcalendar.6.1.8.global.js') }}"></script>
+	<script src="{{ asset('contact_assets/js/fullcalendar.6.1.8.bootstrap5.global.js') }}"></script>
+	<script src="{{ asset('contact_assets/js/fullcalendar_locales/'~locale~'.global.js') }}"></script>
+	<script src="{{ asset('contact_assets/js/lcalendar.js') }}"></script>
 {% endblock %}
