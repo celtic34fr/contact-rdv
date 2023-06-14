@@ -1,13 +1,13 @@
 <?php
 
-use Doctrine\ORM\EntityManagerInterface;
-use Celtic34fr\ContactCore\Trait\Utilities;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactCore\Traits\Utilities;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('events')]
 class EventsController extends AbstractController

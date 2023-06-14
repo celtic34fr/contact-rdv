@@ -2,7 +2,7 @@
 
 namespace Celtic34fr\ContactRendezVous\Repository;
 
-use Celtic34fr\ContactCore\Trait\DbPaginateTrait;
+use Celtic34fr\ContactCore\Traits\DbPaginateTrait;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

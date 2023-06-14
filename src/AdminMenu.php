@@ -2,9 +2,9 @@
 
 namespace Celtic34fr\ContactRendezVous;
 
-use Knp\Menu\MenuItem;
 use Bolt\Menu\ExtensionBackendMenuInterface;
-use Celtic34fr\ContactCore\Trait\AdminMenuTrait;
+use Celtic34fr\ContactCore\Traits\AdminMenuTrait;
+use Knp\Menu\MenuItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AdminMenu implements ExtensionBackendMenuInterface
