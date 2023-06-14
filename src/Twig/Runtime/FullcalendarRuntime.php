@@ -4,8 +4,18 @@ namespace Celtic34fr\ContactRendezVous\Twig\Runtime;
 
 use DateTime;
 
+/**
+ * TWIG Extension : helpers for parameter up a Fullcalendar object code implementation
+ */
 class FullcalendarRuntime
 {
+    /**
+     * Get starting date according display mode
+     * 
+     * @param mixed $date
+     * @param mixed $view
+     * @return DateTime|string
+     */
     public function twigFunction_getStartDate(string $date = "", string $view = "dayGridMonth")
     {
         if (!$date) {
@@ -16,7 +26,7 @@ class FullcalendarRuntime
 
         switch ($view) {
             case "dayGridMonth":
-                return (new DateTime($date->format("Y-m-") . "01"));
+                $strDate = (new DateTime($date->format("Y-m-") . "01"));
                 break;
             case "dayGridWeek":
             case "timeGridWeek":
@@ -26,15 +36,23 @@ class FullcalendarRuntime
                 $week = (int)date('W', $day);
                 $timestamp = mktime(0, 0, 0, 1, 1, $year ) + ($week * 7 * 24 * 60 * 60);
                 $timestamp_for_monday = $timestamp - 86400 * (date('N', $timestamp) - 1);
-                return date('Y-m-d', $timestamp_for_monday);
+                $strDate = date('Y-m-d', $timestamp_for_monday);
                 break;
             case "timeGridDay":
             case "dayGridDay":
-                return $date->format("Y-m-d");
+                $strDate = $date->format("Y-m-d");
                 break;
         }
+        return $strDate;
     }
 
+    /**
+     * Get ending date according display mode
+     * 
+     * @param mixed $date
+     * @param mixed $view
+     * @return DateTime|string
+     */
     public function twigFunction_getEndDate(string $date = "", string $view = "dayGridMonth")
     {
         if (!$date) {
@@ -45,7 +63,7 @@ class FullcalendarRuntime
 
         switch ($view) {
             case "dayGridMonth":
-                return (new DateTime($date->modify("+1 month -1 day")->format("Y-m-d")));
+                $strDate = (new DateTime($date->modify("+1 month -1 day")->format("Y-m-d")));
                 break;
             case "dayGridWeek":
             case "timeGridWeek":
@@ -55,12 +73,13 @@ class FullcalendarRuntime
                 $week = (int)date('W', $day);
                 $timestamp = mktime(0, 0, 0, 1, 1, $year) + ($week * 7 * 24 * 60 * 60);
                 $timestamp_for_monday = $timestamp - 86400 * (date('N', $timestamp) + 6);
-                return date('Y-m-d', $timestamp_for_monday);
+                $strDate = date('Y-m-d', $timestamp_for_monday);
                 break;
             case "timeGridDay":
             case "dayGridDay":
-                return $date->format("Y-m-d");
+                $strDate = $date->format("Y-m-d");
                 break;
         }
+        return $strDate;
     }
 }
