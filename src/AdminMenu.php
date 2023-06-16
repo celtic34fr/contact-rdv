@@ -72,7 +72,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
         /** extraction menu 'Utilitaires' et mise en fin du bloc menu */
         $utilitaires = $menuContacts['Utilitaires'];
         unset($menuContacts['Utilitaires']);
-        $menuContacts['Utilitaires'] = $utilitaires;
+        $menuContacts->addChild($utilitaires);
 
         /* 4/ recontruction de $menu avec $menuBefore, $menuContacts et $menuAfter */
         $menu = $this->rebuildMenu($menu, $menuBefore, $menuContacts, $menuAfter);
