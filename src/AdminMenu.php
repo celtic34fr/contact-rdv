@@ -41,6 +41,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                         'group' => 'CRM',
                         'name' => 'Les Rendez-Vous',
                         'slug' => 'rendez_vous',
+                        'icon' => 'fa-calendar',
                     ]
                 ]
             ],
@@ -50,7 +51,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt_list'),
                     'extras' => [
-                        'icon' => 'fa-clipboard-question',
+                        'icon' => 'fa-calendar-alt',
                         'group' => 'CRM',
                     ]
                 ]
@@ -61,7 +62,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt_input'),
                     'extras' => [
-                        'icon' => 'fa-clipboard-question',
+                        'icon' => 'fa-user-clock',
                         'group' => 'CRM',
                     ]
                 ]
