@@ -1,5 +1,7 @@
 <?php
 
+namespace Celtic34fr\ContactRendezVous\Controller\Backend;
+
 use Celtic34fr\ContactCore\Service\Utilities;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Doctrine\ORM\EntityManagerInterface;
