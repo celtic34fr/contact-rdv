@@ -31,7 +31,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
         list($menuBefore, $menuContacts, $menuAfter) = $this->extractsMenus($menu);
 
         $rendezVous = [
-            'Gestion des Rendez-Vous' => [
+            'Les Rendez-Vous' => [
                 'type' => 'menu',
                 'item' => [
                     'uri' => $this->urlGenerator->generate('bolt_menupage', [
@@ -46,7 +46,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
             ],
             'Futurs rendez-vous, évènements'  => [
                 'type' => 'smenu',
-                'parent' => 'Gestion des Rendez-Vous',
+                'parent' => 'Les Rendez-Vous',
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt_list'),
                     'extras' => [
@@ -57,7 +57,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
             ],
             'Saisir un rendez-vous, une évènement' => [
                 'type' => 'smenu',
-                'parent' => 'Gestion des Rendez-Vous',
+                'parent' => 'Les Rendez-Vous',
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt_input'),
                     'extras' => [
