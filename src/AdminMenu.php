@@ -39,7 +39,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                     ]),
                     'extras' => [
                         'group' => 'CRM',
-                        'name' => 'Gestion des Rendez-Vous',
+                        'name' => 'Les Rendez-Vous',
                         'slug' => 'rendez_vous',
                     ]
                 ]
