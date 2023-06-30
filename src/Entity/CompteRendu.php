@@ -2,11 +2,13 @@
 
 namespace Celtic34fr\ContactRendezVous\Entity;
 
+use DateTime;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\TextType;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\DateTimeType;
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactRendezVous\Repository\CompteRenduRepository;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompteRenduRepository::class)]
 #[ORM\Table('comptes_rendus')]
@@ -17,13 +19,13 @@ class CompteRendu
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: DateTimeType::class)]
     private ?DateTime $write_at = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: IntegerType::class)]
     private ?int $duree = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: TextType::class)]
     private ?string $compte_rendu = null;
 
     #[ORM\ManyToOne]
