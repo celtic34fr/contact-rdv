@@ -26,8 +26,10 @@ class RendezVous
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
 
-    #[ORM\ManyToOne(targetEntity: CliInfos::class, inversedBy: 'entretiens')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToMany(targetEntity: CliInfos::class)]
+    #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\InverseJoinColumn(name: 'rendezvous_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\JoinTable(name: 'cliinfos_rendezvous')]
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(targetEntity: CompteRendu::class, inversedBy: 'rendezVous')]
