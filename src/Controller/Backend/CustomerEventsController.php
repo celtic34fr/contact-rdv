@@ -5,6 +5,7 @@ namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactGestion\Entity\Contact;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
