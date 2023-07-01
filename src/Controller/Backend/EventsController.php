@@ -2,7 +2,7 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactCore\Service\Utilities;
+use Celtic34fr\ContactCore\Traits\Utilities;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
 {
+    use Utilities;
+    
     private EntityManagerInterface $entityManager;
     protected $container;
 
@@ -25,15 +27,14 @@ class EventsController extends AbstractController
     #[Route('/list/{currentPage}', name: 'list')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
-     * @param Utilities $utility
      * @param int $currentPage
      */
-    public function index(Utilities $utility, $currentPage = 1): Response
+    public function index($currentPage = 1): Response
     {
         $events = [];
         $dbPrefix = $this->getParameter('bolt.table_prefix');
 
-        if ($utility->existsTable($dbPrefix.'rendezvous') == true) {
+        if ($this->existsTable($dbPrefix.'rendezvous') == true) {
             $events = $this->entityManager->getRepository(RendezVous::class)
                 ->findEventsAll($currentPage);
             /**
@@ -54,10 +55,9 @@ class EventsController extends AbstractController
     #[Route('/input', name: 'input')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
-     * @param Utilities $utility
      * @param int $currentPage
      */
-    public function input(Utilities $utility, $currentPage = 1)
+    public function input($currentPage = 1)
     {
 
     }
