@@ -26,8 +26,10 @@ class CompteRendu
     #[ORM\Column(type: Types::TEXT)]
     private ?string $compte_rendu = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToMany(targetEntity: CliInfos::class)]
+    #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\InverseJoinColumn(name: 'compterendu_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\JoinTable(name: 'cliinfos_compterendu')]
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(targetEntity: RendezVous::class, mappedBy: 'compte_rendu')]
