@@ -35,7 +35,7 @@ class CustomerEventsController extends AbstractController
             throw new Exception('Demandeur {custormer->getFullname()} incompatible avec la demande de contact (ID: [$contact->getId()}');
         }
 
-        return $this->render('@contact-rendezvous/customer-events/new-meeting.html.twig', [
+        return $this->render('@contact-rdv/customer-events/new-meeting.html.twig', [
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/CustomerEventsController.php',
         ]);
