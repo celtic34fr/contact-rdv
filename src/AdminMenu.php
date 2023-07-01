@@ -49,7 +49,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'type' => 'smenu',
                 'parent' => 'Les Rendez-Vous',
                 'item' => [
-                    'uri' => $this->urlGenerator->generate('evt_list'),
+                    'uri' => $this->urlGenerator->generate('evt-list'),
                     'extras' => [
                         'icon' => 'fa-calendar-alt',
                         'group' => 'CRM',
@@ -60,7 +60,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'type' => 'smenu',
                 'parent' => 'Les Rendez-Vous',
                 'item' => [
-                    'uri' => $this->urlGenerator->generate('evt_input'),
+                    'uri' => $this->urlGenerator->generate('evt-input'),
                     'extras' => [
                         'icon' => 'fa-user-clock',
                         'group' => 'CRM',
