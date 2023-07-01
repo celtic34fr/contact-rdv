@@ -2,13 +2,14 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
+use Exception;
+use Symfony\Component\Routing\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactGestion\Entity\Contact;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('customer_evts', name: 'custevts-')]
 class CustomerEventController extends AbstractController
