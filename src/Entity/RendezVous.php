@@ -5,8 +5,6 @@ namespace Celtic34fr\ContactRendezVous\Entity;
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
 use DateTime;
-use Doctrine\DBAL\Types\DateTimeType;
-use Doctrine\DBAL\Types\TextType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,20 +17,20 @@ class RendezVous
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: DateTimeType::class, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $time_at = null;
 
-    #[ORM\Column(type: TextType::class, length: 255)]
+    #[ORM\Column(type: Types::TEXT, length: 255)]
     private ?string $objet = null;
 
-    #[ORM\Column(type: TextType::class, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
 
-    #[ORM\ManyToOne(inversedBy: 'entretiens')]
+    #[ORM\ManyToOne(targetEntity: CliInfos::class, inversedBy: 'entretiens')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CliInfos $invite = null;
 
-    #[ORM\OneToOne(inversedBy: 'rendezVous')]
+    #[ORM\OneToOne(targetEntity: CompteRendu::class, inversedBy: 'rendezVous')]
     private ?CompteRendu $compte_rendu = null;
 
     public function getId(): ?int

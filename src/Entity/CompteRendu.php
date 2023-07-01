@@ -3,10 +3,8 @@
 namespace Celtic34fr\ContactRendezVous\Entity;
 
 use DateTime;
-use Doctrine\DBAL\Types\IntegerType;
-use Doctrine\DBAL\Types\TextType;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\DBAL\Types\DateTimeType;
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactRendezVous\Repository\CompteRenduRepository;
 
@@ -19,20 +17,20 @@ class CompteRendu
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: DateTimeType::class)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTime $write_at = null;
 
-    #[ORM\Column(type: IntegerType::class)]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $duree = null;
 
-    #[ORM\Column(type: TextType::class)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $compte_rendu = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?CliInfos $invite = null;
 
-    #[ORM\OneToOne(mappedBy: 'compte_rendu')]
+    #[ORM\OneToOne(targetEntity: RendezVous::class, mappedBy: 'compte_rendu')]
     private ?RendezVous $rendezVous = null;
 
 
