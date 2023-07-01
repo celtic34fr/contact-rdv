@@ -9,9 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
-#[Route('events')]
+#[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -23,7 +22,7 @@ class EventsController extends AbstractController
         $this->container = $container;
     }
 
-    #[Route('/list/{currentPage}', name: 'evt_list')]
+    #[Route('/list/{currentPage}', name: 'list')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
      * @param Utilities $utility
@@ -52,7 +51,7 @@ class EventsController extends AbstractController
         ]);
     }
 
-    #[Route('/input', name: 'evt_input')]
+    #[Route('/input', name: 'input')]
     /**
      * interface pour afficher les requêtes adressées par les internautes
      * @param Utilities $utility
