@@ -1,0 +1,54 @@
+{% extends "@contact-rdv/events_layout.html.twig" %}
+
+{% block main %}
+    <div class="jumbotron text-center">
+        <h1>Prise de rendez-vous</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div id='calendar-holder'></div>
+            </div>
+            <div class="col-4">
+                <div id='listEvents'>
+                    <h3 class="col-12">Liste des évènements</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <p></p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        const calendarEl = document.querySelector("#calender-holder");
+        const calendar = new FullClendar(colendarEl, {
+            defaultView: 'dayGridMonth',
+            editable: true,
+            eventSources: [
+                {
+                    url: "{{ path('fc_load_events') }}",
+                    method: "POST",
+                    extraParams: {
+                        filters: JSON.stringify({})
+                    },
+                    failure: () => {
+                        alert("Une erreur est survenue durant la recherche de données du calendrier");
+                    }
+                },
+            ],
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            timeZone: "Europe/Paris",
+            themeSystem: 'bootstrap5',
+        });
+        calendar.render();
+    </script>
+{% endblock %}
