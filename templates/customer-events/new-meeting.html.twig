@@ -16,7 +16,7 @@
 {% block main %}
     <div class="jumbotron text-center">
         <h1>Demande de rendez-vous pour	{{ customer.getFullname() }}</h1>
-        <h3>Demande de contact du{{ contact.getCreatedAt()|date("d/m/Y") }}</h3>
+        <h3>Demande de contact du {{ contact.getCreatedAt()|date("d/m/Y") }}</h3>
     </div>
 
     <div class="container">
