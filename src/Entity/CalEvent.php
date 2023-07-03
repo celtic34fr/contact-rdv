@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CalEventRepository::class)]
-#[ORM\Table('events')]
+#[ORM\Table('cal_events')]
 class CalEvent
 {
     #[ORM\Id]
@@ -32,8 +32,8 @@ class CalEvent
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
-    #[ORM\InverseJoinColumn(name: 'rendezvous_id', referencedColumnName: 'id', unique: true)]
-    #[ORM\JoinTable(name: 'cliinfos_rendezvous')]
+    #[ORM\InverseJoinColumn(name: 'calevent_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\JoinTable(name: 'cliinfos_calecents')]
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(targetEntity: CompteRendu::class, inversedBy: 'rendezVous')]
