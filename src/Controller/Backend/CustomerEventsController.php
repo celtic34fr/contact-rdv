@@ -36,7 +36,7 @@ class CustomerEventsController extends AbstractController
         }
 
         return $this->render('@contact-rdv/customer-events/new-meeting.html.twig', [
-            'cutormer' => $customer,
+            'customer' => $customer,
             'contact' => $contact,
         ]);
     }
