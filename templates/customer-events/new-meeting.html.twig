@@ -53,7 +53,16 @@
             },
             timeZone: "Europe/Paris",
             themeSystem: 'bootstrap5',
-            locale: "{{ app.user.locale|default() }}"
+            locale: "{{ app.user.locale|default() }}",
+            buttonText: {
+                prev: '<<',
+                next: '>>',
+                today:'Aujourd\'hui',
+                title:'Titre : ',
+                dayGridMonth: 'Le mois',
+                timeGridWeek: 'La semaine',
+                timeGridDay: 'LA journéee',
+            },
         });
         calendar.render();
     </script>
