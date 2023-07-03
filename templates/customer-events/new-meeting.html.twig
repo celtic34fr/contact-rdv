@@ -1,8 +1,21 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
 
+{% block shoulder %}
+	{{ 'Evènements dans le calendrier' }}
+{% endblock shoulder %}
+
+{% block title %}
+	<i class="fas mr-2 link--icon fa-clipboard-question"></i>
+	Prise de rendez-vous
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
 {% block main %}
     <div class="jumbotron text-center">
-        <h1>Prise de rendez-vous</h1>
+        <h1>Demande de rendez-vous pour </h1>
     </div>
 
     <div class="container">
@@ -21,7 +34,7 @@
     <div class="jumbotron text-center" style="margin-bottom:0">
         <p></p>
     </div>
-{% endblock %}
+{% endblock %} 
 
 {% block javascripts %}
     <script type="text/javascript">
