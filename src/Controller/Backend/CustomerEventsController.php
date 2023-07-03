@@ -36,8 +36,8 @@ class CustomerEventsController extends AbstractController
         }
 
         return $this->render('@contact-rdv/customer-events/new-meeting.html.twig', [
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/CustomerEventsController.php',
+            'cutormer' => $customer,
+            'contact' => $contact,
         ]);
     }
 }
