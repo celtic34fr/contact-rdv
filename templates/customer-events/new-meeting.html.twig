@@ -44,7 +44,7 @@
         let calendarEl = document.getElementById('calendar-holder');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             events: [{{ events.datas|raw }}],
-            defaultView: 'dayGridMonth',
+            initialView: 'dayGridMonth',
             editable: true,
             headerToolbar: {
                 start: 'prev,next today',
@@ -53,7 +53,7 @@
             },
             timeZone: "Europe/Paris",
             themeSystem: 'bootstrap5',
-            lang: "{{ app.user.locale|default() }}"
+            locale: "{{ app.user.locale|default() }}"
         });
         calendar.render();
     </script>
