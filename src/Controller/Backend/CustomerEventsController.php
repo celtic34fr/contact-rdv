@@ -26,7 +26,7 @@ class CustomerEventsController extends AbstractController
     {
         $this->customerRepo     = $entityManager->getRepository(CliInfos::class);
         $this->contactRepo      = $entityManager->getRepository(Contact::class);
-        $this->event Repo       = $entityManager->getRepository(CalEvent::class);
+        $this->eventRepo        = $entityManager->getRepository(CalEvent::class);
     }
 
     #[Route('/new-meeting/{customer}-{contact}', name: 'new-meeting')]
