@@ -45,10 +45,10 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        const calendarEl = document.querySelector("#calender-holder");
+        let calendarEl = document.getElementById('calendar-holder');
         const calendar = new FullCalendar.Calendar(calendarEl, {
+
             defaultView: 'dayGridMonth',
-            events: [{{ events.datas|raw }}],
             editable: true,
             headerToolbar: {
                 start: 'prev,next today',
@@ -63,6 +63,7 @@
     </script>
 
     {#
+            events: [{{ events.datas|raw }}],
 
             eventSources: [
                 {
