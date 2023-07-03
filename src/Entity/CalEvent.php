@@ -3,14 +3,15 @@
 namespace Celtic34fr\ContactRendezVous\Entity;
 
 use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactRendezVous\Repository\RendezVousRepository;
+use Celtic34fr\ContactCore\Enum\EventEnums;
+use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RendezVousRepository::class)]
-#[ORM\Table('rendezvous')]
-class RendezVous
+#[ORM\Entity(repositoryClass: CalEventRepository::class)]
+#[ORM\Table('events')]
+class CalEvent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,6 +26,9 @@ class RendezVous
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
+
+    #[ORM\Column(type: Types::TEXT, length: 255)]
+    private ?string $nature = null;
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
@@ -93,5 +97,20 @@ class RendezVous
     {
         $this->compte_rendu = $compte_rendu;
         return $this;
+    }
+
+
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setNature(string $nature): bool|self
+    {
+        if (EventEnums::isValid($nature)) {
+            $this->nature = $nature;
+            return $this;
+        }
+        return false;
     }
 }
