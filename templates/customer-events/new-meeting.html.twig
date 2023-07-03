@@ -37,6 +37,7 @@
 {% endblock %} 
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         const calendarEl = document.querySelector("#calender-holder");
         const calendar = new FullCalendar.Calendar(calendarEl, {
