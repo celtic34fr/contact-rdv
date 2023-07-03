@@ -39,7 +39,7 @@
 {% block javascripts %}
     <script type="text/javascript">
         const calendarEl = document.querySelector("#calender-holder");
-        const calendar = new FullClendar(colendarEl, {
+        const calendar = new FullCalendar(calendarEl, {
             defaultView: 'dayGridMonth',
             editable: true,
             eventSources: [
