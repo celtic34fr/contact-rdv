@@ -53,6 +53,7 @@
             },
             timeZone: "Europe/Paris",
             themeSystem: 'bootstrap5',
+            lang: "{{ app.user.locale|default() }}"
         });
         calendar.render();
     </script>
