@@ -14,10 +14,6 @@
 {% endblock %}
 
 {% block main %}
-    <pre>
-        {{ dump(events) }}
-    </pre>
-
     <div class="jumbotron text-center">
         <h1>Demande de rendez-vous pour	{{ customer.getFullname() }}</h1>
         <h3>Demande de contact du {{ contact.getCreatedAt()|date("d/m/Y") }}</h3>
@@ -47,7 +43,7 @@
     <script type="text/javascript">
         let calendarEl = document.getElementById('calendar-holder');
         const calendar = new FullCalendar.Calendar(calendarEl, {
-
+            events: [{{ events.datas|raw }}],
             defaultView: 'dayGridMonth',
             editable: true,
             headerToolbar: {
@@ -59,23 +55,5 @@
             themeSystem: 'bootstrap5',
         });
         calendar.render();
-
     </script>
-
-    {#
-            events: [{{ events.datas|raw }}],
-
-            eventSources: [
-                {
-                    url: "{{ path('fc_load_events') }}",
-                    method: "POST",
-                    extraParams: {
-                        filters: JSON.stringify({})
-                    },
-                    failure: () => {
-                        alert("Une erreur est survenue durant la recherche de données du calendrier");
-                    }
-                },
-            ],
-    #}
 {% endblock %}
