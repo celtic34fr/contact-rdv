@@ -32,8 +32,8 @@ class CompteRendu
     #[ORM\JoinTable(name: 'cliinfos_compterendu')]
     private ?CliInfos $invite = null;
 
-    #[ORM\OneToOne(targetEntity: RendezVous::class, mappedBy: 'compte_rendu')]
-    private ?RendezVous $rendezVous = null;
+    #[ORM\OneToOne(targetEntity: CalEvent::class, mappedBy: 'compte_rendu')]
+    private ?CalEvent $rendezVous = null;
 
 
     public function getId(): ?int
@@ -85,12 +85,12 @@ class CompteRendu
         return $this;
     }
 
-    public function getRendezVous(): ?RendezVous
+    public function getRendezVous(): ?CalEvent
     {
         return $this->rendezVous;
     }
 
-    public function setRendezVous(?RendezVous $rendezVous): self
+    public function setRendezVous(?CalEvent $rendezVous): self
     {
         // unset the owning side of the relation if necessary
         if ($rendezVous === null && $this->rendezVous !== null) {
