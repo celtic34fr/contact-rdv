@@ -2,6 +2,7 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
+use Celtic34fr\ContactRendezVous\Form\CalEventType;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
@@ -32,13 +33,8 @@ class CustomerEventsController extends AbstractController
     #[Route('/new-meeting/{customer}-{contact}', name: 'new-meeting')]
     public function index(Request $request, int $customer, int $contact): Response
     {
-        if ($customer > 0) {
-            $customer = $this->entityManager->getRepository(CliInfos::class)->find($customer);
-        }
-        if ($contact > 0) {
-            $contact = $this->entityManager->getRepository(Contact::class)->find($contact);
-        }
-
+        $customer = ($customer > 0) ? $this->entityManager->getRepository(CliInfos::class)->find($customer) : null;
+        $contact = ($contact > 0) ? $this->entityManager->getRepository(Contact::class)->find($contact) : null;
         if (!$customer || !$contact) {
             throw new Exception("demandeur ou demande de contact introuvable, veuillez en avertir l'admistrateur");
         } elseif ($customer != $contact->getClient()) {
@@ -46,11 +42,26 @@ class CustomerEventsController extends AbstractController
         }
 
         $events = $this->eventRepo->findAllPaginateFromDate(1, 10, null, "json");
+        $event = new CalEvent();
+        $event->setInvite($customer);
+        $form = $this->createForm(CalEventType::class, $event);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // traitement du formulaire pour ajouter un rendez-vous à CalEvents nature : CTEL en temporaire
+            // génération d'un courriel de proposition du RDV téléphonique
+            // -> reprise date, heure et objet rendez-vous
+            // -> ajout de 2 liens : 
+            //      => un pour confirmer le RDV Téléphonique
+            //      => un pour que le femandeur puisse prendre directement le dit RDV (annulant le précédent)
+        }
 
         return $this->render('@contact-rdv/customer-events/new-meeting.html.twig', [
             'customer' => $customer,
             'contact' => $contact,
             'events' => $events,
+            'form' => $form->createView(),
         ]);
     }
 }
