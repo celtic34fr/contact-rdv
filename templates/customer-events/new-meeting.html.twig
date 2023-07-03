@@ -39,12 +39,26 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {#
+
     <script type="text/javascript">
         const calendarEl = document.querySelector("#calender-holder");
         const calendar = new FullCalendar.Calendar(calendarEl, {
             defaultView: 'dayGridMonth',
             editable: true,
+            events: [{{ events }}]
+            headerToolbar: {
+                start: 'prev,next today',
+                center: 'title',
+                end: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            timeZone: "Europe/Paris",
+            themeSystem: 'bootstrap5',
+        });
+        calendar.render();
+
+    </script>
+
+    {#
             eventSources: [
                 {
                     url: "{{ path('fc_load_events') }}",
@@ -57,15 +71,5 @@
                     }
                 },
             ],
-            headerToolbar: {
-                start: 'prev,next today',
-                center: 'title',
-                end: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            timeZone: "Europe/Paris",
-            themeSystem: 'bootstrap5',
-        });
-        calendar.render();
-        #}
-    </script>
+    #}
 {% endblock %}
