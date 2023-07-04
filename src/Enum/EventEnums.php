@@ -34,6 +34,7 @@ enum EventEnums: string
 
     public static function getValuesCases(): array
     {
-        return array_combine(self::getValues(), self::getCases());
+        $cases = self::cases();
+        return array_map(static fn (\UnitEnum $case) => [$case->value => $case->name], $cases);
     }
 }
