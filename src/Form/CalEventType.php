@@ -29,7 +29,6 @@ class CalEventType extends AbstractType
                 'required' => false,
             ])
             ->add('nature', ChoiceType::class, [
-                'choices' => array_combine(EventEnums::getValues(), EventEnums::getCases()),
                 'choice_label' => 'Nature du rendez-vous',
                 "required" => false,
             ])
