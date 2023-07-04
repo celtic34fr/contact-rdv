@@ -20,6 +20,7 @@ class CalEventType extends AbstractType
         $builder
             ->add('time_at', DateTimeType::class, [
                 'date_label' => 'le ', 'input' => 'string', 'input_format' => "d/m/Y H:s:i",
+                'required' => false,
             ])
             ->add('objet', TextType::class, [
                 'required' => true,
@@ -36,7 +37,7 @@ class CalEventType extends AbstractType
                 'required' => false,
             ])
             ->add('contact_id', HiddenType::class, [
-                'requires' => false,
+                'required' => false,
             ])
         ;
     }
