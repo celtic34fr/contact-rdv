@@ -50,7 +50,7 @@ class CustomerEventsController extends AbstractController
         $event->setContactId($contact->getId());
         $event->setNature(EventEnums::ContactTel->_toString());
         $form = $this->createForm(CalEventType::class, $event);
-        $date_min = (new DateTime('naw'))->modify("+1 day")->format("d/m/Y H:i:s");
+        $date_min = (new DateTime('now'))->modify("+1 day")->format("d/m/Y H:i:s");
 
         $form->handleRequest($request);
 
