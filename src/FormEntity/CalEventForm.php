@@ -18,7 +18,7 @@ class CalEventForm
     /**
      * Get the value of time_at
      */ 
-    public function getTime_at(): DateTime
+    public function getTimeAt(): DateTime
     {
         return $this->time_at;
     }
@@ -27,7 +27,7 @@ class CalEventForm
      * Set the value of time_at
      * @return  self
      */ 
-    public function setTime_at(DateTime $time_at): self
+    public function setTimeAt(DateTime $time_at): self
     {
         $this->time_at = $time_at;
         return $this;
