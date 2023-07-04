@@ -4,7 +4,7 @@ namespace Celtic34fr\ContactRendezVous\Form;
 
 use Carbon\Doctrine\DateTimeType;
 use Celtic34fr\ContactCore\Enum\EventEnums;
-use Celtic34fr\ContactRendezVous\Entity\CalEvent;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -30,6 +30,13 @@ class CalEventType extends AbstractType
             ->add('nature', ChoiceType::class, [
                 'choices' => array_combine(EventEnums::getValues(), EventEnums::getCases()),
                 'choice_label' => 'Nature du rendez-vous',
+                "required" => false,
+            ])
+            ->add('customer_id', HiddenType::class, [
+                'required' => false,
+            ])
+            ->add('contact_id', HiddenType::class, [
+                'requires' => false,
             ])
         ;
     }
@@ -37,7 +44,7 @@ class CalEventType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CalEvent::class,
+            'data_class' => CalEventForm::class,
         ]);
     }
 }

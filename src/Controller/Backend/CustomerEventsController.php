@@ -2,16 +2,19 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactRendezVous\Form\CalEventType;
+use DateTime;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactCore\Enum\EventEnums;
 use Celtic34fr\ContactGestion\Entity\Contact;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
+use Celtic34fr\ContactRendezVous\Form\CalEventType;
 use Celtic34fr\ContactCore\Repository\CliInfosRepository;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
 use Celtic34fr\ContactGestion\Repository\ContactRepository;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,9 +45,12 @@ class CustomerEventsController extends AbstractController
         }
 
         $events = $this->eventRepo->findAllPaginateFromDate(1, 10, null, "json");
-        $event = new CalEvent();
-        $event->setInvite($customer);
+        $event = new CalEventForm();
+        $event->setCustomerId($customer->getId());
+        $event->setContactId($contact->getId());
+        $event->setNature(EventEnums::ContactTel->_toString());
         $form = $this->createForm(CalEventType::class, $event);
+        $date_min = (new DateTime('naw'))->modify("+1 day");
 
         $form->handleRequest($request);
 
@@ -62,6 +68,8 @@ class CustomerEventsController extends AbstractController
             'contact' => $contact,
             'events' => $events,
             'form' => $form->createView(),
+            'date_min' => $date_min,
+            'date_time' => null,
         ]);
     }
 }

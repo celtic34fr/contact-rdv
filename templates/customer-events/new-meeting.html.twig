@@ -1,4 +1,6 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
+{% import "@contact-core/macros/form_type.html.twig" as fields %}
+{% import "@contact-core/macros/form_classic.html.twig" as forms %}
 
 {% block shoulder %}
 	{{ 'Evènements dans le calendrier' }}
@@ -11,6 +13,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
+    {% include 'includes/asset_datepicker_vanilla.html.twig' %}
 {% endblock %}
 
 {% block main %}
@@ -25,7 +28,35 @@
                 <div id='calendar-holder'></div>
             </div>
             <div class="col-4">
-                <div id='listEvents'>
+                <div id='listEvents' class="row">
+                    <h3 class="col-12">Rendez-vous</h3>
+                        {{ form_start(form, {'class': 'col-12 mx-0 px-0 row'}) }}
+                            {{ fields.datepickerField(form.time_at, "Date - heure du rendrez-vous",
+                                {'il_class': {'label': ' col-6', 'input': ' col-6'}, 'class': 'col-12', 'date_min': date_min,
+                                'disabled': disabled, 'placeholder': "Choississez la date et heure", 
+                                'date_date': date_time is defined and date_time is not empty ? date_time|date("d/m/Y h:i:s") }
+                            )}}
+                            {{ fields.field(form.objet, "Objet du rendrez-vous",
+                                {'il_class': { 'lable': 'col-6', 'textarea': 'col-6'}, 'class': 'col-12', 'row': 5, 'col': 72,
+                                "placeholder"; "Informaions utiles à connaître", "required": false, "value": form.complements.vars.value}
+                            )}}
+                            {{ fields.textarea(form.complements, "Botes, informations utiles", 
+                                {'tl_class': { 'lable': 'col-6', 'input': 'col-6'}, 'class': 'col-12'}
+                            )}}
+                            {{ fields.select(form.nature, "",
+                                {'sl_class': { 'lable': 'col-6', 'select': 'col-6'}, 'class': 'col-12', 'multiple': false, 'disabled': true}
+                            )}}
+                            {{ field.hidden(form.customer_id) }}
+                            {{ field.hidden(form.contact_id) }}
+                            {{ forms.submitbtn('record', 'Enregitrer le rendez-vous',
+                                {'class': 'offset-1 col-4'}
+                            ) }}
+                            {{ forms.cancelbtn('cancel', 'Tout annuler',
+                                {'class': 'offset-1 col-4'}
+                            ) }}
+                        {{ form_end(form, {render_rest: false}) }}
+                </div>
+                <div id='listEvents' class="row">
                     <h3 class="col-12">Liste des futurs évènements</h3>
                 </div>
             </div>
@@ -39,6 +70,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    {{ generals.datepickersJS('dd/mm/yyyy', {'language': 'fr', 'weekStart': 1, 'calendarWeeks': true, 'clearBtn': true,
+        'daysOfWeekHighlighted': "1,2,3,4,5", 'autohide': true, 'orientation': 'bottom'  }) }}
 
     <script type="text/javascript">
         let calendarEl = document.getElementById('calendar-holder');

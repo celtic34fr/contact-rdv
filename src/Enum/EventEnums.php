@@ -4,7 +4,7 @@ namespace Celtic34fr\ContactCore\Enum;
 
 enum EventEnums: string
 {
-    case ContactTerl    = 'CTEL';   // demande de rendez-vous via demande de contact
+    case ContactTel     = 'CTEL';   // demande de rendez-vous via demande de contact
     case CongesAbs      = 'ABS';    // congé, absence
     case Intervention   = 'INTR';   // intervention (chez client, dans locaux ...)
     case Meeting        = "MEET";   // réunion de travail, meeting divers ...
