@@ -19,7 +19,7 @@ class CalEventType extends AbstractType
     {
         $builder
             ->add('time_at', DateTimeType::class, [
-                'required' > true,
+                'date_label' => 'le ', 'input' => 'string', 'input_format' => "d/m/Y H:s:i",
             ])
             ->add('objet', TextType::class, [
                 'required' => true,

@@ -34,7 +34,7 @@
                             {{ fields.datepickerField(form.time_at, "Date - heure du rendrez-vous",
                                 {'il_class': {'label': ' col-6', 'input': ' col-6'}, 'class': 'col-12', 'date_min': date_min,
                                 'disabled': disabled, 'placeholder': "Choississez la date et heure", 
-                                'date_date': date_time is defined and date_time is not empty ? date_time|date("d/m/Y h:i:s") }
+                                'date_date': date_time is defined and date_time is not empty ? date_time|date("d/m/Y H:i:s") }
                             )}}
                             {{ fields.field(form.objet, "Objet du rendrez-vous",
                                 {'il_class': { 'lable': 'col-6', 'textarea': 'col-6'}, 'class': 'col-12', 'row': 5, 'col': 72,
