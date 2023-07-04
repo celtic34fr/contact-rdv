@@ -17,7 +17,7 @@ class CalEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $natureChoices = EventEnums::getValuesCases;
+        $natureChoices = EventEnums::getValuesCases();
 
         $builder
             ->add('time_at', DateTimeType::class, [
