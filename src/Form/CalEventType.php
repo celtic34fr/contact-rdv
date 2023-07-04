@@ -17,6 +17,8 @@ class CalEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $natureChoices = EventEnums::getValuesCases;
+
         $builder
             ->add('time_at', DateTimeType::class, [
                 'date_label' => 'le ', 'input' => 'string', 'input_format' => "d/m/Y H:s:i",
@@ -29,7 +31,7 @@ class CalEventType extends AbstractType
                 'required' => false,
             ])
             ->add('nature', ChoiceType::class, [
-                'choices' => EventEnums::getValuesCases(),
+                'choices' => $natureChoices,
                 'choice_label' => 'Nature du rendez-vous',
                 "required" => false,
             ])
