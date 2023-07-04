@@ -2,8 +2,12 @@
 
 namespace Celtic34fr\ContactCore\Enum;
 
+use Celtic34fr\ContactCore\Traits\EnumToArray;
+
 enum EventEnums: string
 {
+    use EnumToArray;
+
     case ContactTel     = 'CTEL';   // demande de rendez-vous via demande de contact
     case CongesAbs      = 'ABS';    // congé, absence
     case Intervention   = 'INTR';   // intervention (chez client, dans locaux ...)
@@ -18,23 +22,5 @@ enum EventEnums: string
     {
         $courrielValuesTab = array_column(self::cases(), 'value');
         return in_array($value, $courrielValuesTab);
-    }
-
-    public static function getCases(): array
-    {
-        $cases = self::cases();
-        return array_map(static fn (\UnitEnum $case) => $case->name, $cases);
-    }
-
-    public static function getValues(): array
-    {
-        $cases = self::cases();
-        return array_map(static fn (\UnitEnum $case) => $case->value, $cases);
-    }
-
-    public static function getValuesCases(): array
-    {
-        $cases = self::cases();
-        return array_map(static fn (\UnitEnum $case) => [$case->value => $case->name], $cases);
     }
 }
