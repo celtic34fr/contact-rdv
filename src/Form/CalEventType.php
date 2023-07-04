@@ -2,16 +2,16 @@
 
 namespace Celtic34fr\ContactRendezVous\Form;
 
-use Carbon\Doctrine\DateTimeType;
-use Celtic34fr\ContactCore\Enum\EventEnums;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Celtic34fr\ContactCore\Enum\EventEnums;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CalEventType extends AbstractType
 {
