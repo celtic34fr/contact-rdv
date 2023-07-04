@@ -18,8 +18,11 @@ class CalEvent
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DateTime $time_at = null;
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTime $start_at = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?DateTime $end_at = null;
 
     #[ORM\Column(type: Types::TEXT, length: 255)]
     private ?string $objet = null;
@@ -29,6 +32,18 @@ class CalEvent
 
     #[ORM\Column(type: Types::TEXT, length: 255)]
     private ?string $nature = null;
+
+    #[ORM\Column(type: Types::TEXT, length: 7)]
+    private ?string $bg_color = null;
+
+    #[ORM\Column(type: Types::TEXT, length: 7)]
+    private ?string $bd_color = null;
+
+    #[ORM\Column(type: Types::TEXT, length: 7)]
+    private ?string $tx_color = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private ?string $all_day = false;
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
@@ -44,14 +59,25 @@ class CalEvent
         return $this->id;
     }
 
-    public function getTimeAt(): ?DateTime
+    public function getStartAt(): ?DateTime
     {
-        return $this->time_at;
+        return $this->start_at;
     }
 
-    public function setTimeAt(DateTime $time_at): self
+    public function setStartAt(DateTime $start_at): self
     {
-        $this->time_at = $time_at;
+        $this->start_at = $start_at;
+        return $this;
+    }
+
+    public function getEndAt(): ?DateTime
+    {
+        return $this->start_at;
+    }
+
+    public function setEndAt(DateTime $start_at): self
+    {
+        $this->start_at = $start_at;
         return $this;
     }
 
@@ -112,5 +138,79 @@ class CalEvent
             return $this;
         }
         return false;
+    }
+
+    /**
+     * Get the value of bg_color
+     */ 
+    public function getBgColor(): string
+    {
+        return $this->bg_color;
+    }
+
+    /**
+     * Set the value of bg_color
+     * @return  self
+     */ 
+    public function setBgColor(string $bg_color): self
+    {
+        $this->bg_color = $bg_color;
+        return $this;
+    }
+
+    /**
+     * Get the value of bd_color
+     */ 
+    public function getBdColor(): string
+    {
+        return $this->bd_color;
+    }
+
+    /**
+     * Set the value of bd_color
+     * @return  self
+     */ 
+    public function setBdColor(string $bd_color): self
+    {
+        $this->bd_color = $bd_color;
+        return $this;
+    }
+
+    /**
+     * Get the value of tx_color
+     */ 
+    public function getTxColor(): string
+    {
+        return $this->tx_color;
+    }
+
+    /**
+     * Set the value of tx_color
+     * @return  self
+     */ 
+    public function setTxColor(string $tx_color): self
+    {
+        $this->yx_color = $tx_color;
+        return $this;
+    }
+
+    /**
+     * Get the value of all_day
+     */ 
+    public function getAllDay(): bool
+    {
+        return $this->all_day;
+    }
+
+    /**
+     * Set the value of all_day
+     *
+     * @return  self
+     */ 
+    public function setAllDay(bool $all_day): self
+    {
+        $this->all_day = $all_day;
+
+        return $this;
     }
 }
