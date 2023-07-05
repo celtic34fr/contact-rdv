@@ -43,7 +43,7 @@ class CalEvent
     private ?string $tx_color = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    private ?string $all_day = false;
+    private ?bool $all_day = false;
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
