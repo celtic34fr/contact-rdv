@@ -66,6 +66,17 @@ class AdminMenu implements ExtensionBackendMenuInterface
                         'group' => 'CRM',
                     ]
                 ]
+            ],
+            "Gestion des types d'évènements" => [
+                'type' => 'smenu',
+                'parent' => 'Les Rendez-Vous',
+                'item' => [
+                    'uri' => $this->urlGenerator->generate('evt-type-gest'),
+                    'extras' => [
+                        'icon' => 'fa-tool',
+                        'group' => 'CRM',
+                    ]
+                ]
             ]
         ];
         $menuContacts = $this->addMenu($rendezVous, $menuContacts);

@@ -61,4 +61,14 @@ class EventsController extends AbstractController
     {
 
     }
+
+    #[Route('/evt_type_gest', name: 'evt-type-gest')]
+    /**
+     * interface pour gérer les types d'évènement dans le calendrier
+     * @param int $currentPage
+     */
+    public function evt_type_gest($currentPage = 1)
+    {
+
+    }
 }
