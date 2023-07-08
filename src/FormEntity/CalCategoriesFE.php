@@ -10,9 +10,14 @@ class CalCategoriesFE
     private string $description;
     private array $values;
 
-    public function __construct(Parameter $paramTitle, array $paramList)
+    public function __construct(?Parameter $paramTitle = null, ?array $paramList = null)
     {
-        $this->description = $paramTitle->getValeur();
+        $this->description = $paramTitle ? $paramTitle->getValeur() :"";
+        if ($paramList) {
+            foreach ($paramList as $paramItem) {
+                $this->values[] = new CalCategoryFE($paramItem);
+            }
+        }
 
     }
 
