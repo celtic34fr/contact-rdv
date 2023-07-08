@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactRendezVous\Form\CalEventType;
 use Celtic34fr\ContactCore\Repository\CliInfosRepository;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventFE;
 use Celtic34fr\ContactGestion\Repository\ContactRepository;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +45,7 @@ class CustomerEventsController extends AbstractController
         }
 
         $events = $this->eventRepo->findAllPaginateFromDate(1, 10, null, "json");
-        $event = new CalEventForm();
+        $event = new CalEventFE();
         $event->setCustomerId($customer->getId());
         $event->setContactId($contact->getId());
         $event->setNature(EventEnums::ContactTel->_toString());

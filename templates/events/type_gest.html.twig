@@ -1,0 +1,24 @@
+{% extends '@contact-core/layout_backend.html.twig' %}
+
+{% block shoulder %}
+    {{ 'Evènements dans le calendrier' }}
+{% endblock shoulder %}
+
+{% block title %}
+    <i class="fas mr-2 link--icon fa-tools"></i>
+    Gestion des types d'évènements
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <pre>
+        {{ dump(_context) }}
+    </pre>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

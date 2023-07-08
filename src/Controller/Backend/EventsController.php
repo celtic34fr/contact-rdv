@@ -2,26 +2,36 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactCore\Traits\Utilities;
-use Celtic34fr\ContactRendezVous\Entity\RendezVous;
+use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Traits\Utilities;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactRendezVous\Entity\RendezVous;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
 {
     use Utilities;
+
+    const PARAM_CLE = "calNature";
     
     private EntityManagerInterface $entityManager;
     protected $container;
+    private EntityRepository $paramRepo;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
         $this->container = $container;
+        $this->paramRepo = $entityManager->getRepository(Parameter::class);
     }
 
     #[Route('/list/{currentPage}', name: 'list')]
@@ -65,10 +75,30 @@ class EventsController extends AbstractController
     #[Route('/evt_type_gest', name: 'type-gest')]
     /**
      * interface pour gérer les types d'évènement dans le calendrier
-     * @param int $currentPage
      */
-    public function evt_type_gest($currentPage = 1)
+    public function evt_type_gest(Request $request)
     {
+        $catagories = [];
+        $dbPrefix = $this->getParameter('bolt.table_prefix');
+        $context = [];
 
+        if ($this->existsTable($dbPrefix.'parameters') == true) {
+            $categories = $this->paramRepo->getParamtersList(self::PARAM_CLE);
+            $categoryTitle = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
+            $categoriesFE = new CalCategoriesFE($categoryTitle, $categories);
+            $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+            }
+            
+            $context['form'] = $form->createView();
+        } else {
+            $this->addFlash('danger', "La table Paramters n'existe pas, veuillez en avertir l'administrateur");
+        }
+
+        return $this->render('@contact-rdv/events/type_gest.html.twig', $context);
     }
 }

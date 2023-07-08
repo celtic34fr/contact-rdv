@@ -7,7 +7,7 @@ use Celtic34fr\ContactCore\Enum\EventEnums;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventForm;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventFE;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -47,7 +47,7 @@ class CalEventType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CalEventForm::class,
+            'data_class' => CalEventFE::class,
         ]);
     }
 }

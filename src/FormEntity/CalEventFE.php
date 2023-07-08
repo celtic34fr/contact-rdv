@@ -6,7 +6,7 @@ use DateTime;
 use Celtic34fr\ContactCore\Enum\EventEnums;
 use phpDocumentor\Reflection\Types\Mixed_;
 
-class CalEventForm
+class CalEventFE
 {
     private DateTime $time_at;
     private string $objet;
