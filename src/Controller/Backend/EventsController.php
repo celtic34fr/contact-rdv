@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -25,11 +24,13 @@ class EventsController extends AbstractController
     
     private EntityManagerInterface $entityManager;
     protected $container;
+    private $schemaManager;
     private EntityRepository $paramRepo;
 
     public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
         $this->entityManager = $entityManager;
+        $this->schemaManager = $entityManager->getConnection()->getSchemaManager();
         $this->container = $container;
         $this->paramRepo = $entityManager->getRepository(Parameter::class);
     }
