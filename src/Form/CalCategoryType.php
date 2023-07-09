@@ -46,12 +46,12 @@ class CalCategoryType extends AbstractType
                 'html5' => true,
                 'empty_data' => "#FFFFFF",
                 ])
-            ->add('background_color', ColorType::class, [
+            ->add('border_color', ColorType::class, [
                 'label' => 'Couleur bordure de case',
                 'html5' => true,
                 'empty_data' => "#FFFFFF",
                 ])
-            ->add('background_color', ColorType::class, [
+            ->add('text_color', ColorType::class, [
                 'label' => 'Couleur écriture',
                 'html5' => true,
                 'empty_data' => "#000000",
