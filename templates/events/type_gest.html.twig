@@ -115,7 +115,7 @@
 		}
 
 		document.addEventListener("DOMContentLoaded", function () {
-			document.querySelectorAll("input[type:color]").forEach(element => {
+			document.querySelectorAll('input[type:"color"]').forEach(element => {
 				let picker = new Picker(element, {
 					alpha: false,
 					color: element.vars.value,
