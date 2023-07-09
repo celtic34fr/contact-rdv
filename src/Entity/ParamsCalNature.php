@@ -2,6 +2,8 @@
 
 namespace Celtic34fr\ContactRendezVous\Entity;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Celtic34fr\ContactCore\Traits\ParametersEntityTrait;
@@ -14,12 +16,12 @@ class ParamsCalNature extends Parameter
     ];
     const PARAM_CLE = "calNature";
 
-    private ParameterRepository $repository;
+    private EntityRepository $repository;
 
-    public function __construct(private LifecycleEventArgs $events)
+    public function __construct(EntityManagerInterface $em)
     {
         parent::__construct();
-        $this->repository = $events->getObjectManager()->getRepository(Parameter::class);
+        $this->repository = $em->getRepository(Parameter::class);
     }
 
     use ParametersEntityTrait;

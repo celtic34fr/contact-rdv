@@ -2,8 +2,7 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
-use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
@@ -12,6 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
+use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
+use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
+use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -92,7 +95,28 @@ class EventsController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                
+                $categoryTitle->setDescription($categoriesFE->getDescription());
+
+                /** @var CalCategoryFE $item */
+                foreach ($categoriesFE->getValues() as $idx => $item) {
+                    $ord = $idx + 1;
+                    /** @var ParamsCalNature $categoryItem */
+                    $categoryItem = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => $ord]);
+                    if ($categoryItem) {
+                        $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
+                    } else {
+                        $categoryItem = new ParamsCalNature($this->entityManager);
+                    }
+                    $categoryItem->setName($item->getName());
+                    $categoryItem->setDescription($item->getDescription());
+                    $categoryItem->setBackgroundColor($item->getBackgroundColor());
+                    $categoryItem->setBorderColor($item->getBorderColor());
+                    $categoryItem->setTextColor($item->getTextColor());
+                    if (!$categoryItem->getId()) $this->entityManager->persist($categoryItem);
+                }
+                $this->entityManager->flush();
+                $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
+                $this->redirectToRoute('bolt_dashboard');
             }
             
             $context['form'] = $form->createView();

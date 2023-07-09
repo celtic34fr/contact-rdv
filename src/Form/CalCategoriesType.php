@@ -3,6 +3,7 @@
 namespace Celtic34fr\ContactRendezVous\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -35,6 +36,9 @@ class CalCategoriesType extends AbstractType
                 'entry_type' => CalCategoryType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+            ])
+            ->add('record', SubmitType::class, [
+                'label' => 'Enregitrer',
             ])
         ;
     }

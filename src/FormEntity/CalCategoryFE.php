@@ -47,7 +47,7 @@ class CalCategoryFE
         return $this;
     }
 
-    public function getBackground_color(): string
+    public function getBackgroundColor(): string
     {
         return $this->background_color;
     }
@@ -56,14 +56,14 @@ class CalCategoryFE
      * Set the value of background_color
      * @return  self|bool
      */ 
-    public function setBackground_color(string $background_color): mixed
+    public function setBackgroundColor(string $background_color): mixed
     {
         if (false === $this->validColorHexa($background_color)) return false;
         $this->background_color = $background_color;
         return $this;
     }
 
-    public function getBorder_color(): string
+    public function getBorderColor(): string
     {
         return $this->border_color;
     }
@@ -72,14 +72,14 @@ class CalCategoryFE
      * Set the value of border_color
      * @return  self|bool
      */ 
-    public function setBorder_color(string $border_color): self
+    public function setBorderColor(string $border_color): self
     {
         if (false === $this->validColorHexa($border_color)) return false;
         $this->border_color = $border_color;
         return $this;
     }
 
-    public function getText_color(): string
+    public function getTextColor(): string
     {
         return $this->text_color;
     }
@@ -88,7 +88,7 @@ class CalCategoryFE
      * Set the value of text_color
      * @return  self|bool
      */ 
-    public function setText_color(string $text_color): mixed
+    public function setTextColor(string $text_color): mixed
     {
         if (false === $this->validColorHexa($text_color)) return false;
         $this->text_color = $text_color;

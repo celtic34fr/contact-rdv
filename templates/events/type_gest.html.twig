@@ -57,6 +57,12 @@
 		</button>
 	</div>
 
+	<div class="col-12 row mt-2 px-0 mx-0">
+		{{ fields.submitbtn(form.record, "", {
+			'class': 'col-12 text-white gradient text-center btn btn-success',
+		}) }}
+	</div>
+
 	{{ form_end(form, {render_rest: false}) }}
 	<div class="col-12 mt-2 text-right text-gray-600 px-0 mx-3">
 		* champs obligatoires
