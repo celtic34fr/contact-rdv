@@ -33,21 +33,23 @@
         data-prototype='{{ calEvtType.prototypeValues(form.values.vars.prototype)|e('html_attr') }}'>
 			{% for idx, valueField in form.values %}
 				<li class="col-12 row my-2">
-                    {{ fields.field(valueField.vars.prototype.name, "", {
-                        'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-                    }) }}
-                    {{ fields.field(valueField.vars.prototype.description, "", {
-                        'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-                    }) }}
-                    {{ fields.field(valueField.vars.prototype.background_color, "", {
-                        'class': 'col-4',
-                    }) }}
-                    {{ fields.field(valueField.vars.prototype.border_color, "", {
-                        'class': 'col-4',
-                    }) }}
-                    {{ fields.field(valueField.vars.prototype.text_color, "", {
-                        'class': 'col-4',
-                    }) }}
+                    <div class="col-10 row">
+                        {{ fields.field(valueField.vars.prototype.name, "", {
+                            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+                        }) }}
+                        {{ fields.field(valueField.vars.prototype.description, "", {
+                            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+                        }) }}
+                        {{ fields.field(valueField.vars.prototype.background_color, "", {
+                            'class': 'col-4',
+                        }) }}
+                        {{ fields.field(valueField.vars.prototype.border_color, "", {
+                            'class': 'col-4',
+                        }) }}
+                        {{ fields.field(valueField.vars.prototype.text_color, "", {
+                            'class': 'col-4',
+                        }) }}
+                    </div>
 				</li>
 			{% endfor %}
 		</ul>
@@ -81,7 +83,7 @@
 			if (index < 1) {
 				removeFormButton.disabled = true;
 			}
-			item.append(removeFormButton);
+			item.appendChild(removeFormButton);
 
 			removeFormButton.addEventListener('click', (e) => {
 				e.preventDefault();
