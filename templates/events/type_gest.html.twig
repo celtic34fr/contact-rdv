@@ -129,16 +129,6 @@
 		}
 
 		document.addEventListener("DOMContentLoaded", function () {
-			document.querySelectorAll('input[type:"color"]').forEach(element => {
-				let picker = new Picker(element, {
-					alpha: false,
-					color: element.vars.value,
-					onChange: function(color) {
-						element.style.background = color.rgbaString;
-					}
-				});
-			});
-
 			document.querySelectorAll('.add_item_link').forEach(btn => {
 				btn.addEventListener("click", function (e) {
 					addEmptyLi(e.currentTarget);
