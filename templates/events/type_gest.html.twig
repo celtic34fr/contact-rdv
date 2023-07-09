@@ -17,7 +17,7 @@
     <pre>
         {{ dump(_context) }}
     </pre>
-	{{ form_start(form, {'action': urlForm, 'method': 'POST'}) }}
+	{{ form_start(form, {'action': path('evt-type-gest'), 'method': 'POST'}) }}
 	{{ form_row(form._token) }}
 
 	{{ fields.field(form.description, "", {
