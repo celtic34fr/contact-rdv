@@ -3,6 +3,7 @@
 namespace Celtic34fr\ContactRendezVous;
 
 use Bolt\Extension\BaseExtension;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Extension extends BaseExtension
 {
@@ -42,5 +43,26 @@ class Extension extends BaseExtension
 
     public function install(): void
     {
+        $filesystem = new Filesystem();
+        $projectDir = $this->getContainer()->getParameter('kernel.project_dir');
+
+        /** test existance contact_assets/css */
+        $source = dirname(__DIR__) . '/public';
+        $destination = $projectDir . '/public/contact-assets';
+        if (!$filesystem->exists($destination)) {
+            $filesystem->mkdir($destination);
+            $filesystem->chgrp($destination, 'www-data', true);
+            $filesystem->chmod($destination, 0777);
+        }
+        $this->doCopy($source, $destination, $filesystem);
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     */
+    private function doCopy(string $source, string $destination, Filesystem $filesystem): void
+    {
+        $filesystem->mirror($source, $destination);
     }
 }

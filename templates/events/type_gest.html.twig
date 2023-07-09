@@ -12,6 +12,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+	<link rel="stylesheet" href="{{ asset('contact-assets/css/vanilla-picker.csp.css') }}"/>
 {% endblock %}
 
 {% block main %}
@@ -52,7 +53,9 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>
+	<script src="{{ asset('contact-assets/js/vanilla-picker.csp.js') }}"></script>
+
+<script>
 		function addTagFormDeleteLink(item, index) {
 			const removeFormButton = document.createElement('button');
 			removeFormButton.classList.add("btn");
@@ -112,6 +115,16 @@
 		}
 
 		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll("input[type:color]").forEach(element => {
+				let picker = new Picker(element, {
+					alpha: false,
+					color: element.vars.value,
+					onChange = function(color) {
+						element.style.background = color.rgbaString;
+					}
+				});
+			});
+
 			document.querySelectorAll('.add_item_link').forEach(btn => {
 				btn.addEventListener("click", function (e) {
 					addEmptyLi(e.currentTarget);
