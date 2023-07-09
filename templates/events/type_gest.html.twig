@@ -13,7 +13,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-	<link rel="stylesheet" href="{{ asset('contact-assets/css/vanilla-picker.csp.css') }}"/>
 {% endblock %}
 
 {% block main %}
@@ -66,8 +65,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-	<script src="{{ asset('contact-assets/js/vanilla-picker.csp.js') }}"></script>
 
     <script>
 		function addTagFormDeleteLink(item, index) {
