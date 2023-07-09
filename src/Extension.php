@@ -43,18 +43,22 @@ class Extension extends BaseExtension
 
     public function install(): void
     {
-        $filesystem = new Filesystem();
-        $projectDir = $this->getContainer()->getParameter('kernel.project_dir');
+        /**
+         * $filesystem = new Filesystem();
+         * $projectDir = $this->getContainer()->getParameter('kernel.project_dir');
+        **/
 
         /** test existance contact_assets/css */
-        $source = dirname(__DIR__) . '/public';
-        $destination = $projectDir . '/public/contact-assets';
-        if (!$filesystem->exists($destination)) {
-            $filesystem->mkdir($destination);
-            $filesystem->chgrp($destination, 'www-data', true);
-            $filesystem->chmod($destination, 0777);
-        }
-        $this->doCopy($source, $destination, $filesystem);
+        /**
+         * $source = dirname(__DIR__) . '/public';
+         * $destination = $projectDir . '/public/contact-assets';
+         * if (!$filesystem->exists($destination)) {
+         *    $filesystem->mkdir($destination);
+         *    $filesystem->chgrp($destination, 'www-data', true);
+         *    $filesystem->chmod($destination, 0777);
+         * }
+         * $this->doCopy($source, $destination, $filesystem);
+        **/
     }
 
     /**
