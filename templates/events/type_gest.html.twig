@@ -119,7 +119,7 @@
 				let picker = new Picker(element, {
 					alpha: false,
 					color: element.vars.value,
-					onChange = function(color) {
+					onChange: function(color) {
 						element.style.background = color.rgbaString;
 					}
 				});
