@@ -2,8 +2,8 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Traits\Utilities;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
-use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
 use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
@@ -29,14 +28,14 @@ class EventsController extends AbstractController
     private EntityManagerInterface $entityManager;
     protected $container;
     private $schemaManager;
-    private EntityRepository $paramRepo;
+    private ParameterRepository $parameterRepo;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container, ParameterRepository $parameterRepo)
     {
         $this->entityManager = $entityManager;
         $this->schemaManager = $entityManager->getConnection()->getSchemaManager();
         $this->container = $container;
-        $this->paramRepo = $entityManager->getRepository(Parameter::class);
+        $this->parameterRepo = $parameterRepo;
     }
 
     #[Route('/list/{currentPage}', name: 'list')]
@@ -89,8 +88,8 @@ class EventsController extends AbstractController
         $reorgList = false;
 
         if ($this->existsTable($dbPrefix.'parameters') == true) {
-            $categories = $this->paramRepo->getParamtersList(self::PARAM_CLE);
-            $categoryTitle = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
+            $categories = $this->parameterRepo->getParamtersList(self::PARAM_CLE);
+            $categoryTitle = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $categoriesFE = new CalCategoriesFE($categoryTitle, $categories);
             $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
             $categoriesNames = $categoriesFE->getNames();
@@ -109,11 +108,11 @@ class EventsController extends AbstractController
                 /** @var CalCategoryFE $item */
                 foreach ($categoriesFE->getValues() as $idx => $item) {
                     $dbId = $categoriesFE->isValueName($item);
-                    $categoryItem = new ParameterCalEvntType();
+                    $categoryItem = new ParameterCalEvntType($this->parameterRepo);
                     if (!$dbId) {
                         $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
                     } else {
-                        $categoryItem = $this->paramRepo->find($dbId);
+                        $categoryItem = $this->parameterRepo->find($dbId);
                         $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
                         unset($categoriesNames[$item->getDbID()]);
                     }
@@ -136,7 +135,7 @@ class EventsController extends AbstractController
                     }
                 }
                 $this->entityManager->flush();
-                if ($reorgList) $this->paramRepo->reorgValues(self::PARAM_CLE);
+                if ($reorgList) $this->parameterRepo->reorgValues(self::PARAM_CLE);
                 $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
                 $this->redirectToRoute('bolt_dashboard');
             }
