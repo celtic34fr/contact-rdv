@@ -122,7 +122,7 @@ class EventsController extends AbstractController
                     }
                 }
                 if ($categoriesNames) {
-                    reorgList = true;
+                    $reorgList = true;
                     /** il reste des cat evt type non reconduit => suppression */
                     foreach ($categoriesNames as $dbID => $dbItem) {
                         $item = $this->paramRepo->find($dbId);
