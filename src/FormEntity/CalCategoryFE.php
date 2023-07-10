@@ -12,7 +12,7 @@ class CalCategoryFE
     private ?string $border_color;
     private ?string $text_color;
 
-    public function __construct(?ParamsCalNature $paramCalNature)
+    public function __construct(?ParamsCalNature $paramCalNature = null)
     {
         if ($paramCalNature) {
             list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
