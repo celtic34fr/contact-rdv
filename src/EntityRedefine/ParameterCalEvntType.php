@@ -1,29 +1,29 @@
 <?php
 
-namespace Celtic34fr\ContactRendezVous\Entity;
-
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+namespace Celtic34fr\ContactRendezVous\EntityRedefine;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use DateTimeImmutable;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Traits\ParametersEntityTrait;
 
-class ParamsCalNature extends Parameter
+class ParameterCalEvntType
 {
     const HEADER = [
         'name', 'description', 'backgroudColor', 'borderColor', 'textColor'
     ];
     const PARAM_CLE = "calNature";
 
-    private EntityRepository $repository;
+    private Parameter $param;
+    private ParameterRepository $repository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ParameterRepository $repository)
     {
-        parent::__construct();
-        $this->repository = $em->getRepository(Parameter::class);
+        $this->param = new Parameter();
+        $this->param->setCle(self::PARAM_CLE);
+        $this->repository = $repository;
     }
 
     use ParametersEntityTrait;
-
     public function getName(): mixed
     {
         return $this->getItem('name');

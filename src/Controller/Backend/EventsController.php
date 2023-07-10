@@ -17,6 +17,7 @@ use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
 
 #[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
@@ -108,9 +109,8 @@ class EventsController extends AbstractController
                 /** @var CalCategoryFE $item */
                 foreach ($categoriesFE->getValues() as $idx => $item) {
                     $dbId = $categoriesFE->isValueName($item);
+                    $categoryItem = new ParameterCalEvntType();
                     if (!$dbId) {
-                        $categoryItem = new ParamsCalNature($this->entityManager);
-                        $categoryItem->setCle(self::PARAM_CLE);
                         $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
                     } else {
                         $categoryItem = $this->paramRepo->find($dbId);
@@ -123,7 +123,7 @@ class EventsController extends AbstractController
                     $categoryItem->setBorderColor($item->getBorderColor());
                     $categoryItem->setTextColor($item->getTextColor());
                     if (!$categoryItem->getId()) {
-                        $categoryItem->persist($categoryItem);
+                        $this->entityManager->persist($categoryItem->getParam());
                         $categoriesFE->setMaxOrd($categoryItem->getOrd());
                     }
                 }
