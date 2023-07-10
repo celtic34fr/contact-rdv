@@ -20,7 +20,7 @@ class CalCategoriesFE
         /** @var ParamsCalNature $paramItem */
         foreach ($paramList as $paramItem) {
                 $this->values[] = new CalCategoryFE($paramItem);
-                $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() ! $this->maxOrd;
+                $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() : $this->maxOrd;
             }
         }
     }
