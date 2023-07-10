@@ -92,7 +92,7 @@ class EventsController extends AbstractController
             $categoryTitle = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $categoriesFE = new CalCategoriesFE($categoryTitle, $categories);
             $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
-            $ = $categoriesFE->getNames();
+            $categoriesNames = $categoriesFE->getNames();
 
             $form->handleRequest($request);
 
