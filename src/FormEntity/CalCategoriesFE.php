@@ -2,23 +2,27 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 
-use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 
 class CalCategoriesFE
 {
     private string $description;
     private array $values;
+    private array $names;
+    private int $maxOrd = 0;
 
-    public function __construct(?Parameter $paramTitle = null, ?array $paramList = null)
+    public function __construct(?ParamsCalNature $paramTitle = null, ?array $paramList = null)
     {
         $this->description = $paramTitle ? $paramTitle->getValeur() :"";
+        $this->names = $paramTitle ? $paramTitle->getParamsListNames() : [];
         if ($paramList) {
-            foreach ($paramList as $paramItem) {
+        /** @var ParamsCalNature $paramItem */
+        foreach ($paramList as $paramItem) {
                 $this->values[] = new CalCategoryFE($paramItem);
+                $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() ! $this->maxOrd;
             }
         }
-
     }
 
     public function getDescription(): string
@@ -72,5 +76,30 @@ class CalCategoriesFE
         }
 
         return false;
+    }
+
+    public function isValueName(CalCategoryFE $calCategory): mixed
+    {
+        return array_search($calCategory->getName(), $this->names);
+    }
+
+    public function getNames()
+    {
+        return $this->names;
+    }
+
+    public function getMaxOrd(): int
+    {
+        return $this->maxOrd;
+    }
+
+    /**
+     * Set the value of maxOrd
+     * @return  self
+     */ 
+    public function setMaxOrd(int $maxOrd): self
+    {
+        $this->maxOrd = $maxOrd;
+        return $this;
     }
 }

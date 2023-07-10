@@ -85,12 +85,14 @@ class EventsController extends AbstractController
         $catagories = [];
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $context = [];
+        $reorgList = false;
 
         if ($this->existsTable($dbPrefix.'parameters') == true) {
             $categories = $this->paramRepo->getParamtersList(self::PARAM_CLE);
             $categoryTitle = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $categoriesFE = new CalCategoriesFE($categoryTitle, $categories);
             $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
+            $ = $categoriesFE->getNames();
 
             $form->handleRequest($request);
 
@@ -99,22 +101,36 @@ class EventsController extends AbstractController
 
                 /** @var CalCategoryFE $item */
                 foreach ($categoriesFE->getValues() as $idx => $item) {
-                    $ord = $idx + 1;
-                    /** @var ParamsCalNature $categoryItem */
-                    $categoryItem = $this->paramRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => $ord]);
-                    if ($categoryItem) {
-                        $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
-                    } else {
+                    $dbId = $categoriesFE->isValueName($item);
+                    if (!$dbId) {
                         $categoryItem = new ParamsCalNature($this->entityManager);
+                        $categoryItem->setCle(self::PARAM_CLE);
+                        $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
+                        unset($categoriesNames[$item->getDbID()]);
+                    } else {
+                        $categoryItem = $this->paramRepo->find($dbId);
+                        $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
                     }
                     $categoryItem->setName($item->getName());
                     $categoryItem->setDescription($item->getDescription());
                     $categoryItem->setBackgroundColor($item->getBackgroundColor());
                     $categoryItem->setBorderColor($item->getBorderColor());
                     $categoryItem->setTextColor($item->getTextColor());
-                    if (!$categoryItem->getId()) $this->entityManager->persist($categoryItem);
+                    if (!$categoryItem->getId()) {
+                        $this->entityManager->persist($categoryItem);
+                        $categoriesFE->setMaxOrd($categoryItem->getOrd());
+                    }
+                }
+                if ($categoriesNames) {
+                    reorgList = true;
+                    /** il reste des cat evt type non reconduit => suppression */
+                    foreach ($categoriesNames as $dbID => $dbItem) {
+                        $item = $this->paramRepo->find($dbId);
+                        $this->entityManager->remove($item);
+                    }
                 }
                 $this->entityManager->flush();
+                if ($reorgList) $this->paramRepo->reorgValues(self::PARAM_CLE);
                 $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
                 $this->redirectToRoute('bolt_dashboard');
             }

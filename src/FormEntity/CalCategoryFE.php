@@ -5,6 +5,7 @@ use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
 
 class CalCategoryFE
 {
+    private int $dbID;
     private string $name;
     private string $description;
     private string $background_color;
@@ -15,6 +16,12 @@ class CalCategoryFE
     {
         list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
         $paramCalNature->getValues();
+        $this->dbID = $paramCalNature->getId();
+    }
+
+    public function getDbID()
+    {
+        return $this->dbID;
     }
 
     public function getName(): string

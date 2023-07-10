@@ -5,9 +5,7 @@ namespace Celtic34fr\ContactRendezVous\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Celtic34fr\ContactCore\Traits\ParametersEntityTrait;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
 
 class ParamsCalNature extends Parameter
 {
