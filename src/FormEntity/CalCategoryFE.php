@@ -5,18 +5,20 @@ use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
 
 class CalCategoryFE
 {
-    private int $dbID;
-    private string $name;
-    private string $description;
-    private string $background_color;
-    private string $border_color;
-    private string $text_color;
+    private ?int $dbID;
+    private ?string $name;
+    private ?string $description;
+    private ?string $background_color;
+    private ?string $border_color;
+    private ?string $text_color;
 
     public function __construct(ParamsCalNature $paramCalNature)
     {
-        list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
-        $paramCalNature->getValues();
-        $this->dbID = $paramCalNature->getId();
+        if ($paramCalNature) {
+            list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
+            $paramCalNature->getValues();
+            $this->dbID = $paramCalNature->getId();
+        }
     }
 
     public function getDbID()
