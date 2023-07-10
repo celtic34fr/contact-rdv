@@ -1,21 +1,19 @@
 {% macro prototypeValues(valsChildren) %}
-    <div class="col-10 row">
-        {% import '@contact-core/macros/form_type.html.twig' as fields %}
+    {% import '@contact-core/macros/form_type.html.twig' as fields %}
 
-        {{ fields.field(valsChildren.name, "", {
-            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-        }) }}
-        {{ fields.field(valsChildren.description, "", {
-            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-        }) }}
-        {{ fields.field(valsChildren.background_color, "", {
-            'class': 'col-4', 'value': "#FFFFFF",
-        }) }}
-        {{ fields.field(valsChildren.border_color, "", {
-            'class': 'col-4', 'value': "#FFFFFF",
-        }) }}
-        {{ fields.field(valsChildren.text_color, "", {
-            'class': 'col-4', 'value': "#000000",
-        }) }}
-    </div>
+    {{ fields.field(valsChildren.name, "", {
+        'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+    }) }}
+    {{ fields.field(valsChildren.description, "", {
+        'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+    }) }}
+    {{ fields.field(valsChildren.background_color, "", {
+        'class': 'col-3', 'value': "#FFFFFF",
+    }) }}
+    {{ fields.field(valsChildren.border_color, "", {
+        'class': 'col-3', 'value': "#FFFFFF",
+    }) }}
+    {{ fields.field(valsChildren.text_color, "", {
+        'class': 'col-3', 'value': "#000000",
+    }) }}
 {% endmacro %}
