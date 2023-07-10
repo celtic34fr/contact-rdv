@@ -32,23 +32,21 @@
         data-prototype='{{ calEvtType.prototypeValues(form.values.vars.prototype)|e('html_attr') }}'>
 			{% for idx, valueField in form.values %}
 				<li class="col-12 row my-2">
-                    <div class="col-10 row">
-                        {{ fields.field(valueField.vars.prototype.name, "", {
-                            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-                        }) }}
-                        {{ fields.field(valueField.vars.prototype.description, "", {
-                            'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-                        }) }}
-                        {{ fields.field(valueField.vars.prototype.background_color, "", {
-                            'class': 'col-4',
-                        }) }}
-                        {{ fields.field(valueField.vars.prototype.border_color, "", {
-                            'class': 'col-4',
-                        }) }}
-                        {{ fields.field(valueField.vars.prototype.text_color, "", {
-                            'class': 'col-4',
-                        }) }}
-                    </div>
+					{{ fields.field(valueField.vars.prototype.name, "Clé", {
+						'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+					}) }}
+					{{ fields.field(valueField.vars.prototype.description, "", {
+						'class': 'col-12', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+					}) }}
+					{{ fields.field(valueField.vars.prototype.background_color, "", {
+						'class': 'col-3',
+					}) }}
+					{{ fields.field(valueField.vars.prototype.border_color, "", {
+						'class': 'col-3',
+					}) }}
+					{{ fields.field(valueField.vars.prototype.text_color, "", {
+						'class': 'col-3',
+					}) }}
 				</li>
 			{% endfor %}
 		</ul>
@@ -77,7 +75,7 @@
 			const removeFormButton = document.createElement('button');
 			removeFormButton.classList.add("btn");
 			removeFormButton.classList.add("btn-warning");
-			removeFormButton.classList.add("col-2");
+			removeFormButton.classList.add("col-3");
 			removeFormButton.setAttribute('title', 'Supprimer la valeur');
 			const removeFormIcon = document.createElement("i");
 			removeFormIcon.classList.add("fa");
