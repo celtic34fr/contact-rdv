@@ -123,7 +123,7 @@ class EventsController extends AbstractController
                     $categoryItem->setBorderColor($item->getBorderColor());
                     $categoryItem->setTextColor($item->getTextColor());
                     if (!$categoryItem->getId()) {
-                        $this->entityManager->persist($categoryItem);
+                        $categoryItem->persist($categoryItem);
                         $categoriesFE->setMaxOrd($categoryItem->getOrd());
                     }
                 }
