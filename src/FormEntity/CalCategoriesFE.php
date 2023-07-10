@@ -10,12 +10,14 @@ class CalCategoriesFE
     private string $description;
     private array $values;
     private array $names;
-    private int $maxOrd = 0;
+    private int $maxOrd;
 
     public function __construct(?ParamsCalNature $paramTitle = null, ?array $paramList = null)
     {
         $this->description = $paramTitle ? $paramTitle->getValeur() :"";
         $this->names = $paramTitle ? $paramTitle->getParamsListNames() : [];
+        $this->values = [];
+        $this->maxOrd = 0;
         if ($paramList) {
         /** @var ParamsCalNature $paramItem */
         foreach ($paramList as $paramItem) {
