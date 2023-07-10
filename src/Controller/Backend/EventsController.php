@@ -97,7 +97,13 @@ class EventsController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $categoryTitle->setDescription($categoriesFE->getDescription());
+                if (!$categoryTitle) {
+                    $categoryTitle = new Parameter();
+                    $categoryTitle->setCle((self::PARAM_CLE));
+                    $categoryTitle->setOrd(0);
+                }
+                $categoryTitle->setValeur($categoriesFE->getDescription());
+                if (!$categoryTitle->getId()) $this->entityManager->persist($categoryTitle);
 
                 /** @var CalCategoryFE $item */
                 foreach ($categoriesFE->getValues() as $idx => $item) {
