@@ -112,10 +112,10 @@ class EventsController extends AbstractController
                         $categoryItem = new ParamsCalNature($this->entityManager);
                         $categoryItem->setCle(self::PARAM_CLE);
                         $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
-                        unset($categoriesNames[$item->getDbID()]);
                     } else {
                         $categoryItem = $this->paramRepo->find($dbId);
                         $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
+                        unset($categoriesNames[$item->getDbID()]);
                     }
                     $categoryItem->setName($item->getName());
                     $categoryItem->setDescription($item->getDescription());
