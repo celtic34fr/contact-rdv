@@ -10,17 +10,16 @@ class CalCategoryFE
     private ?int $dbID = null;
     private ?string $name;
     private ?string $description;
-    private ?string $background_color;
-    private ?string $border_color;
-    private ?string $text_color;
+    private ?string $backgroundColor;
+    private ?string $borderColor;
+    private ?string $textColor;
 
     public function __construct(?Parameter $parameter = null, ParameterRepository $parameterRepo)
     {
         if ($parameter) {
             $item = new ParameterCalEvntType($parameterRepo);
             $item->setParam($parameter);
-            list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
-            $item->getValues();
+            $this->hydrateValues($item->getValues()):
             $this->dbID = $item->getId();
         }
     }
@@ -118,5 +117,12 @@ class CalCategoryFE
         if (substr($color_str, 0, 1) != "#") return false;
         if (!ctype_xdigit(substr($color_str, 1))) return false;
         return true;
+    }
+
+    private function hydrateValues(array $values): void
+    {
+        foreach ($values as $key => $value) {
+            $this->$key = $value;
+        }
     }
 }
