@@ -61,52 +61,51 @@ class CalCategoryFE
 
     public function getBackgroundColor(): string
     {
-        return $this->background_color;
+        return $this->backgroundColor;
     }
 
     /**
-     * Set the value of background_color
+     * Set the value of backgroundColor
      * @return  self|bool
      */ 
-    public function setBackgroundColor(string $background_color): mixed
+    public function setBackgroundColor(string $backgroundColor): mixed
     {
-        if (false === $this->validColorHexa($background_color)) return false;
-        $this->background_color = $background_color;
+        if (false === $this->validColorHexa($backgroundColor)) return false;
+        $this->backgroundColor = $backgroundColor;
         return $this;
     }
 
     public function getBorderColor(): string
     {
-        return $this->border_color;
+        return $this->borderColor;
     }
 
     /**
-     * Set the value of border_color
+     * Set the value of borderColor
      * @return  self|bool
      */ 
-    public function setBorderColor(string $border_color): self
+    public function setBorderColor(string $borderColor): self
     {
-        if (false === $this->validColorHexa($border_color)) return false;
-        $this->border_color = $border_color;
+        if (false === $this->validColorHexa($borderColor)) return false;
+        $this->borderColor = $borderColor;
         return $this;
     }
 
     public function getTextColor(): string
     {
-        return $this->text_color;
+        return $this->textColor;
     }
 
     /**
-     * Set the value of text_color
+     * Set the value of textColor
      * @return  self|bool
      */ 
-    public function setTextColor(string $text_color): mixed
+    public function setTextColor(string $textColor): mixed
     {
-        if (false === $this->validColorHexa($text_color)) return false;
-        $this->text_color = $text_color;
+        if (false === $this->validColorHexa($textColor)) return false;
+        $this->textColor = $textColor;
         return $this;
     }
-
 
     private function validColorHexa(string $color_str): bool
     {
