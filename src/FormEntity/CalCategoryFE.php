@@ -19,7 +19,7 @@ class CalCategoryFE
         if ($parameter) {
             $item = new ParameterCalEvntType($parameterRepo);
             $item->setParam($parameter);
-            $this->hydrateValues($item->getValues()):
+            $this->hydrateValues($item->getValues());
             $this->dbID = $item->getId();
         }
     }
