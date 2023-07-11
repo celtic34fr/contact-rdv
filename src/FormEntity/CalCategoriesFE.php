@@ -2,7 +2,9 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 
-use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
+use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 
 class CalCategoriesFE
@@ -12,15 +14,18 @@ class CalCategoriesFE
     private array $names;
     private int $maxOrd;
 
-    public function __construct(?ParamsCalNature $paramTitle = null, ?array $paramList = null)
+    public function __construct(?Parameter $paramTitle = null, ?array $paramList = null,
+        ParameterRepository $parameterRepo)
     {
         $this->description = $paramTitle ? $paramTitle->getValeur() :"";
-        $this->names = $paramTitle ? $paramTitle->getParamsListNames() : [];
         $this->values = [];
+        $parameterEvtCal = new ParameterCalEvntType($parameterRepo);
+        $this->names = $parameterEvtCal->getParamsListNames();
         $this->maxOrd = 0;
+
         if ($paramList) {
-        /** @var ParamsCalNature $paramItem */
-        foreach ($paramList as $paramItem) {
+            /** @var Parameter $paramItem */
+            foreach ($paramList as $paramItem) {
                 $this->values[] = new CalCategoryFE($paramItem);
                 $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() : $this->maxOrd;
             }
@@ -35,7 +40,7 @@ class CalCategoriesFE
     /**
      * Set the value of description
      * @return  self
-     */ 
+     */
     public function setDescription(string $description)
     {
         $this->description = $description;
@@ -45,7 +50,7 @@ class CalCategoriesFE
     /**
      * Get the value of values
      * @return  array[CalCategoryFE]
-     */ 
+     */
     public function getValues(): array
     {
         return $this->values;
@@ -54,7 +59,7 @@ class CalCategoriesFE
     /**
      * Set the value of values
      * @return  self
-     */ 
+     */
     public function setValues(array $values): self
     {
         $this->values = $values;
@@ -64,7 +69,7 @@ class CalCategoriesFE
     public function addValue(CalCategoryFE $value): mixed
     {
         if (in_array($value, $this->values)) return false;
-        
+
         $this->values[] = $value;
         return $this;
     }
@@ -98,7 +103,7 @@ class CalCategoriesFE
     /**
      * Set the value of maxOrd
      * @return  self
-     */ 
+     */
     public function setMaxOrd(int $maxOrd): self
     {
         $this->maxOrd = $maxOrd;

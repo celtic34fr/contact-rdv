@@ -90,7 +90,7 @@ class EventsController extends AbstractController
         if ($this->existsTable($dbPrefix.'parameters') == true) {
             $categories = $this->parameterRepo->getParamtersList(self::PARAM_CLE);
             $categoryTitle = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
-            $categoriesFE = new CalCategoriesFE($categoryTitle, $categories);
+            $categoriesFE = new CalCategoriesFE($categoryTitle, $categories, $this->parameterRepo);
             $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
             $categoriesNames = $categoriesFE->getNames();
 
