@@ -1,7 +1,7 @@
 <?php
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
-use Celtic34fr\ContactRendezVous\Entity\ParamsCalNature;
+use Celtic34fr\ContactCore\Entity\Parameter;
 
 class CalCategoryFE
 {
@@ -12,7 +12,7 @@ class CalCategoryFE
     private ?string $border_color;
     private ?string $text_color;
 
-    public function __construct(?ParamsCalNature $paramCalNature = null)
+    public function __construct(?Parameter $paramCalNature = null)
     {
         if ($paramCalNature) {
             list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
