@@ -26,7 +26,7 @@ class CalCategoriesFE
         if ($paramList) {
             /** @var Parameter $paramItem */
             foreach ($paramList as $paramItem) {
-                $this->values[] = new CalCategoryFE($paramItem);
+                $this->values[] = new CalCategoryFE($paramItem, $parameterRepo);
                 $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() : $this->maxOrd;
             }
         }

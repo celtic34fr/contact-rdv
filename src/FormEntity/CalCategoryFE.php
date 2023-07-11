@@ -2,6 +2,8 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
 
 class CalCategoryFE
 {
@@ -12,12 +14,14 @@ class CalCategoryFE
     private ?string $border_color;
     private ?string $text_color;
 
-    public function __construct(?Parameter $paramCalNature = null)
+    public function __construct(?Parameter $parameter = null, ParameterRepository $parameterRepo)
     {
-        if ($paramCalNature) {
+        if ($parameter) {
+            $item = new ParameterCalEvntType($parameterRepo);
+            $item->setParam($parameter);
             list($this->name, $this->description, $this->background_color, $this->border_color, $this->text_color) =
-            $paramCalNature->getValues();
-            $this->dbID = $paramCalNature->getId();
+            $item->getValues();
+            $this->dbID = $item->getId();
         }
     }
 
