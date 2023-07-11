@@ -9,7 +9,7 @@ use Celtic34fr\ContactCore\Traits\ParametersEntityTrait;
 class ParameterCalEvntType
 {
     const HEADER = [
-        'name', 'description', 'backgroudColor', 'borderColor', 'textColor'
+        'name', 'description', 'backgroundColor', 'borderColor', 'textColor'
     ];
     const PARAM_CLE = "calNature";
 
