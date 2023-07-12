@@ -3,7 +3,7 @@
 namespace Celtic34fr\ContactRendezVous\Entity;
 
 use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactCore\Enum\EventEnums;
+use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -30,7 +30,8 @@ class CalEvent
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
 
-    #[ORM\Column(type: Types::TEXT, length: 255)]
+    #[ORM\ManyToOne(targetEntity: Parameter::class)]
+    #[ORM\JoinColumn(name: 'nature_id', referencedColumnName: 'id')]
     private ?string $nature = null;
 
     #[ORM\Column(type: Types::TEXT, length: 7)]
@@ -126,18 +127,15 @@ class CalEvent
     }
 
 
-    public function getNature(): ?string
+    public function getNature(): ?Parameter
     {
         return $this->nature;
     }
 
-    public function setNature(string $nature): bool|self
+    public function setNature(Parameter $nature): self
     {
-        if (EventEnums::isValid($nature)) {
-            $this->nature = $nature;
-            return $this;
-        }
-        return false;
+        $this->nature = $nature;
+        return $this;
     }
 
     /**
@@ -190,7 +188,7 @@ class CalEvent
      */ 
     public function setTxColor(string $tx_color): self
     {
-        $this->yx_color = $tx_color;
+        $this->tx_color = $tx_color;
         return $this;
     }
 

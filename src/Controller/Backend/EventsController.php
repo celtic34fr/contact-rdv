@@ -130,7 +130,7 @@ class EventsController extends AbstractController
                     $reorgList = true;
                     /** il reste des cat evt type non reconduit => suppression */
                     foreach ($categoriesNames as $dbID => $dbItem) {
-                        $item = $this->paramRepo->find($dbId);
+                        $item = $this->parameterRepo->find($dbId);
                         $this->entityManager->remove($item);
                     }
                 }
@@ -142,7 +142,7 @@ class EventsController extends AbstractController
             
             $context['form'] = $form->createView();
         } else {
-            $this->addFlash('danger', "La table Paramters n'existe pas, veuillez en avertir l'administrateur");
+            $this->addFlash('danger', "La table ParamEters n'existe pas, veuillez en avertir l'administrateur");
         }
 
         return $this->render('@contact-rdv/events/type_gest.html.twig', $context);
