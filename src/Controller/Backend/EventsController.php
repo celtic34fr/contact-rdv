@@ -88,9 +88,10 @@ class EventsController extends AbstractController
         $reorgList = false;
 
         if ($this->existsTable($dbPrefix.'parameters') == true) {
-            $categories = $this->parameterRepo->getParamtersList(self::PARAM_CLE);
+            $categories = $this->parameterRepo->getValuesParamterList(self::PARAM_CLE);
             $categoryTitle = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
-            $categoriesFE = new CalCategoriesFE($categoryTitle, $categories, $this->parameterRepo);
+            $categoriesFE = $this->initCategoriesFe($categoryTitle, $categories);
+
             $form = $this->createForm(CalCategoriesType::class, $categoriesFE);
             $categoriesNames = $categoriesFE->getNames();
 
@@ -114,7 +115,7 @@ class EventsController extends AbstractController
                     } else {
                         $categoryItem = $this->parameterRepo->find($dbId);
                         $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
-                        unset($categoriesNames[$item->getDbID()]);
+                        unset($categoriesNames[$item->getId()]);
                     }
                     $categoryItem->setName($item->getName());
                     $categoryItem->setDescription($item->getDescription());
@@ -146,5 +147,19 @@ class EventsController extends AbstractController
         }
 
         return $this->render('@contact-rdv/events/type_gest.html.twig', $context);
+    }
+
+    private function initCategoriesFE(Parameter $calTitle, array $categories)
+    {
+        $categoriesFE = new CalCategoriesFE();
+        $categoriesFE->setDescription($calTitle->getValeur());
+        $categoriesFE->setMaxOrd(sizeof($categories));
+        /** @var Parameter category */
+        foreach ($categories as $category) {
+            $categoryFE = new CalCategoryFE();
+            $categoryFE->hydrate($category);
+            $categoriesFE->addValue(new CalCategoryFE($category));
+        }
+        return $categoriesFE;
     }
 }

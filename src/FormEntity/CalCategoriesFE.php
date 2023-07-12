@@ -9,28 +9,10 @@ use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 
 class CalCategoriesFE
 {
-    private string $description;
-    private array $values;
-    private array $names;
-    private int $maxOrd;
-
-    public function __construct(?Parameter $paramTitle = null, ?array $paramList = null,
-        ParameterRepository $parameterRepo)
-    {
-        $this->description = $paramTitle ? $paramTitle->getValeur() :"";
-        $this->values = [];
-        $parameterEvtCal = new ParameterCalEvntType($parameterRepo);
-        $this->names = $parameterEvtCal->getParamsListNames();
-        $this->maxOrd = 0;
-
-        if ($paramList) {
-            /** @var Parameter $paramItem */
-            foreach ($paramList as $paramItem) {
-                $this->values[] = new CalCategoryFE($paramItem, $parameterRepo);
-                $this->maxOrd = $this->maxOrd < $paramItem->getOrd() ? $paramItem->getOrd() : $this->maxOrd;
-            }
-        }
-    }
+    private string $description = "";
+    private array $values = [];
+    private array $names = [];
+    private int $maxOrd = 0;
 
     public function getDescription(): string
     {
@@ -71,6 +53,7 @@ class CalCategoriesFE
         if (in_array($value, $this->values)) return false;
 
         $this->values[] = $value;
+        $this->names[$value->getId()] = $value->getName();
         return $this;
     }
 

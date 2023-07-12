@@ -3,30 +3,29 @@
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 
 class CalCategoryFE
 {
-    private ?int $dbID = null;
+    private ?int $id = null;
     private ?string $name;
     private ?string $description;
     private ?string $backgroundColor;
     private ?string $borderColor;
     private ?string $textColor;
 
-    public function __construct(?Parameter $parameter = null, ParameterRepository $parameterRepo)
+    public function hydrate(?Parameter $parameter = null)
     {
         if ($parameter) {
-            $item = new ParameterCalEvntType($parameterRepo);
-            $item->setParam($parameter);
+            $item = new ParameterCalEvent($parameter);
             $this->hydrateValues($item->getValues());
-            $this->dbID = $item->getId();
+            $this->id = $item->getId();
         }
     }
 
-    public function getDbID(): ?int
+    public function getId(): ?int
     {
-        return $this->dbID;
+        return $this->id;
     }
 
     public function getName(): string
