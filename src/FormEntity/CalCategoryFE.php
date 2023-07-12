@@ -2,7 +2,6 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 
 class CalCategoryFE
@@ -36,7 +35,7 @@ class CalCategoryFE
     /**
      * Set the value of name
      * @return  self
-     */ 
+     */
     public function setName(string $name): self
     {
         $this->name = $name;

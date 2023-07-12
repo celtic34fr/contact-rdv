@@ -2,7 +2,6 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
@@ -12,10 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
 
 #[Route('events', name: 'evt-')]
@@ -109,13 +110,13 @@ class EventsController extends AbstractController
                 /** @var CalCategoryFE $item */
                 foreach ($categoriesFE->getValues() as $idx => $item) {
                     $dbId = $categoriesFE->isValueName($item);
-                    $categoryItem = new ParameterCalEvntType($this->parameterRepo);
+                    $categoryItem = new ParameterCalEvent();
                     if (!$dbId) {
                         $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
                     } else {
-                        $categoryItem = $this->parameterRepo->find($dbId);
+                        $categoryItem->setParameter($this->parameterRepo->find($dbId));
                         $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
-                        unset($categoriesNames[$item->getId()]);
+                        unset($categoriesNames[$item->getName()]);
                     }
                     $categoryItem->setName($item->getName());
                     $categoryItem->setDescription($item->getDescription());
@@ -123,7 +124,7 @@ class EventsController extends AbstractController
                     $categoryItem->setBorderColor($item->getBorderColor());
                     $categoryItem->setTextColor($item->getTextColor());
                     if (!$categoryItem->getId()) {
-                        $this->entityManager->persist($categoryItem->getParam());
+                        $this->entityManager->persist($categoryItem->getParameter());
                         $categoriesFE->setMaxOrd($categoryItem->getOrd());
                     }
                 }

@@ -3,18 +3,25 @@
 namespace Celtic34fr\ContactRendezVous\EntityRedefine;
 
 use Celtic34fr\ContactCore\Entity\Parameter;
+use DateTimeImmutable;
 
 class ParameterCalEvent
 {
     const HEADER = [
         'name', 'description', 'backgroundColor', 'borderColor', 'textColor'
     ];
+    const PARAM_CLE = "calNature";
 
-    private array $values;
+    private array $values = [];
 
-    public function __construct(private Parameter $parameter)
+    public function __construct(private ?Parameter $parameter = null)
     {
-        $this->values = $this->array_combine(self::HEADER, $this->getValues());
+        if ($parameter) {
+            $this->values = $this->array_combine(self::HEADER, $this->getValues());
+        } else {
+            $this->parameter = new Parameter();
+            $this->parameter->setCle(self::PARAM_CLE);
+        }
     }
 
     public function getParameter(): Parameter
@@ -45,6 +52,17 @@ class ParameterCalEvent
     public function setOrd(int $ord): self
     {
         $this->parameter->setOrd($ord);
+        return $this;
+    }
+
+    public function getUpdatedAt(): mixed
+    {
+        return $this->parameter->getUpdatedAt() ?? false;
+    }
+
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
+    {
+        $this->parameter->setUpdatedAt($updatedAt);
         return $this;
     }
 

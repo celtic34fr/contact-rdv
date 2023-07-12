@@ -2,9 +2,6 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 
-use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 
 class CalCategoriesFE
@@ -53,7 +50,7 @@ class CalCategoriesFE
         if (in_array($value, $this->values)) return false;
 
         $this->values[] = $value;
-        $this->names[$value->getId()] = $value->getName();
+        $this->names[$value->getName()] = $value->getId() ?? 0;
         return $this;
     }
 
@@ -62,6 +59,7 @@ class CalCategoriesFE
         if (in_array($value, $this->values)) {
             $idx = array_search($value, $this->values);
             unset($this->values[$idx]);
+            unset($this->names[$value->getName()]);
             return $this;
         }
 
@@ -70,7 +68,10 @@ class CalCategoriesFE
 
     public function isValueName(CalCategoryFE $calCategory): mixed
     {
-        return array_search($calCategory->getName(), $this->names);
+        if (array_key_exists($calCategory->getName(), $this->names)) {
+            return $this->names[$calCategory->getName()];
+        }
+        return false;
     }
 
     public function getNames()
