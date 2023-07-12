@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
+use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 
 #[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
@@ -30,13 +31,16 @@ class EventsController extends AbstractController
     protected $container;
     private $schemaManager;
     private ParameterRepository $parameterRepo;
+    private CalEventRepository $calEventRepo;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container, ParameterRepository $parameterRepo)
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container,
+        ParameterRepository $parameterRepo, CalEventRepository $calEventRepo)
     {
         $this->entityManager = $entityManager;
         $this->schemaManager = $entityManager->getConnection()->getSchemaManager();
         $this->container = $container;
         $this->parameterRepo = $parameterRepo;
+        $this->calEventRepo = $calEventRepo;
     }
 
     #[Route('/list/{currentPage}', name: 'list')]
@@ -131,10 +135,7 @@ class EventsController extends AbstractController
                 if ($categoriesNames) {
                     $reorgList = true;
                     /** il reste des cat evt type non reconduit => suppression */
-                    foreach ($categoriesNames as $dbID => $dbItem) {
-                        $item = $this->parameterRepo->find($dbId);
-                        $this->entityManager->remove($item);
-                    }
+                    $this->removeCalevtType($categoriesNames);
                 }
                 $this->entityManager->flush();
                 if ($reorgList) $this->parameterRepo->reorgValues(self::PARAM_CLE);
@@ -144,7 +145,7 @@ class EventsController extends AbstractController
             
             $context['form'] = $form->createView();
         } else {
-            $this->addFlash('danger', "La table ParamEters n'existe pas, veuillez en avertir l'administrateur");
+            $this->addFlash('danger', "La table {$dbPrefix}parameters n'existe pas, veuillez en avertir l'administrateur");
         }
 
         return $this->render('@contact-rdv/events/type_gest.html.twig', $context);
@@ -162,5 +163,17 @@ class EventsController extends AbstractController
             $categoriesFE->addValue(new CalCategoryFE($category));
         }
         return $categoriesFE;
+    }
+
+    private function removeCalEvtType(array $names = []): void
+    {
+        foreach ($names as $idx => $DBitem) {
+            $item = $this->parameterRepo->find($idx);
+            if (!$this->calEventRepo->findEventsByCategory($item)) {
+                $this->entityManager->remove($item);
+            } else {
+                $this->addFlash('warning', "Type EvtCal {$DBitem->getName()} impossible à supprimer, encore utilisé");
+            }
+        }
     }
 }
