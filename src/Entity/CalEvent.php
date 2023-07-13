@@ -8,6 +8,7 @@ use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CalEventRepository::class)]
 #[ORM\Table('cal_events')]
@@ -19,40 +20,61 @@ class CalEvent
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Assert\DateTime]
     private ?DateTime $start_at = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Assert\DateTime]
     private ?DateTime $end_at = null;
 
-    #[ORM\Column(type: Types::TEXT, length: 255)]
+    #[ORM\Column(type: Types::TEXT, length: 255, nullable: true)]
     private ?string $objet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $complements = null;
 
     #[ORM\ManyToOne(targetEntity: Parameter::class)]
-    #[ORM\JoinColumn(name: 'nature_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'nature_id', referencedColumnName: 'id', nullable: true)]
+    #[Assert\Type('string')]
     private ?string $nature = null;
 
     #[ORM\Column(type: Types::TEXT, length: 7)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 7,     minMessage: "La taille minimale est de 7 caractères",
+        max: 7,     maxMessage: "La taille maximale est de 7 caractères"
+    )]
     private ?string $bg_color = null;
 
     #[ORM\Column(type: Types::TEXT, length: 7)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 7,     minMessage: "La taille minimale est de 7 caractères",
+        max: 7,     maxMessage: "La taille maximale est de 7 caractères"
+    )]
     private ?string $bd_color = null;
 
     #[ORM\Column(type: Types::TEXT, length: 7)]
+    #[Assert\Type('string')]
+    #[Assert\Length(
+        min: 7,     minMessage: "La taille minimale est de 7 caractères",
+        max: 7,     maxMessage: "La taille maximale est de 7 caractères"
+    )]
     private ?string $tx_color = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    #[Assert\Type('boolean')]
     private ?bool $all_day = false;
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
     #[ORM\InverseJoinColumn(name: 'calevent_id', referencedColumnName: 'id', unique: true)]
     #[ORM\JoinTable(name: 'cliinfos_calecents')]
+    #[Assert\Type(CliInfos::class)]
     private ?CliInfos $invite = null;
 
     #[ORM\OneToOne(targetEntity: CompteRendu::class, inversedBy: 'rendezVous')]
+    #[Assert\Type(CompteRendu::class)]
     private ?CompteRendu $compte_rendu = null;
 
     public function getId(): ?int
@@ -73,12 +95,12 @@ class CalEvent
 
     public function getEndAt(): ?DateTime
     {
-        return $this->start_at;
+        return $this->end_at;
     }
 
-    public function setEndAt(DateTime $start_at): self
+    public function setEndAt(DateTime $end_at): self
     {
-        $this->start_at = $start_at;
+        $this->end_at = $end_at;
         return $this;
     }
 

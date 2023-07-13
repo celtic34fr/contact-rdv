@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactRendezVous\Repository\CompteRenduRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompteRenduRepository::class)]
 #[ORM\Table('comptes_rendus')]
@@ -18,6 +19,7 @@ class CompteRendu
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\DateTime]
     private ?DateTime $write_at = null;
 
     #[ORM\Column(type: Types::INTEGER)]
