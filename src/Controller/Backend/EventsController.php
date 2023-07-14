@@ -160,7 +160,7 @@ class EventsController extends AbstractController
         foreach ($categories as $category) {
             $categoryFE = new CalCategoryFE();
             $categoryFE->hydrate($category);
-            $categoriesFE->addValue(new CalCategoryFE($category));
+            $categoriesFE->addValue($categoryFE);
         }
         return $categoriesFE;
     }
