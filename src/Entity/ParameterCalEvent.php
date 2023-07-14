@@ -3,10 +3,10 @@
 namespace Celtic34fr\ContactRendezVous\EntityRedefine;
 
 use Celtic34fr\ContactCore\Entity\Parameter;
-use DateTimeImmutable;
 
-class ParameterCalEvent
+class ParameterCalEvent extends Parameter
 {
+    /**
     const HEADER = [
         'name', 'description', 'backgroundColor', 'borderColor', 'textColor'
     ];
@@ -28,11 +28,13 @@ class ParameterCalEvent
     {
         return $this->parameter;
     }
+     */
 
     /**
      * Set the value of parameter
      * @return  self
      */
+    /**
     public function setParameter(Parameter $parameter)
     {
         $this->parameter = $parameter;
@@ -96,66 +98,70 @@ class ParameterCalEvent
         $datas[$key] = $val;
         return $this->setValues($datas);
     }
+     */
 
     public function getName(): mixed
     {
-        return $this->getItem('name');
+        return array_key_exists('name', $this->getValeur()) ? $this->getValeur()['name'] : "";
     }
 
     public function setName(string $name): mixed
     {
-        return $this->setItem('name', $name);
+        $datas = $this->getValeur();
+        $datas['name'] = $name;
+        $this->setValeur($datas);
+        return $this;
     }
 
     public function getDescription(): mixed
     {
-        return $this->getItem('description');
+        return array_key_exists('description', $this->getValeur()) ? $this->getValeur()['description'] : "";
     }
 
-    public function setDescription(string $name): mixed
+    public function setDescription(string $description): mixed
     {
-        return $this->setItem('description', $name);
+        $datas = $this->getValeur();
+        $datas['description'] = $description;
+        $this->setValeur($datas);
+        return $this;
     }
 
     public function getBackgroundColor(): string
     {
-        return $this->getItem('backgroundColor');
+        return array_key_exists('backgroundColor', $this->getValeur()) ? $this->getValeur()['backgroundColor'] : "";
     }
 
     public function setBackgroundColor(string $backgroundColor)
     {
-        return $this->setItem('backgroundColor', $backgroundColor);
+        $datas = $this->getValeur();
+        $datas['backgroundColor'] = $backgroundColor;
+        $this->setValeur($datas);
+        return $this;
     }
 
     public function getBorderColor(): string
     {
-        return $this->getItem('borderColor');
+        return array_key_exists('borderColor', $this->getValeur()) ? $this->getValeur()['borderColor'] : "";
     }
 
     public function setBorderColor(string $borderColor)
     {
-        return $this->setItem('borderColor', $borderColor);
+        $datas = $this->getValeur();
+        $datas['borderColor'] = $borderColor;
+        $this->setValeur($datas);
+        return $this;
     }
 
     public function getTextColor(): string
     {
-        return $this->getItem('textColor');
+        return array_key_exists('textColor', $this->getValeur()) ? $this->getValeur()['textColor'] : "";
     }
 
     public function setTextColor(string $textColor)
     {
-        return $this->setItem('textColor', $textColor);
-    }
-
-    private function array_combine(array $keys, array $values): array
-    {
-        $arrayComnined = [];
-        $maxIdx = max(sizeof($keys), sizeof($values));
-        for ($idx = 0; $idx < $maxIdx; $idx++) {
-            $lkey = array_key_exists($idx, $keys) ? $keys[$idx] : $idx;
-            $lvalue = array_key_exists($idx, $values) ? $values[$idx] : null;
-            $arrayComnined[$lkey] = $lvalue;
-        }
-        return $arrayComnined;
+        $datas = $this->getValeur();
+        $datas['textColor'] = $textColor;
+        $this->setValeur($datas);
+        return $this;
     }
 }
