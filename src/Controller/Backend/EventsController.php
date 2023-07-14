@@ -16,8 +16,7 @@ use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
-use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvntType;
+use Celtic34fr\ContactRendezVous\Entity\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 
 #[Route('events', name: 'evt-')]
@@ -26,16 +25,19 @@ class EventsController extends AbstractController
     use Utilities;
 
     const PARAM_CLE = "calNature";
-    
+
     private EntityManagerInterface $entityManager;
     protected $container;
     private $schemaManager;
     private ParameterRepository $parameterRepo;
     private CalEventRepository $calEventRepo;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container,
-        ParameterRepository $parameterRepo, CalEventRepository $calEventRepo)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ContainerInterface $container,
+        ParameterRepository $parameterRepo,
+        CalEventRepository $calEventRepo
+    ) {
         $this->entityManager = $entityManager;
         $this->schemaManager = $entityManager->getConnection()->getSchemaManager();
         $this->container = $container;
@@ -53,7 +55,7 @@ class EventsController extends AbstractController
         $events = [];
         $dbPrefix = $this->getParameter('bolt.table_prefix');
 
-        if ($this->existsTable($dbPrefix.'rendezvous') == true) {
+        if ($this->existsTable($dbPrefix . 'rendezvous') == true) {
             $events = $this->entityManager->getRepository(RendezVous::class)
                 ->findEventsAll($currentPage);
             /**
@@ -78,7 +80,6 @@ class EventsController extends AbstractController
      */
     public function input($currentPage = 1)
     {
-
     }
 
     #[Route('/evt_type_gest', name: 'type-gest')]
@@ -92,7 +93,7 @@ class EventsController extends AbstractController
         $context = [];
         $reorgList = false;
 
-        if ($this->existsTable($dbPrefix.'parameters') == true) {
+        if ($this->existsTable($dbPrefix . 'parameters') == true) {
             $categories = $this->parameterRepo->getValuesParamterList(self::PARAM_CLE);
             $categoryTitle = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $categoriesFE = $this->initCategoriesFe($categoryTitle, $categories);
@@ -118,7 +119,6 @@ class EventsController extends AbstractController
                     if (!$dbId) {
                         $categoryItem->setOrd($categoriesFE->getMaxOrd() + 1);
                     } else {
-                        $categoryItem->setParameter($this->parameterRepo->find($dbId));
                         $categoryItem->setUpdatedAt(new DateTimeImmutable('now'));
                         unset($categoriesNames[$item->getName()]);
                     }
@@ -128,7 +128,7 @@ class EventsController extends AbstractController
                     $categoryItem->setBorderColor($item->getBorderColor());
                     $categoryItem->setTextColor($item->getTextColor());
                     if (!$categoryItem->getId()) {
-                        $this->entityManager->persist($categoryItem->getParameter());
+                        $this->entityManager->persist($categoryItem);
                         $categoriesFE->setMaxOrd($categoryItem->getOrd());
                     }
                 }
@@ -142,7 +142,7 @@ class EventsController extends AbstractController
                 $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
                 $this->redirectToRoute('bolt_dashboard');
             }
-            
+
             $context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}parameters n'existe pas, veuillez en avertir l'administrateur");
@@ -151,10 +151,12 @@ class EventsController extends AbstractController
         return $this->render('@contact-rdv/events/type_gest.html.twig', $context);
     }
 
-    private function initCategoriesFE(Parameter $calTitle, array $categories)
+    private function initCategoriesFE(?Parameter $calTitle = null, array $categories = [])
     {
         $categoriesFE = new CalCategoriesFE();
-        $categoriesFE->setDescription($calTitle->getValeur());
+        if ($calTitle) {
+            $categoriesFE->setDescription($calTitle->getValeur());
+        }
         $categoriesFE->setMaxOrd(sizeof($categories));
         /** @var Parameter category */
         foreach ($categories as $category) {

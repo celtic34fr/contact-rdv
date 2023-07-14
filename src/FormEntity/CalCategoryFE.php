@@ -1,6 +1,7 @@
 <?php
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
+
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 
@@ -50,7 +51,7 @@ class CalCategoryFE
     /**
      * Set the value of description
      * @return  self
-     */ 
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -65,7 +66,7 @@ class CalCategoryFE
     /**
      * Set the value of backgroundColor
      * @return  self|bool
-     */ 
+     */
     public function setBackgroundColor(string $backgroundColor): mixed
     {
         if (false === $this->validColorHexa($backgroundColor)) return false;
@@ -81,7 +82,7 @@ class CalCategoryFE
     /**
      * Set the value of borderColor
      * @return  self|bool
-     */ 
+     */
     public function setBorderColor(string $borderColor): self
     {
         if (false === $this->validColorHexa($borderColor)) return false;
@@ -97,7 +98,7 @@ class CalCategoryFE
     /**
      * Set the value of textColor
      * @return  self|bool
-     */ 
+     */
     public function setTextColor(string $textColor): mixed
     {
         if (false === $this->validColorHexa($textColor)) return false;

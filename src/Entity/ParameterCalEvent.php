@@ -1,6 +1,6 @@
 <?php
 
-namespace Celtic34fr\ContactRendezVous\EntityRedefine;
+namespace Celtic34fr\ContactRendezVous\Entity;
 
 use Celtic34fr\ContactCore\Entity\Parameter;
 
