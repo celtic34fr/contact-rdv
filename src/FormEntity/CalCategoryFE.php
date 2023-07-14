@@ -7,11 +7,11 @@ use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 class CalCategoryFE
 {
     private ?int $id = null;
-    private ?string $name = null;
-    private ?string $description = null;
-    private ?string $backgroundColor = null;
-    private ?string $borderColor = null;
-    private ?string $textColor = null;
+    private ?string $name = "";
+    private ?string $description = "";
+    private ?string $backgroundColor = "";
+    private ?string $borderColor = "";
+    private ?string $textColor = "";
 
     public function hydrate(?Parameter $parameter = null)
     {
