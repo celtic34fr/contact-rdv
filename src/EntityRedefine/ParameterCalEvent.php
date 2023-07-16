@@ -1,12 +1,12 @@
 <?php
 
-namespace Celtic34fr\ContactRendezVous\Entity;
+namespace Celtic34fr\ContactRendezVous\EntityRedefine;
 
+use DateTimeImmutable;
 use Celtic34fr\ContactCore\Entity\Parameter;
 
-class ParameterCalEvent extends Parameter
+class ParameterCalEvent
 {
-    /**
     const HEADER = [
         'name', 'description', 'backgroundColor', 'borderColor', 'textColor'
     ];
@@ -28,13 +28,11 @@ class ParameterCalEvent extends Parameter
     {
         return $this->parameter;
     }
-     */
 
     /**
      * Set the value of parameter
      * @return  self
      */
-    /**
     public function setParameter(Parameter $parameter)
     {
         $this->parameter = $parameter;
@@ -98,70 +96,86 @@ class ParameterCalEvent extends Parameter
         $datas[$key] = $val;
         return $this->setValues($datas);
     }
-     */
 
     public function getName(): mixed
     {
-        return array_key_exists('name', $this->getValeur()) ? $this->getValeur()['name'] : "";
+        $valuesAR = $this->getValues();
+        return array_key_exists('name', $valuesAR) ? $valuesAR['name'] : null;
     }
 
     public function setName(string $name): mixed
     {
-        $datas = $this->getValeur();
+        $datas = $this->getValues();
         $datas['name'] = $name;
-        $this->setValeur($datas);
+        $this->setValues($datas);
         return $this;
     }
 
     public function getDescription(): mixed
     {
-        return array_key_exists('description', $this->getValeur()) ? $this->getValeur()['description'] : "";
+        $valuesAR = $this->getValues();
+        return array_key_exists('description', $valuesAR) ? $valuesAR()['description'] : null;
     }
 
     public function setDescription(string $description): mixed
     {
-        $datas = $this->getValeur();
+        $datas = $this->getValues();
         $datas['description'] = $description;
-        $this->setValeur($datas);
+        $this->setValues($datas);
         return $this;
     }
 
     public function getBackgroundColor(): string
     {
-        return array_key_exists('backgroundColor', $this->getValeur()) ? $this->getValeur()['backgroundColor'] : "";
+        $valuesAR = $this->getValues();
+        return array_key_exists('backgroundColor', $valuesAR) ? $valuesAR['backgroundColor'] : null;
     }
 
     public function setBackgroundColor(string $backgroundColor)
     {
-        $datas = $this->getValeur();
+        $datas = $this->getValues();
         $datas['backgroundColor'] = $backgroundColor;
-        $this->setValeur($datas);
+        $this->setValues($datas);
         return $this;
     }
 
     public function getBorderColor(): string
     {
-        return array_key_exists('borderColor', $this->getValeur()) ? $this->getValeur()['borderColor'] : "";
+        $valuesAR = $this->getValues();
+        return array_key_exists('borderColor', $valuesAR) ? $valuesAR['borderColor'] : null;
     }
 
     public function setBorderColor(string $borderColor)
     {
-        $datas = $this->getValeur();
+        $datas = $this->getValues();
         $datas['borderColor'] = $borderColor;
-        $this->setValeur($datas);
+        $this->setValues($datas);
         return $this;
     }
 
     public function getTextColor(): string
     {
-        return array_key_exists('textColor', $this->getValeur()) ? $this->getValeur()['textColor'] : "";
+        $valuesAR = $this->getValues();
+        return array_key_exists('textColor', $valuesAR) ? $valuesAR['textColor'] : null;
     }
 
     public function setTextColor(string $textColor)
     {
-        $datas = $this->getValeur();
+        $datas = $this->getValues();
         $datas['textColor'] = $textColor;
-        $this->setValeur($datas);
+        $this->setValues($datas);
         return $this;
+    }
+
+    private function array_combine(array $headers, array $values)
+    {
+        $maxOrd = max (sizeof($headers), sizeof($values));
+        $newArray = [];
+        for ($idx =0; $idx < $maxOrd; $idx++) {
+            $header = array_key_exists($idx, $headers) ? $headers[$idx] : $idx;
+            $value = array_key_exists($idx, $values) ? $values[$idx] : null;
+            $newArray[$header] = $value;
+        }
+        return $newArray;
     }
 }

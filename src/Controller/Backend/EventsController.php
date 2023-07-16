@@ -12,12 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Celtic34fr\ContactRendezVous\Entity\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('events', name: 'evt-')]
 class EventsController extends AbstractController
