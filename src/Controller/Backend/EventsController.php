@@ -24,7 +24,7 @@ class EventsController extends AbstractController
 {
     use Utilities;
 
-    const PARAM_CLE = "calNature";
+    const PARAM_CLE = "SysCalNature";
 
     private EntityManagerInterface $entityManager;
     protected $container;

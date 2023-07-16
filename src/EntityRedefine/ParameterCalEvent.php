@@ -10,7 +10,7 @@ class ParameterCalEvent
     const HEADER = [
         'name', 'description', 'backgroundColor', 'borderColor', 'textColor'
     ];
-    const PARAM_CLE = "calNature";
+    const PARAM_CLE = "SysCalNature";
 
     private array $values = [];
 
