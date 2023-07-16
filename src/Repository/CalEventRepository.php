@@ -5,6 +5,7 @@ namespace Celtic34fr\ContactRendezVous\Repository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Enum\EventEnums;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactCore\Traits\DbPaginateTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -59,10 +60,11 @@ class CalEventRepository extends ServiceEntityRepository
         $type = strtoupper($type);
         if ($type != "ARRAY" && $type != "JSON") $type = "ARRAY";
         $qb = $this->createQueryBuilder("rdv")
-        ->where('rdv.time_at >= :from')
-        ->orderBy('rdv.time_at', 'ASC')
-        ->setParameter('from', $from->format("Y-m-d"))
-        ->getQuery();
+            ->where('rdv.time_at >= :from')
+            ->orderBy('rdv.time_at', 'ASC')
+            ->setParameter('from', $from->format("Y-m-d"))
+            ->getQuery()
+        ;
         $results = $this->paginateDoctrine($qb, $currentPage, $limit);
         return $this->formatEvents($results, $type);
     }
@@ -76,6 +78,23 @@ class CalEventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findAllRendezVousPaginate(int $currentPage = 1, int $limit = 10, DateTime $from = null,
+        string $type = "array")
+    {
+        if (!$from) $from = new DateTime('now');
+        $type = strtoupper($type);
+        if ($type != "ARRAY" && $type != "JSON") $type = "ARRAY";
+        $qb = $this->createQueryBuilder('rdv')
+            ->where('rdv.nature = :nature')
+            ->andWhere('rdv.time_at >= :from')
+            ->setParameter('nature', EventEnums::ContactTel->_toString())
+            ->setParameter('from', $from->format("Y-m-d"))
+            ->getQuery()
+            ;
+        $results = $this->paginateDoctrine($qb, $currentPage, $limit);
+        return $this->formatEvents($results, $type);
     }
 
 //    /**

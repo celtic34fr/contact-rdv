@@ -9,7 +9,6 @@ use Celtic34fr\ContactCore\Traits\Utilities;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Celtic34fr\ContactRendezVous\Entity\RendezVous;
 use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
@@ -36,7 +35,7 @@ class EventsController extends AbstractController
         EntityManagerInterface $entityManager,
         ContainerInterface $container,
         ParameterRepository $parameterRepo,
-        CalEventRepository $calEventRepo
+        CalEventRepository $calEventRepo,
     ) {
         $this->entityManager = $entityManager;
         $this->schemaManager = $entityManager->getConnection()->getSchemaManager();
@@ -56,8 +55,7 @@ class EventsController extends AbstractController
         $dbPrefix = $this->getParameter('bolt.table_prefix');
 
         if ($this->existsTable($dbPrefix . 'rendezvous') == true) {
-            $events = $this->entityManager->getRepository(RendezVous::class)
-                ->findEventsAll($currentPage);
+            $events = $this->calEventRepo->findAllRendezVousPaginate($currentPage);
             /**
              * avoir une case à cocher pour montrer les demandes déjà traitées
              * module de recherche dans les requêtes : date (format français), nom de l'internaute, sujet
