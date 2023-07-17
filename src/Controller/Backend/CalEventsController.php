@@ -18,9 +18,12 @@ class CalEventsController extends AbstractController
     const PARAM_CLE = "SysCalNature";
     const PARAM_VALEUR = "Liste des types d'événements de calendrier";
 
+    private $schemaManager;
+
     public function __construct(private EntityManagerInterface $em, private CalEventRepository $calEventRepo,
         private ParameterRepository $parameterRepo)
     {
+        $this->schemaManager = $em->getConnection()->getSchemaManager();
     }
 
     #[Route('list', name: 'list')]
