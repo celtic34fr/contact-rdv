@@ -1,0 +1,26 @@
+{% extends "@contact-rdv/events_layout.html.twig" %}
+
+{% block shoulder %}
+	{{ 'Evènements dans le calendrier' }}
+{% endblock shoulder %}
+
+{% block title %}
+	<i class="fas mr-2 link--icon fa-clipboard-question"></i>
+	Gestion des types d'événements
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block main %}
+    <div class="col-12 row" id="entete">
+        <span class="col-2 text-end">Liste :</span>
+        <span class="col-2 text-center">{{ entete.getCle() }}</span>
+        <span class="col-6 text-end">{{ entete.getValeur() }}</span>
+    </div>
+{% endblock %} 
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %} 
