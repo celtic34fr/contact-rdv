@@ -5,6 +5,9 @@ namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Traits\Utilities;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,9 +57,11 @@ class CalEventsController extends AbstractController
     public function eventTypeGest()
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
+        $twig_context = [];
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'parameters') == true) {
+            /** rrecherche des informations de base */
             $calEventEntete = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $calEventItems = $this->parameterRepo->findItemsByCle(self::PARAM_CLE);
 
@@ -68,12 +73,24 @@ class CalEventsController extends AbstractController
                 $this->em->flush();
             }
 
+            /** mise en place du formulaire à partir de $calEventItems */
+            $items = new CalEventItems();
+            if ($calEventItems) {
+                foreach ($calEventItems as $calEventItem) {
+                    $item = new CalEventItem();
+                    $item->hydrateFromJson($calEventItem->getValeur());
+                    $items->addItem($item);
+                }
+            }
+            $form = $this->createForm(CalEventItemsType::class, $items);
+
+            $twig_context['entete']= $calEventEntete;
+            $twig_context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}parameters n'existe pas, veuillez en avertir l'administrateur");
+            $twig_context['entete'] = null;
         }
 
-        return $this->render("@contact-rdv/cal_events/type_gest.html.twig", [
-            'entete' => $calEventEntete,
-        ]);
+        return $this->render("@contact-rdv/cal_events/type_gest.html.twig", $twig_context);
     }
 }

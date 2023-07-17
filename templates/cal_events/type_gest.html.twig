@@ -15,9 +15,11 @@
 
 {% block main %}
     <div class="col-12 row" id="entete">
-        <span class="col-2 text-end">Liste :</span>
+        {% if entete is defined and entete is not empty %}
+        <span class="col-2 offszt-1 text-end bg-secondary">Liste :</span>
         <span class="col-2 text-center">{{ entete.getCle() }}</span>
         <span class="col-6 text-end">{{ entete.getValeur() }}</span>
+        {% endif %}
     </div>
 {% endblock %} 
 
