@@ -1,6 +1,7 @@
 {% extends '@contact-core/layout_backend.html.twig' %}
 {% import '@contact-core/macros/form_type.html.twig' as fields %}
 {% import "@contact-rdv/macro/calEventType.html.twig" as calEvtType %}
+{% import '@contact-core/macros/form_classic.html.twig' as forms %}
 
 {% block shoulder %}
     {{ 'Evènements dans le calendrier' }}
@@ -63,8 +64,11 @@
 
 	<div class="col-12 row mt-2 px-0 mx-0">
 		{{ fields.submitbtn(form.record, "", {
-			'class': 'col-12 text-white gradient text-center btn btn-success',
+			'class': 'col-4 offset-1 text-white gradient text-center btn btn-success',
 		}) }}
+		{{ forms.btn('canList', "Annuler l'opération", {
+            'class': 'btn btn-bs-warning col-4 offset-2', 'bclass': 'btn btn-bs-warning',
+        } ) }}
 	</div>
 
 	{{ form_end(form, {render_rest: false}) }}
@@ -138,6 +142,15 @@
 			collectionHolder.dataset.index ++;
 			addTagFormDeleteLink(item, index);
 		}
+
+		const myForm = document.getElementByTag("form");
+		myForm.addEventListener("submit", function(evt){
+			if (evt.submitter.id == "canList") {
+				evt.preventDefault();
+				window.location.href = "{{ path('bolt-dashboard') }}";
+			}
+		});
+
 
 		document.addEventListener("DOMContentLoaded", function () {
 			document.querySelectorAll('.add_item_link').forEach(btn => {
