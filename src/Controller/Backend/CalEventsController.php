@@ -71,6 +71,6 @@ class CalEventsController extends AbstractController
 
         return $this->render("@contact-rdv/cal_events/type_gest.html.twig", [
             'entete' => $calEventEntete,
-        ])
+        ]);
     }
 }
