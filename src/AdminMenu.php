@@ -73,7 +73,7 @@ class AdminMenu implements ExtensionBackendMenuInterface
                 'item' => [
                     'uri' => $this->urlGenerator->generate('evt-type-gest'),
                     'extras' => [
-                        'icon' => 'fa-tool',
+                        'icon' => 'fa-tools',
                         'group' => 'CRM',
                     ]
                 ]

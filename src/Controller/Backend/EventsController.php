@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('events', name: 'evt-')]
+#[Route('events', name: 'evt1-')]
 class EventsController extends AbstractController
 {
     use Utilities;
