@@ -13,7 +13,7 @@ class CalEventItemsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('values', CollectionType::class, [
+            ->add('items', CollectionType::class, [
                 'label' => 'Liste des catégories',
                 'entry_type' => CalEventItemType::class,
                 'allow_add' => true,
