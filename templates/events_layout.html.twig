@@ -2,8 +2,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-
-	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js" integrity="sha256-dHUNnePy81fXq4D/wfu7cPsEIP7zl6MvLb84jtZf+UY=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.5/locales-all.global.js" integrity="sha256-IhTDHOh7JHWcossHgoc03ZKK/q0lx807VlS4upDYXe4=" crossorigin="anonymous"></script>
+    
+    <script src="{{ asset('contact-assets/js/fullcalendar_6.1.5.global.min.js') }}"></script>
+    <script src="{{ asset('contact-assets/js/fullcalendar_6.1.5.locales-allglobal.min.js') }}"></script>
 {% endblock %}
 
