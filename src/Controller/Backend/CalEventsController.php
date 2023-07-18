@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('events', name: 'evt-')]
+#[Route('events_', name: 'evt-')]
 class CalEventsController extends AbstractController
 {
     use Utilities;
