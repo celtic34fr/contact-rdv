@@ -51,16 +51,18 @@
 
     {% if errors is defined and errors is not empty %}
         <div class="col-12 row m-2 p-0 border border-dark">
-            <h3 class="bg-danger col-12">Erreurs détextées dans le formulaire</h3>
-            <table class="col-12 row table-danger table-bordered">
-                <thead class="col-12 row m-0 pt-1">
-                    <tr class="row col-12">
+            <h3 class="bg-danger col-12 m-0 p-1 text-white">
+                Erreurs détectées dans le formulaire
+            </h3>
+            <table class="col-12 row table-danger table-bordered m-0 p-0">
+                <thead class="col-12 row m-0 p-0">
+                    <tr class="row col-12 m-0 p-0">
                         <th class="col-2 text-center">Bloc n°</th>
                         <th class="col-3 text-center">Champ</th>
                         <th class="col-7 text-start">Erreur(s)</th>
                     </tr>
                 </thead>
-                <tbody class="col-12 row m-0 pb-1">
+                <tbody class="col-12 row m-0 p-0">
             {% for occur, occurErrors in errors %}
                 {% for field, error in occurErrors %}
                     <tr class="col-12 row m-0 p-0">
