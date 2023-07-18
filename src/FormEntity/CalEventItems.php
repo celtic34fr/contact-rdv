@@ -25,26 +25,33 @@ class CalEventItems
     }
 
     /**
-     * @param array $item
+     * @param array|CalEventItem $item
      * @return CalEventItems
      */
-    public function addItem(array $item): self
+    public function addItem($item): self
     {
-        $realItem = new CalEventItem();
-        $realItem->hydrateFromJson(json_encode($item));
-        $this->items[$realItem->getCle()] = $realItem;
+        $realItem = $item;
+        if (is_array($item)) {
+            $realItem = new CalEventItem();
+            $realItem->hydrateFromJson(json_encode($item));
+        }
+        $idx = $this->items ? sizeof($this->items) : 0;
+        $this->items[$idx] = $realItem;
         return $this;
     }
 
     /**
-     * @param CalEventItem $item
-     * @return CalEventItems
+     * param CalEventItem $item
+     * return CalEventItems
      */
-    public function addItemCalEvent(CalEventItem $item): self
-    {
-        $this->items[$item->getCle()] = $item;
-        return $this;
-    }
+    /**
+     * public function addItemCalEvent(CalEventItem $item): self
+     * {
+     *     $idx = $this->items ? sizeof($this->items) : 0;
+     *     $this->items[$idx] = $item;
+     *     return $this;
+     * }
+     */
 
     /**
      * @param CalEventItem $item

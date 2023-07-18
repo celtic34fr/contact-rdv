@@ -86,7 +86,7 @@ class CalEventsController extends AbstractController
                     $item = new CalEventItem();
                     $item->hydrateFromJson($calEventItem->getValeur());
                     $item->setId($calEventItem->getId());
-                    $items->addItemCalEvent($item);
+                    $items->addItem($item);
                 }
             }
             $form = $this->createForm(CalEventItemsType::class, $items);
