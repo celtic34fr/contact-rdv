@@ -19,9 +19,6 @@ class CalEventItemsType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
             ])
-            ->add('record', SubmitType::class, [
-                'label' => 'Enregitrer',
-            ])
         ;
     }
 
