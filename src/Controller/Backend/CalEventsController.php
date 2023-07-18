@@ -2,22 +2,24 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Traits\Utilities;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
-use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Celtic34fr\ContactCore\Entity\Parameter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Celtic34fr\ContactCore\Traits\UtilitiesTrait;
+use Celtic34fr\ContactCore\Traits\FormErrorsTrait;
+use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
+use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('events_', name: 'evt-')]
 class CalEventsController extends AbstractController
 {
-    use Utilities;
+    use UtilitiesTrait;
+    use FormErrorsTrait;
 
     const PARAM_CLE = "SysCalNature";
     const PARAM_VALEUR = "Liste des types d'événements de calendrier";
@@ -126,25 +128,6 @@ class CalEventsController extends AbstractController
         }
 
         return $this->render("@contact-rdv/cal_events/type_gest.html.twig", $twig_context);
-    }
-
-    private function getErrors($form): array
-    {
-        $errors = array();
-        foreach ($form->getErrors() as $key => $error) {
-            if ($form->isRoot()) {
-                $errors['#'][] = $error->getMessage();
-            } else {
-                $errors[] = $error->getMessage();
-            }
-        }
-
-        foreach ($form->all() as $child) {
-            if (!$child->isValid()) {
-                $errors[$child->getName()] = $this->getErrors($child);
-            }
-        }
-        return $errors;
     }
 
     private function formatErrors(array $rawErrors): array
