@@ -2,6 +2,7 @@
 {% import '@contact-core/macros/form_type.html.twig' as fields %}
 {% import '@contact-core/macros/form_classic.html.twig' as forms %}
 
+{#
 {% macro prototypeValues(valsChildren) %}
 	{% import '@contact-core/macros/form_type.html.twig' as fields %}
 
@@ -26,6 +27,7 @@
         'dataset': {'ord': 0}
     }) }}
 {% endmacro %}
+#}
 
 {% block shoulder %}
 	{{ 'Evènements dans le calendrier' }}
@@ -49,6 +51,7 @@
         {% endif %}
     </div>
 
+{#
     {{ form_start(form, {'action': path('evt-type-gest'), 'method': 'POST'}) }}
         {{ form_row(form._token) }}
 
@@ -101,6 +104,8 @@
         <div class="col-12 mt-2 text-right text-gray-600 px-0 mx-3">
             * champs obligatoires
         </div>
+#}
+
 {% endblock %} 
 
 {% block javascripts %}
