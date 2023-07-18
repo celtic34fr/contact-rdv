@@ -133,7 +133,7 @@ class CalEventsController extends AbstractController
     private function formatErrors(array $rawErrors): array
     {
         $formatedErrors = [];
-        $rawErrors = $rawErrors['items'];
+        $rawErrors = $rawErrors['Liste des catégories'];
         foreach ($rawErrors as $occurs => $errorsOccurs) {
             foreach ($errorsOccurs as $field => $errors) {
                 $formatedFieldErrors ="";
