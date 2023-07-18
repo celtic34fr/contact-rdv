@@ -5,12 +5,12 @@ namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Traits\Utilities;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactRendezVous\Form\CalCategoriesType;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactCore\Traits\UtilitiesTrait;
 use Celtic34fr\ContactRendezVous\EntityRedefine\ParameterCalEvent;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoryFE;
 use Celtic34fr\ContactRendezVous\FormEntity\CalCategoriesFE;
@@ -21,7 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('events', name: 'evt1-')]
 class EventsController extends AbstractController
 {
-    use Utilities;
+    use UtilitiesTrait;
 
     const PARAM_CLE = "SysCalNature";
 
