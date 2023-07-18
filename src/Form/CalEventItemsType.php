@@ -3,10 +3,10 @@
 namespace Celtic34fr\ContactRendezVous\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CalEventItemsType extends AbstractType
 {
@@ -25,7 +25,7 @@ class CalEventItemsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // 'data_class' => CalEventFE::class,
+            'data_class' => CalEventItems::class,
         ]);
     }
 }

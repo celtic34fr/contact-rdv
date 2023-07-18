@@ -85,6 +85,7 @@ class CalEventsController extends AbstractController
                 foreach ($calEventItems as $calEventItem) {
                     $item = new CalEventItem();
                     $item->hydrateFromJson($calEventItem->getValeur());
+                    $item->setId($calEventItem->getId());
                     $items->addItemCalEvent($item);
                 }
             }
@@ -94,15 +95,17 @@ class CalEventsController extends AbstractController
 
             if ($form->isSubmitted()) {
                 if ($form->isValid()) {
+                    $idx = 0;
                     /** @var CalEventItem $item */
-                    foreach ($items as $idx => $item) {
+                    foreach ($items->getItems() as $item) {
+                        $idx++;
                         if ($item->getId()) {
                             $calEvtItem = $this->parameterRepo->find($item->getId());
                         } else {
                             $calEvtItem = new Parameter();
                             $calEvtItem->setCle(self::PARAM_CLE);
                         }
-                        $calEvtItem->setOrd($idx + 1);
+                        $calEvtItem->setOrd($idx);
                         $calEvtItem->setValeur($item->getValaur());
                         if (!$item->getId()) {
                             $this->em->persist($calEvtItem);
