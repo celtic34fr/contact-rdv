@@ -11,6 +11,7 @@ use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('events_', name: 'evt-')]
@@ -54,7 +55,7 @@ class CalEventsController extends AbstractController
     }
 
     #[Route('type_gest', name: 'type-gest')]
-    public function eventTypeGest()
+    public function eventTypeGest(Request $request)
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $twig_context = [];
@@ -64,6 +65,7 @@ class CalEventsController extends AbstractController
             /** rrecherche des informations de base */
             $calEventEntete = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $calEventItems = $this->parameterRepo->findItemsByCle(self::PARAM_CLE);
+            $errors = [];
 
             if (!$calEventEntete) {
                 /** par encore de liste de paramètre SysCalEvent = création */
@@ -84,13 +86,53 @@ class CalEventsController extends AbstractController
             }
             $form = $this->createForm(CalEventItemsType::class, $items);
 
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    /** @var CalEventItem $item */
+                    foreach ($items as $idx => $item) {
+                        if ($item->getId()) {
+                            $calEvtItem = $this->parameterRepo->find($item->getId());
+                        } else {
+                            $calEvtItem = new Parameter();
+                            $calEvtItem->setCle(self::PARAM_CLE);
+                        }
+                        $calEvtItem->setOrd($idx + 1);
+                        $calEvtItem->setValeur($item->getValaur());
+                        if (!$item->getId()) {
+                            $this->em->persist($calEvtItem);
+                        }
+                    }
+                    $this->em->flush();
+                    $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
+                    $this->redirectToRoute('bolt_dashboard');
+                } else {
+                    /** recherche des erreurs dans les sous formulaires */
+                    $errors = $this->getErrors($form);
+                }
+            }
+
             $twig_context['entete']= $calEventEntete;
             $twig_context['form'] = $form->createView();
+            $twig_context['errors'] = $errors;
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}parameters n'existe pas, veuillez en avertir l'administrateur");
             $twig_context['entete'] = null;
+            $twig_context['form'] = null;
+            $twig_context['errors'] = null;
         }
 
         return $this->render("@contact-rdv/cal_events/type_gest.html.twig", $twig_context);
     }
+
+    private function getErrors($form)
+    {
+        $errors = $form->getErrors();
+        foreach ($form as $child) {
+            $errors = array_merge($errors, $this->getErrors($child));
+        }
+        return $errors;
+    }
+
 }
