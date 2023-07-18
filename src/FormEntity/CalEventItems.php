@@ -4,11 +4,11 @@ namespace Celtic34fr\ContactRendezVous\FormEntity;
 
 class CalEventItems
 {
-    private ?array $items;
+    private ?array $items = null;
 
     /**
      * @return array|null
-     */ 
+     */
     public function getItems(): ?array
     {
         return $this->items;
@@ -17,7 +17,7 @@ class CalEventItems
     /**
      * @param array $items
      * @return CalEventItems
-     */ 
+     */
     public function setItems(array $items): self
     {
         $this->items = $items;
@@ -25,10 +25,22 @@ class CalEventItems
     }
 
     /**
+     * @param array $item
+     * @return CalEventItems
+     */
+    public function addItem(array $item): self
+    {
+        $realItem = new CalEventItem();
+        $realItem->hydrateFromJson(json_encode($item));
+        $this->items[$realItem->getCle()] = $realItem;
+        return $this;
+    }
+
+    /**
      * @param CalEventItem $item
      * @return CalEventItems
-     */ 
-    public function addItem(CalEventItem $item): self
+     */
+    public function addItemCalEvent(CalEventItem $item): self
     {
         $this->items[$item->getCle()] = $item;
         return $this;
@@ -37,7 +49,7 @@ class CalEventItems
     /**
      * @param CalEventItem $item
      * @return CalEventItems|bool
-     */ 
+     */
     public function removeItem(CalEventItem $item): mixed
     {
         if (array_key_exists($item->getCle(), $this->items)) {

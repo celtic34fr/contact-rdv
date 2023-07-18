@@ -49,9 +49,32 @@
         {% endif %}
     </div>
 
-    <pre>
-        {{ dump(errors) }}
-    </pre>
+    {% if errors is defined and errors is not empty %}
+        <div class="col-12 row m-0 p-0">
+            <h3 class="text-danger col-12">Erreurs détextées dans le formulaire</h3>
+            <table class="col-12 row">
+                <thead class="col-12 row m-0 p-0">
+                    <tr class="row col-12">
+                        <th class="col-2 text-center">Bloc n°</th>
+                        <th class="col-3 text-center">Champ</th>
+                        <th class="col-7 text-start">Erreur(s)</th>
+                    </tr>
+                </thead>
+                <tbody class="col-12 row m-0 p-0">
+                {% for occur, occurErrors in errors %}
+                    {% for field, error in errors %}
+                    <tr class="col-12 row m-0 p-0">
+                        <td class="col-2 text-center">{{ occur + 1 }}</td>
+                        <td class="col-3 text-center">{{ field }}</td>
+                        <td class="col-7 yexy-start">{{ error }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+    
 
     {{ form_start(form, {'action': path('evt-type-gest'), 'method': 'POST'}) }}
         {{ form_row(form._token) }}

@@ -24,9 +24,11 @@ class CalEventsController extends AbstractController
 
     private $schemaManager;
 
-    public function __construct(private EntityManagerInterface $em, private CalEventRepository $calEventRepo,
-        private ParameterRepository $parameterRepo)
-    {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private CalEventRepository $calEventRepo,
+        private ParameterRepository $parameterRepo
+    ) {
         $this->schemaManager = $em->getConnection()->getSchemaManager();
     }
 
@@ -81,7 +83,7 @@ class CalEventsController extends AbstractController
                 foreach ($calEventItems as $calEventItem) {
                     $item = new CalEventItem();
                     $item->hydrateFromJson($calEventItem->getValeur());
-                    $items->addItem($item);
+                    $items->addItemCalEvent($item);
                 }
             }
             $form = $this->createForm(CalEventItemsType::class, $items);
@@ -109,11 +111,11 @@ class CalEventsController extends AbstractController
                     $this->redirectToRoute('bolt_dashboard');
                 } else {
                     /** recherche des erreurs dans les sous formulaires */
-                    $errors = $this->getErrors($form);
+                    $errors = $this->formatErrors($this->getErrors($form));
                 }
             }
 
-            $twig_context['entete']= $calEventEntete;
+            $twig_context['entete'] = $calEventEntete;
             $twig_context['form'] = $form->createView();
             $twig_context['errors'] = $errors;
         } else {
@@ -126,13 +128,39 @@ class CalEventsController extends AbstractController
         return $this->render("@contact-rdv/cal_events/type_gest.html.twig", $twig_context);
     }
 
-    private function getErrors($form)
+    private function getErrors($form): array
     {
-        $errors = $form->getErrors();
-        foreach ($form as $child) {
-            $errors = array_merge($errors, $this->getErrors($child));
+        $errors = array();
+        foreach ($form->getErrors() as $key => $error) {
+            if ($form->isRoot()) {
+                $errors['#'][] = $error->getMessage();
+            } else {
+                $errors[] = $error->getMessage();
+            }
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = $this->getErrors($child);
+            }
         }
         return $errors;
     }
 
+    private function formatErrors(array $rawErrors): array
+    {
+        $formatedErrors = [];
+        $rawErrors = $rawErrors['items'];
+        foreach ($rawErrors as $occurs => $errorsOccurs) {
+            foreach ($errorsOccurs as $field => $errors) {
+                $formatedFieldErrors ="";
+                foreach ($errors as $error) {
+                    $formatedFieldErrors .= "<p>".$error."</p>";
+                }
+                if (!array_key_exists($occurs, $formatedErrors)) $formatedErrors[$occurs] = [];
+                $formatedErrors[$occurs][$field] = $formatedFieldErrors;
+            }
+        }
+        return $formatedErrors;
+    }
 }
