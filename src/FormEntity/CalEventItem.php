@@ -109,12 +109,15 @@ class CalEventItem
 
     /**
      * @param string $background
-     * @return CalEventItem
+     * @return CalEventItem|bool
      */ 
-    public function setBackground(string $background): self
+    public function setBackground(string $background): mixed
     {
-        $this->background = $background;
-        return $this;
+        if ($this->validColorHexa($border)) {
+            $this->background = $background;
+            return $this;
+        }
+        return false;
     }
 
     /**
@@ -127,12 +130,15 @@ class CalEventItem
 
     /**
      * @param string $border
-     * @return CalEventItem
+     * @return CalEventItem|bool
      */ 
-    public function setBorder(string $border): self
+    public function setBorder(string $border): mixed
     {
-        $this->border = $border;
-        return $this;
+        if ($this->validColorHexa($border)) {
+            $this->border = $border;
+            return $this;
+        }
+        return false;
     }
 
     /**
@@ -145,12 +151,25 @@ class CalEventItem
 
     /**
      * @param string $text
-     * @return CalEventItem
+     * @return CalEventItem|bool
      */ 
-    public function setText($text)
+    public function setText($text): mixed
     {
-        $this->text = $text;
+        if ($this->validColorHexa($text)) {
+            $this->text = $text;
+            return $this;
+        }
+        return false;
+    }
 
-        return $this;
+    private function validColorHexa(string $color_str): bool
+    {
+        /** validation de la chaîne de caractères
+         *      -> commencer par '#'
+         *      -> par groupe de 2 caractères : valeur hexadéciaml de 0 à 255 : 00 à FF
+         */
+        if (substr($color_str, 0, 1) != "#") return false;
+        if (!ctype_xdigit(substr($color_str, 1))) return false;
+        return true;
     }
 }
