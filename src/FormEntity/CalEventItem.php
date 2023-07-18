@@ -54,10 +54,10 @@ class CalEventItem
     }
 
     /**
-     * @param int $is
+     * @param int|null $is
      * @return CalEventItem
      */ 
-    public function setId(int $id) : self
+    public function setId(?int $id) : self
     {
         $this->id = $id;
         return $this;
@@ -72,10 +72,10 @@ class CalEventItem
     }
 
     /**
-     * @param string $cle
+     * @param string[null] $cle
      * @return CalEventItem
      */ 
-    public function setCle(string $cle): self
+    public function setCle(?string $cle): self
     {
         $this->cle = $cle;
         return $this;
@@ -90,10 +90,10 @@ class CalEventItem
     }
 
     /**
-     * @param string $fonction
+     * @param string|null $fonction
      * @return CalEventItem
      */ 
-    public function setFonction(string $fonction): self
+    public function setFonction(?string $fonction): self
     {
         $this->fonction = $fonction;
         return $this;
@@ -108,12 +108,12 @@ class CalEventItem
     }
 
     /**
-     * @param string $background
+     * @param string|null $background
      * @return CalEventItem|bool
      */ 
-    public function setBackground(string $background): mixed
+    public function setBackground(?string $background): mixed
     {
-        if ($this->validColorHexa($border)) {
+        if ($this->validColorHexa($background)) {
             $this->background = $background;
             return $this;
         }
@@ -129,10 +129,10 @@ class CalEventItem
     }
 
     /**
-     * @param string $border
+     * @param string|null $border
      * @return CalEventItem|bool
      */ 
-    public function setBorder(string $border): mixed
+    public function setBorder(?string $border): mixed
     {
         if ($this->validColorHexa($border)) {
             $this->border = $border;
@@ -150,10 +150,10 @@ class CalEventItem
     }
 
     /**
-     * @param string $text
+     * @param string[null] $text
      * @return CalEventItem|bool
      */ 
-    public function setText($text): mixed
+    public function setText(?string $text): mixed
     {
         if ($this->validColorHexa($text)) {
             $this->text = $text;
@@ -168,6 +168,7 @@ class CalEventItem
          *      -> commencer par '#'
          *      -> par groupe de 2 caractères : valeur hexadéciaml de 0 à 255 : 00 à FF
          */
+        if (!$color_str) return false;
         if (substr($color_str, 0, 1) != "#") return false;
         if (!ctype_xdigit(substr($color_str, 1))) return false;
         return true;
