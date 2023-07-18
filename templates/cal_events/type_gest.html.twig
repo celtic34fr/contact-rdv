@@ -92,7 +92,7 @@
                 }) }}
             {{ forms.btn('canList', "Annuler l'opération", {
                     'class': 'btn btn-bs-warning col-4 offset-2', 'bclass': 'btn btn-bs-warning',
-                    'formnovalidate': true, 'event': 'onClick', 'codeJS': 'backToDAshboard()',
+                    'formnovalidate': true, 'event': 'onClick', 'codeJS': 'backToDashboard()',
                     'type': 'button',
                 } ) }}
         </div>
@@ -107,8 +107,90 @@
     {{ parent() }}
 
     <script>
-        function backToDAshboard() {
+		function addTagFormDeleteLink(item, index) {
+			const removeFormButton = document.createElement('button');
+			removeFormButton.classList.add("btn");
+			removeFormButton.classList.add("btn-warning");
+			removeFormButton.classList.add("col-3");
+			removeFormButton.classList.add("mx-0");
+			removeFormButton.classList.add("px-0");
+			removeFormButton.setAttribute('title', 'Supprimer la valeur');
+			const removeFormIcon = document.createElement("i");
+			removeFormIcon.classList.add("fa");
+			removeFormIcon.classList.add("fa-trash");
+			removeFormButton.append(removeFormIcon);
+			if (index < 1) {
+				removeFormButton.disabled = true;
+			}
+			item.appendChild(removeFormButton);
+
+			removeFormButton.addEventListener('click', (e) => {
+				e.preventDefault();
+				let item = e.currentTarget.parentElement;
+                let list = item.parentElement;
+				let index = parseInt(item.querySelector("input").dataset.ord);
+				item.remove();
+
+                let spans = list.querySelectorAll("span");
+				spans.forEach(span => {
+					let idx = parseInt(span.innerHTML);
+
+					if (idx > index) {
+						let idxStr = idx.toString();
+						let nidxStr = (idx - 1).toString();
+						let input = span.parentElement.querySelector("input");
+						let iclone = input.cloneNode(1);
+
+                        span.innerHTML = nidxStr + " : ";
+						iclone.id = input.id.replace(idxStr, nidxStr);
+						iclone.name = input.name.replace(idxStr, nidxStr);
+						iclone.value = input.value;
+						iclone.dataset.ord = nidxStr;
+						input.remove();
+						span.after(iclone);
+					}
+				});
+			});
+		}
+
+		function addEmptyLi(bouton) {
+			const collectionHolder = document.querySelector('.' + bouton.dataset.collectionHolderClass);
+			const index = parseInt(collectionHolder.dataset.index);
+			const item = document.createElement('li');
+			item.classList.add("col-12");
+			item.classList.add("row");
+			item.classList.add("my-2");
+			item.classList.add("mx-0");
+			item.classList.add("px-0");
+			item.innerHTML = collectionHolder.dataset.prototype.replace(/__name__/g, index);
+			collectionHolder.appendChild(item);
+
+			collectionHolder.dataset.index ++;
+			addTagFormDeleteLink(item, index);
+		}
+
+        function backToDashboard() {
             window.location.href = "{{ path('bolt_dashboard') }}";
         }
+
+		document.addEventListener("DOMContentLoaded", function () {
+			document.querySelectorAll('.add_item_link').forEach(btn => {
+				btn.addEventListener("click", function (e) {
+					addEmptyLi(e.currentTarget);
+				});
+			});
+
+			document.querySelectorAll('ul.values li').forEach((val) => {
+				let input = val.querySelector("input");
+				let ord = parseInt(input.dataset.ord);
+				addTagFormDeleteLink(val, ord)
+			});
+
+			const bouton = document.querySelector(".add_item_link")
+			const valuesNBR = document.querySelectorAll("ul.values li");
+			if (valuesNBR.length < 1) {
+				addEmptyLi(bouton);
+			}
+		});
     </script>
 {% endblock %} 
