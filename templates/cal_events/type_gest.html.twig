@@ -55,7 +55,7 @@
         <div class="col-12 row mx-0 px-0">
             {{ form_label(form.items) }}
             {{ form_errors(form.items) }}
-            <ul class="values col-12 row mx-0 px-0" data-index="{{ form.values.children|length > 0 ? (form.values.children|last).vars.name + 1 : 0 }}" data-prototype='{{ _self.prototypeValues(form.values.vars.prototype)|e('html_attr') }}'>
+            <ul class="values col-12 row mx-0 px-0" data-index="{{ form.items.children|length > 0 ? (form.items.children|last).vars.name + 1 : 0 }}" data-prototype='{{ _self.prototypeValues(form.items.vars.prototype)|e('html_attr') }}'>
                 {% for idx, valueField in form.items %}
                     <li class="col-12 row my-2 mx-0 px-0">
                         {{ fields.field(valueField.children.cle, "", {
