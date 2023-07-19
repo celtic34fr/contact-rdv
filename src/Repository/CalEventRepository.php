@@ -60,8 +60,8 @@ class CalEventRepository extends ServiceEntityRepository
         $type = strtoupper($type);
         if ($type != "ARRAY" && $type != "JSON") $type = "ARRAY";
         $qb = $this->createQueryBuilder("rdv")
-            ->where('rdv.time_at >= :from')
-            ->orderBy('rdv.time_at', 'ASC')
+            ->where('rdv.start_at >= :from')
+            ->orderBy('rdv.start_at', 'ASC')
             ->setParameter('from', $from->format("Y-m-d"))
             ->getQuery()
         ;
