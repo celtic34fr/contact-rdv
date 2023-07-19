@@ -55,6 +55,8 @@ class CalEventsController extends AbstractController
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
+            $allEvents = $this->calEventRepo->findAllPaginateFromDate(1);
+            if ($allEvents) $twig_context['allEvents'] = $allEvents;
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
