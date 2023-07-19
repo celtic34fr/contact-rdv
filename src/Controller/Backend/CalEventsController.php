@@ -14,6 +14,7 @@ use Celtic34fr\ContactCore\Repository\ParameterRepository;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Exception;
 
 #[Route('events_', name: 'evt-')]
 class CalEventsController extends AbstractController
@@ -106,6 +107,10 @@ class CalEventsController extends AbstractController
                             $calEvtItem = new Parameter();
                             $calEvtItem->setCle(self::PARAM_CLE);
                         } else {
+                            if (sizeof($calEvtItem) > 1) {
+                                throw new Exception("Evt Type {$item->getCle()} existe plusieurs fois : incohérent");
+                            }
+                            $calEvtItem = $calEvtItem[0];
                             unset($dbEvtKeys[$item->getCle()]);
                         }
                         $calEvtItem->setOrd($idx);
@@ -133,7 +138,7 @@ class CalEventsController extends AbstractController
                     }
 
                     $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
-                    $this->redirectToRoute('bolt_dashboard');
+                    $this->redirectToRoute('bolt_dashboard', [], 301);
                 } else {
                     /** recherche des erreurs dans les sous formulaires */
                     $errors = $this->formatErrors($this->getErrors($form));
@@ -159,9 +164,9 @@ class CalEventsController extends AbstractController
         $rawErrors = $rawErrors['Liste des catégories'];
         foreach ($rawErrors as $occurs => $errorsOccurs) {
             foreach ($errorsOccurs as $field => $errors) {
-                $formatedFieldErrors ="";
+                $formatedFieldErrors = "";
                 foreach ($errors as $error) {
-                    $formatedFieldErrors .= "<p>".$error."</p>";
+                    $formatedFieldErrors .= "<p>" . $error . "</p>";
                 }
                 if (!array_key_exists($occurs, $formatedErrors)) $formatedErrors[$occurs] = [];
                 $formatedErrors[$occurs][$field] = $formatedFieldErrors;
