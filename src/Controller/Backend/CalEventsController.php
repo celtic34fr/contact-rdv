@@ -63,6 +63,7 @@ class CalEventsController extends AbstractController
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $twig_context = [];
+        $dbEvtKeys = [];
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'parameters') == true) {
@@ -87,6 +88,7 @@ class CalEventsController extends AbstractController
                     $item->hydrateFromJson($calEventItem->getValeur());
                     $item->setId($calEventItem->getId());
                     $items->addItem($item);
+                    $dbEvtKeys[$item->getCle()] = $item->getId();
                 }
             }
             $form = $this->createForm(CalEventItemsType::class, $items);
@@ -99,11 +101,12 @@ class CalEventsController extends AbstractController
                     /** @var CalEventItem $item */
                     foreach ($items->getItems() as $item) {
                         $idx++;
-                        if ($item->getId()) {
-                            $calEvtItem = $this->parameterRepo->find($item->getId());
-                        } else {
+                        $calEvtItem = $this->parameterRepo->findByPartialFields(['valeur' => $item->getCle()]);
+                        if (!$calEvtItem) {
                             $calEvtItem = new Parameter();
                             $calEvtItem->setCle(self::PARAM_CLE);
+                        } else {
+                            unset($dbEvtKeys[$item->getCle()]);
                         }
                         $calEvtItem->setOrd($idx);
                         $calEvtItem->setValeur($item->getValaur());
@@ -112,6 +115,23 @@ class CalEventsController extends AbstractController
                         }
                     }
                     $this->em->flush();
+
+                    /** traitement des clé non reconduites */
+                    if ($dbEvtKeys) {
+                        foreach ($dbEvtKeys as $dbEvtKey => $dbId) {
+                            $item = $this->parameterRepo->find($dbId);
+                            if ($this->calEventRepo->findEventsByCategory($item)) {
+                                /** duppression impossible => existe des événement avec cet type */
+                                $this->addFlash('warning', "Le type d'évèment $dbEvtKey est utilisé, suppression impossible");
+                                $idx++;
+                                $item->setOrd($idx);
+                            } else {
+                                $this->em->remove($item);
+                            }
+                        }
+                        $this->em->flush();
+                    }
+
                     $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
                     $this->redirectToRoute('bolt_dashboard');
                 } else {
