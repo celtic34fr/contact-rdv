@@ -20,7 +20,56 @@
 {% endblock %}
 
 {% block main %}
-	<div id="calendar"></div>
+	<div class="col-12 m-0 p-0 row">
+		<div class="col-8 row m-0 p-0">
+			{# affichage du calendrier #}
+			<div id="calendar"></div>
+		</div>
+		<div class="col-4 row m-0 p-0">
+			{# formulaire de saisie d'événement #}
+			{{ form_start(form, {'action': path('evt-type-gest'), 'method': 'POST', 'class': 'col-12 row'}) }}
+				{{ form_row(form._token) }}
+
+				<div class="col-12 row m-0 p-0">
+					<div class="col-2 row m-0 p-0">
+						{{ fields.checkbox(form.allDay, "", {
+							'class': 'col-12 m-0 p-0'
+						}) }}
+					</div>
+
+					<div class="col-5 row m-0 p-0">
+						{{ fields.datepicker(form.startBG, "", {
+							'class': 'col-6 m-0 p-0',
+						}) }}
+						{{ fields.field(form.hourBG, "", {
+							'class': 'col-6 m-0 p-0',
+						}) }}
+					</div>
+
+					<div class="col-5 row m-0 p-0">
+						{{ fields.datepicker(form.startED, "", {
+							'class': 'col-6 m-0 p-0',
+						}) }}
+						{{ fields.field(form.hourED, "", {
+							'class': 'col-6 m-0 p-0',
+						}) }}
+					</div>
+				</div>
+
+				{{ fields.field(form.title, "", {
+					'class': 'col-12 m-0 p-0', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+				}) }}
+
+				{{ fields.textarea(form.description, "", {
+					'class': 'col-12'
+				}) }}
+
+			{{ form_end(form, {render_rest: false}) }}
+			<div class="col-12 mt-2 text-right text-gray-600 px-0 mx-3">
+				* champs obligatoires
+			</div>
+		</div>
+	</div>
 {% endblock %} 
 
 {% block javascripts %}

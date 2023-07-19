@@ -70,6 +70,7 @@ class CalEventsController extends AbstractController
                     dump('inputEvent form soumis et balide');
                 }
             }
+            $twig_context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
