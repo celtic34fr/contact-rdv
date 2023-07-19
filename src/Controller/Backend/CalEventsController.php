@@ -11,7 +11,9 @@ use Celtic34fr\ContactCore\Traits\FormErrorsTrait;
 use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\Form\InputEventType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
+use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Exception;
@@ -48,7 +50,7 @@ class CalEventsController extends AbstractController
     }
 
     #[Route('input', name: 'input')]
-    public function eventInput()
+    public function eventInput(Request $request)
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $twig_context = [];
@@ -57,6 +59,17 @@ class CalEventsController extends AbstractController
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
             $allEvents = $this->calEventRepo->findAllPaginateFromDate(1);
             if ($allEvents) $twig_context['allEvents'] = $allEvents;
+
+            $inputEvent = new InputEvent();
+            $form = $this->createForm(InputEventType::class, $inputEvent);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    dump('inputEvent form soumis et balide');
+                }
+            }
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
