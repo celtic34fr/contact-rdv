@@ -51,12 +51,15 @@ class CalEventsController extends AbstractController
     public function eventInput()
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
+        $twig_context = [];
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
+
+        return $this->render("@contact-rdv/cal_events/input.html.twig", $twig_context);
     }
 
     #[Route('type_gest', name: 'type-gest')]

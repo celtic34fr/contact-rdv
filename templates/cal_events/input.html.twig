@@ -1,0 +1,25 @@
+{% extends "@contact-rdv/events_layout.html.twig" %}
+{% import '@contact-core/macros/form_type.html.twig' as fields %}
+{% import '@contact-core/macros/form_classic.html.twig' as forms %}
+
+{% block shoulder %}
+	{{ 'Evènements dans le calendrier' }}
+{% endblock shoulder %}
+
+{% block title %}
+	<i class="fas mr-2 link--icon fa-clipboard-question"></i>
+	Gestion des types d'événements
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block main %}
+{% endblock %} 
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('contact-assets/js/timepicker-ui/timepicker-ui.umd.js') }}"></script>
+{% endblock %} 
