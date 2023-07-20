@@ -2,11 +2,13 @@
 
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 
+use DateTime;
+
 class InputEvent
 {
-    private string $startBG;
+    private DateTime $startBG;
     private ?string $hourBG;
-    private string $startED;
+    private DateTime $startED;
     private ?string $hourED;
     private string $typeEvt;
     private string $title;
@@ -17,16 +19,16 @@ class InputEvent
     /**
      * @return dtring
      */
-    public function getStartBG(): string
+    public function getStartBG(): DateTime
     {
         return $this->startBG;
     }
 
     /**
-     * @param string $startBG
+     * @param DateTime $startBG
      * @return  InputEvent
      */
-    public function setStartBG(string $startBG): self
+    public function setStartBG(DateTime $startBG): self
     {
         $this->startBG = $startBG;
         return $this;
@@ -51,18 +53,18 @@ class InputEvent
     }
 
     /**
-     * @return dtring
+     * @return DateTime
      */
-    public function getStartED(): string
+    public function getStartED(): DateTime
     {
         return $this->startED;
     }
 
     /**
-     * @param string $startED
+     * @param DateTime $startED
      * @return  InputEvent
      */
-    public function setStartED(string $startED): self
+    public function setStartED(DateTime $startED): self
     {
         $this->startED = $startED;
         return $this;
