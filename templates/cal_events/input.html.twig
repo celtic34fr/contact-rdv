@@ -33,13 +33,13 @@
 				<div class="col-12 row m-0 p-0">
 					<div class="col-2 row m-0 p-0">
 						{{ fields.checkbox(form.allDay, "", {
-							'class': 'col-12 m-0 p-0'
+							'class': 'col-12 m-0 p-0', 'date_min': date_min,
 						}) }}
 					</div>
 
 					<div class="col-5 row m-0 p-0">
 						{{ fields.datepickerField(form.startBG, "", {
-							'class': 'col-6 m-0 p-0',
+							'class': 'col-6 m-0 p-0', 'date_min': date_min,
 						}) }}
 						{{ fields.field(form.hourBG, "", {
 							'class': 'col-6 m-0 p-0',

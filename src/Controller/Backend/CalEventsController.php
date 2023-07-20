@@ -2,21 +2,22 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
+use DateTime;
+use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Celtic34fr\ContactCore\Traits\UtilitiesTrait;
 use Celtic34fr\ContactCore\Traits\FormErrorsTrait;
+use Celtic34fr\ContactRendezVous\Form\InputEventType;
+use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
 use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\Form\InputEventType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
-use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Exception;
 
 #[Route('events_', name: 'evt-')]
 class CalEventsController extends AbstractController
@@ -57,6 +58,7 @@ class CalEventsController extends AbstractController
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
+            $date_min = new DateTime('now');
             $allEvents = $this->calEventRepo->findAllPaginateFromDate(1);
             if ($allEvents) $twig_context['allEvents'] = $allEvents;
 
@@ -70,6 +72,8 @@ class CalEventsController extends AbstractController
                     dump('inputEvent form soumis et balide');
                 }
             }
+
+            $twig_context['date_min'] = $date_min;
             $twig_context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
