@@ -38,9 +38,6 @@
 					</div>
 
 					<div class="col-5 row m-0 p-0">
-						<pre>
-							{{ dump(vacktrace()) }}
-						</pre>
 						{{ fields.datepickerField(form.startBG, "", {
 							'class': 'col-6 m-0 p-0', 'date_min': date_min,
 						}) }}
@@ -51,7 +48,7 @@
 
 					<div class="col-5 row m-0 p-0">
 						{{ fields.datepickerField(form.startED, "", {
-							'class': 'col-6 m-0 p-0',
+							'class': 'col-6 m-0 p-0', 'date_min': date_min,
 						}) }}
 						{{ fields.field(form.hourED, "", {
 							'class': 'col-6 m-0 p-0',
