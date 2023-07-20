@@ -1,6 +1,7 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
 {% import '@contact-core/macros/form_type.html.twig' as fields %}
 {% import '@contact-core/macros/form_classic.html.twig' as forms %}
+{% import '@contact-core/macros/generals.html.twig' as generals %}
 
 {% block shoulder %}
 	{{ 'Evènements dans le calendrier' }}
@@ -81,6 +82,9 @@
     <script src="{{ asset('contact-assets/js/timepicker-ui/timepicker-ui.umd.js') }}"></script>
 	<script src="{{ asset('contact-assets/js/fullcalendar/index.global.min.js') }}"></script>
 	<script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
+
+	{{ generals.datepickersJS('dd/mm/yyyy', {'language': 'fr', 'weekStart': 1, 'calendarWeeks': true, 'clearBtn': true,
+            'daysOfWeekHighlighted': "1,2,3,4,5", 'autohide': true, 'orientation': 'bottom'  }) }}
 
 	<script>
 		const calElement = document.querySelector('#calendar');
