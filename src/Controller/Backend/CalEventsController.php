@@ -73,7 +73,7 @@ class CalEventsController extends AbstractController
                 }
             }
 
-            $twig_context['date_min'] = $date_min;
+            $twig_context['date_min'] = $date_min->format("d/m/Y");
             $twig_context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
