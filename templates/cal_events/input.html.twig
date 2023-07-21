@@ -2,6 +2,8 @@
 {% import '@contact-core/macros/form_type.html.twig' as fields %}
 {% import '@contact-core/macros/form_classic.html.twig' as forms %}
 {% import '@contact-core/macros/generals.html.twig' as generals %}
+{% import "@contact-core/macros/datepicker_resource.html.twig" as datepickerResources %}
+{% import "@contact-core/macros/datepicker_blocks.html.twig" as datepickerBlocks %}
 
 {% block shoulder %}
 	{{ 'Evènements dans le calendrier' }}
@@ -16,7 +18,7 @@
 	{{ parent() }}
 
 	<link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-	{% include "@contact-core/includes/_asset_datepicker_vanilla.html.twig" %}
+	{{ datepickerResources.datepickerStylesheets() }}
 {% endblock %}
 
 {% block main %}
@@ -38,7 +40,7 @@
 					</div>
 
 					<div class="col-6 row m-0 p-0">
-						{{ fields.datepickerField(form.startBG, "", {
+						{{ datepickerBlocks.datepickerField(form.startBG, "", {
 							'class': 'col-6 m-0 p-0', 'date_min': date_min,
 						}) }}
 						{#
@@ -49,7 +51,7 @@
 					</div>
 
 					<div class="col-6 row m-0 p-0">
-						{{ fields.datepickerField(form.startED, "", {
+						{{ datepickerBlocks.datepickerField(form.startED, "", {
 							'class': 'col-6 m-0 p-0', 'date_min': date_min,
 						}) }}
 						{#
@@ -80,12 +82,21 @@
     {{ parent() }}
 
 	<script src="{{ asset('contact-assets/js/bootstrap.min.js') }}"></script>
+	{{ datepickerResources.datepickerJavaScript() }}
     <script src="{{ asset('contact-assets/js/timepicker-ui/timepicker-ui.umd.js') }}"></script>
 	<script src="{{ asset('contact-assets/js/fullcalendar/index.global.min.js') }}"></script>
 	<script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
 
-	{{ generals.datepickersJS('dd/mm/yyyy', {'language': 'fr', 'weekStart': 1, 'calendarWeeks': true, 'clearBtn': true,
-            'daysOfWeekHighlighted': "1,2,3,4,5", 'autohide': true, 'orientation': 'bottom'  }) }}
+	{{ datepickerBlocks.datepickersJSinit({
+		'format': 'dd/mm/yyyy',
+		'language': defaultLocale,
+		'weekStart': 1,
+		'calendarWeeks': true,
+		'clearBtn': true,
+		'daysOfWeekHighlighted': "1,2,3,4,5",
+		'autohide': true,
+		'orientation': 'bottom'
+	}) }}
 
 	<script>
 		const calElement = document.querySelector('#calendar');
