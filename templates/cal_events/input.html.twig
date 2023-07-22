@@ -97,11 +97,11 @@
         'orientation': 'bottom' 
     }) }}
 
-    document.querySelector("#{{ form.allDay.vars.id }}").addEventListener('change', function(evt){
-        alert(evt.target.value);
-    })
-
     <script>
+        document.querySelector("#{{ form.allDay.vars.id }}").addEventListener('change', function(evt){
+	        alert(evt.target.value);
+	    })
+
         const calElement = document.querySelector('#calendar');
         const calendar = new FullCalendar.Calendar(calElement, {
             initialView: 'dayGridMonth',
