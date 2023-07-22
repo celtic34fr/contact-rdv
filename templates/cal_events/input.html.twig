@@ -1,122 +1,80 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
-{% import '@contact-core/macros/form_type.html.twig' as fields %}
-{% import '@contact-core/macros/form_classic.html.twig' as forms %}
-{% import '@contact-core/macros/generals.html.twig' as generals %}
-{% import "@contact-core/macros/datepicker_resources.html.twig" as datepickerResources %}
-{% import "@contact-core/macros/datepicker_blocks.html.twig" as datepickerBlocks %}
+{% import "@templates/macros/datepicker_resources.html.twig" as datepickerRes %}
+{% import "@templates/macros/datepicker_blocks.html.twig" as datepickerBlk %}
+{% import "@contact-core/macros/form_type.html.twig" as fields %}
 
 {% block shoulder %}
-	{{ 'Evènements dans le calendrier' }}
-{% endblock shoulder %}
+    Evénement dans le calendrier
+{% endblock %}
 
 {% block title %}
-	<i class="fas mr-2 link--icon fa-clipboard-question"></i>
-	Saisie d'un événement au calendrier
+    <i class="fas mr-2 link--icon fa-clipboard-question"></i>
+    Saisie d'un événement au calendrier
 {% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-
-	<link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
-	{{ datepickerResources.datepickerStylesheets() }}
+    {{ parent() }}
+    {{ datepickerRes.datepickerStylesheets() }}
 {% endblock %}
 
 {% block main %}
-	<div class="col-12 m-0 p-0 row">
-		<div class="col-8 row m-0 p-0">
-			{# affichage du calendrier #}
-			<div id="calendar"></div>
-		</div>
-		<div class="col-4 row m-0 p-0">
-			{# formulaire de saisie d'événement #}
-			{{ form_start(form, {'action': path('evt-type-gest'), 'method': 'POST', 'class': 'col-12 row'}) }}
-				{{ form_row(form._token) }}
+    <div class="col-12 row m-0 p-0">
+        <div class="col-8 row m-0 p-0"></div>
+        <div class="col-4 row m-0 p-0">
+            <h3 class="col-12 text-center">Nouvel événement</h3>
+            {{ form_start(form, {'class': 'col-12 row'}) }}
 
-				<div class="col-12 row m-0 p-0">
-					<div class="col-12 row m-0 p-0">
-						{{ fields.checkbox(form.allDay, "", {
-							'class': 'col-12 m-0 p-0', 'date_min': date_min,
-						}) }}
-					</div>
+                <div class="col-12 row m-0 p-0">
+                    <div class="col-12 row m-0 p-0">
+                        {{ fields.checkbox(form.allDay, "", {
+                            'class': 'col-12 m-0 p-0', 'date_min': date_min,
+                        }) }}
+                    </div>
+                    <div class="col-6 row m-0 p-0">
+                        {{ datepickerBlk.datepickerField(form.startBG, "", {
+                            'date_min': date_min,
+                        }) }}
+                    </div>
+                    <div class="col-6 rox m-0 p-0">
+                        {{ datepickerBlk.datepickerField(form.startED, "", {
+                            'date_min': date_min,
+                        }) }}
+                    </div>
+                </div>
 
-					<div class="col-6 row m-0 p-0">
-						{{ datepickerBlocks.datepickerField(form.startBG, "", {
-							'class': 'col-6 m-0 p-0', 'date_min': date_min,
-						}) }}
-						{#
-						{{ fields.field(form.hourBG, "", {
-							'class': 'col-6 m-0 p-0',
-						}) }}
-						#}
-					</div>
+                <div class="col-12 row m-0 px-0 py-2">
+                    {{ fields.field(form.title, "Objet", {
+                        'class': 'col-12 m-0 p-0', 'il_class': {'label': 'col-4', 'input': 'col-8'}
+                    }) }}
+                </div>
 
-					<div class="col-6 row m-0 p-0">
-						{{ datepickerBlocks.datepickerField(form.startED, "", {
-							'class': 'col-6 m-0 p-0', 'date_min': date_min,
-						}) }}
-						{#
-						{{ fields.field(form.hourED, "", {
-							'class': 'col-6 m-0 p-0',
-						}) }}
-						#}
-					</div>
-				</div>
+                <div class="col-12 row m-0 px-0 py-2">
+                    {{ fields.textarea(form.description, "Description", {
+                        'class': 'col-12'
+                    }) }}
+                </div>
 
-				{{ fields.field(form.title, "", {
-					'class': 'col-12 m-0 p-0', 'il_class': {'label': 'col-4', 'input': 'col-8'}
-				}) }}
-
-				{{ fields.textarea(form.description, "", {
-					'class': 'col-12'
-				}) }}
-
-			{{ form_end(form, {render_rest: false}) }}
-			<div class="col-12 mt-2 text-right text-gray-600 px-0 mx-3">
-				* champs obligatoires
-			</div>
-		</div>
-	</div>
-{% endblock %} 
+            {{ form_end(form, {render_rest: false}) }}
+            <div class="col-12 mt-2 text-right text-gray-600 px-0">
+                * champs obligatoires
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    {{ datepickerRes.datepickerJavaScripts() }}
 
-	<script src="{{ asset('contact-assets/js/bootstrap.min.js') }}"></script>
-	{{ datepickerResources.datepickerJavaScripts() }}
-    <script src="{{ asset('contact-assets/js/timepicker-ui/timepicker-ui.umd.js') }}"></script>
-	<script src="{{ asset('contact-assets/js/fullcalendar/index.global.min.js') }}"></script>
-	<script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
-
-	{{ datepickerBlocks.datepickerJSinit({
-		'format': 'dd/mm/yyyy',
-		'language': defaultLocale,
-		'weekStart': 1,
-		'calendarWeeks': true,
-		'clearBtn': true,
-		'daysOfWeekHighlighted': "1,2,3,4,5",
-		'autohide': true,
-		'orientation': 'bottom'
-	}) }}
-
-	<script>
-		const calElement = document.querySelector('#calendar');
-		const calendar = new FullCalendar.Calendar(calElement, {
-			initialView: 'dayGridMonth',
-			themeSystem: 'bootstrap5',
-			locale: 'fr',
-			timeZone: 'local',
-			eventTimeFormat: {
-				hour: '2-digit',
-				minute: '2-digit',
-				second: '2-digit',
-				meridiem: false,
-			},
-			  headerToolbar: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'dayGridMonth,dayGridWeek,dayGridDay' // user can switch between the two
-			},
-  		});
-		calendar.render();
-	</script>
-{% endblock %} 
+    {{ datepickerBlk.datepickerJSinit({
+        'format': 'dd/mm/yyyy',
+        'autohide': true,
+        'language': defaultLocale,
+        'weekStart': 1,
+        'calendarWeeks': true,
+        'clearBtn': true,
+        'daysOfWeekHighlighted': "1,2,3,4,5",
+        'autohide': true,
+        'orientation': 'bottom' 
+    }) }}
+{% endblock %}
