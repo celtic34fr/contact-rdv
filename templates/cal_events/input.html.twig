@@ -54,10 +54,21 @@
                     }) }}
                 </div>
 
-            {{ form_end(form, {render_rest: false}) }}
             <div class="col-12 mt-2 text-right text-gray-600 px-0">
                 * champs obligatoires
             </div>
+
+            {{ forms.btn('record', "Enregistrer l'événement", {
+                'class': 'offset-1 col-4 btn btn-success', 'bclass': 'btn btn-success',
+                'type': 'submit',
+            })}}
+
+            {{ forms.btn('cancel', 'Annuler la saisie', {
+                'class': 'offset-2 col-4 btn btn-bs-warning', 'bclass': 'btn btn-bs-warning',
+                'type': 'reset',
+            }) }}
+
+            {{ form_end(form, {render_rest: false}) }}
         </div>
     </div>
 {% endblock %}
