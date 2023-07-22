@@ -1,7 +1,8 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
-{% import "@templates/macros/datepicker_resources.html.twig" as datepickerRes %}
-{% import "@templates/macros/datepicker_blocks.html.twig" as datepickerBlk %}
+{% import "@contact-core/macros/datepicker_resources.html.twig" as datepickerRes %}
+{% import "@contact-core/macros/datepicker_blocks.html.twig" as datepickerBlk %}
 {% import "@contact-core/macros/form_type.html.twig" as fields %}
+{% import "@contact-core/macros/form_classic.html.twig" as forms %}
 
 {% block shoulder %}
     Evénement dans le calendrier
@@ -19,10 +20,15 @@
 
 {% block main %}
     <div class="col-12 row m-0 p-0">
-        <div class="col-8 row m-0 p-0"></div>
+        <div class="col-8 row m-0 p-0">
+            {# affichage du calendrier #}
+            <div id="calendar"></div>
+        </div>
         <div class="col-4 row m-0 p-0">
+            {# formulaire de saisie d'événement #}
             <h3 class="col-12 text-center">Nouvel événement</h3>
-            {{ form_start(form, {'class': 'col-12 row'}) }}
+            {{ form_start(form, {'class': 'col-12 row', 'method': 'POST'}) }}
+                {{ form_row(form._token) }}
 
                 <div class="col-12 row m-0 p-0">
                     <div class="col-12 row m-0 p-0">
@@ -76,6 +82,8 @@
 {% block javascripts %}
     {{ parent() }}
     {{ datepickerRes.datepickerJavaScripts() }}
+    <script src="{{ asset('contact-assets/js/fullcalendar/index.global.min.js') }}"></script>
+    <script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
 
     {{ datepickerBlk.datepickerJSinit({
         'format': 'dd/mm/yyyy',
@@ -88,4 +96,26 @@
         'autohide': true,
         'orientation': 'bottom' 
     }) }}
+
+    <script>
+        const calElement = document.querySelector('#calendar');
+        const calendar = new FullCalendar.Calendar(calElement, {
+            initialView: 'dayGridMonth',
+            themeSystem: 'bootstrap5',
+            locale: 'fr',
+            timeZone: 'local',
+            eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                meridiem: false
+            },
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,dayGridWeek,dayGridDay' // user can switch between the two
+            }
+        });
+        calendar.render();
+    </script>
 {% endblock %}
