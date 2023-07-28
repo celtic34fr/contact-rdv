@@ -20,11 +20,11 @@
 
 {% block main %}
     <div class="col-12 row m-0 p-0">
-        <div class="col-8 row m-0 p-0">
+        <div class="col-6 row m-0 p-0">
             {# affichage du calendrier #}
             <div id="calendar"></div>
         </div>
-        <div class="col-4 row m-0 p-0">
+        <div class="col-6 row m-0 p-0">
             {# formulaire de saisie d'événement #}
             <h3 class="col-12 text-center">Nouvel événement</h3>
             {{ form_start(form, {'class': 'col-12 row', 'method': 'POST'}) }}
