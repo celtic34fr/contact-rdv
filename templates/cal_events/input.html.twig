@@ -83,7 +83,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ datepickerRes.datepickerJavaScripts() }}
+    {{ datetimepickerRes.datetimepickerJavaScripts() }}
     <script src="{{ asset('contact-assets/js/fullcalendar/index.global.min.js') }}"></script>
     <script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
 
@@ -101,7 +101,15 @@
 
     <script>
         document.querySelector("#{{ form.allDay.vars.id }}").addEventListener('change', function(evt){
-	        alert(evt.target.checked);
+	        if (evt.target.checked) {
+                // hour/minute disabled/hidden et maj value ??
+                //      si timepicker*/datetimepicker* -> hour='00' et minute='00'
+                //      si timePickerRange*/datetimepickerRange* 
+                //          -> start : hour='00'/minute='00'
+                //          -> end   : hour='23'/minute='59'
+            } else {
+                // hour/minute enable/show
+            }
 	    })
 
         const calElement = document.querySelector('#calendar');
