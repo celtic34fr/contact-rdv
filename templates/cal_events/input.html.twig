@@ -1,6 +1,6 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
-{% import "@contact-core/macros/datepicker_resources.html.twig" as datepickerRes %}
-{% import "@contact-core/macros/datepicker_blocks.html.twig" as datepickerBlk %}
+{% import "@contact-core/macros/datetimepicker_resources.html.twig" as datetimepickerRes %}
+{% import "@contact-core/macros/datetimepicker_blocks.html.twig" as datetimepickerBlk %}
 {% import "@contact-core/macros/form_type.html.twig" as fields %}
 {% import "@contact-core/macros/form_classic.html.twig" as forms %}
 
@@ -15,7 +15,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {{ datepickerRes.datepickerStylesheets() }}
+    {{ datetimepickerRes.datetimepickerStylesheets() }}
 {% endblock %}
 
 {% block main %}
@@ -33,17 +33,19 @@
                 <div class="col-12 row m-0 p-0">
                     <div class="col-12 row m-0 p-0">
                         {{ fields.checkbox(form.allDay, "", {
-                            'class': 'col-12 m-0 p-0', 'date_min': date_min,
+                            'class': 'col-12 m-0 p-0',
                         }) }}
                     </div>
                     <div class="col-6 row m-0 p-0">
-                        {{ datepickerBlk.datepickerField(form.startBG, "", {
+                        {{ datetimepickerBlk.datetimepickerField(form.start, "", {
                             'date_min': date_min,
+                            'hour_min': hour_min,
                         }) }}
                     </div>
                     <div class="col-6 rox m-0 p-0">
-                        {{ datepickerBlk.datepickerField(form.startED, "", {
+                        {{ datetimepickerBlk.datetimepickerField(form.end, "", {
                             'date_min': date_min,
+                            'hour_min': hour_min,
                         }) }}
                     </div>
                 </div>

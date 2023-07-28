@@ -58,7 +58,9 @@ class CalEventsController extends AbstractController
 
         /** contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
-            $date_min = new DateTime('now');
+            $now = new DateTime('now');
+            $date_min = $now->format("d/m/Y");
+            $hour_min = $now->format("h:m");
             $allEvents = $this->calEventRepo->findAllPaginateFromDate(1);
             if ($allEvents) $twig_context['allEvents'] = $allEvents;
 
@@ -73,7 +75,8 @@ class CalEventsController extends AbstractController
                 }
             }
 
-            $twig_context['date_min'] = $date_min->format("d/m/Y");
+            $twig_context['date_min'] = $date_min;
+            $twig_context['hour_min'] = $hour_min;
             $twig_context['form'] = $form->createView();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");

@@ -6,10 +6,8 @@ use DateTime;
 
 class InputEvent
 {
-    private DateTime $startBG;
-    private ?string $hourBG;
-    private DateTime $startED;
-    private ?string $hourED;
+    private DateTime $start;
+    private DateTime $end;
     private string $typeEvt;
     private string $title;
     private string $description;
@@ -19,72 +17,36 @@ class InputEvent
     /**
      * @return dtring
      */
-    public function getStartBG(): DateTime
+    public function getStart(): DateTime
     {
-        return $this->startBG;
+        return $this->start;
     }
 
     /**
-     * @param DateTime $startBG
+     * @param DateTime $start
      * @return  InputEvent
      */
-    public function setStartBG(DateTime $startBG): self
+    public function setStart(DateTime $start): self
     {
-        $this->startBG = $startBG;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHourBG(): ?string
-    {
-        return $this->hourBG;
-    }
-
-    /**
-     * @param string $hourBG
-     * @return  InputEvent
-     */
-    public function setHourBG(string $hourBG): self
-    {
-        $this->hourBG = $hourBG;
+        $this->start = $start;
         return $this;
     }
 
     /**
      * @return DateTime
      */
-    public function getStartED(): DateTime
+    public function getEnd(): DateTime
     {
-        return $this->startED;
+        return $this->end;
     }
 
     /**
-     * @param DateTime $startED
+     * @param DateTime $end
      * @return  InputEvent
      */
-    public function setStartED(DateTime $startED): self
+    public function setEnd(DateTime $end): self
     {
-        $this->startED = $startED;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHourED(): ?string
-    {
-        return $this->hourED;
-    }
-
-    /**
-     * @param string $hourED
-     * @return  InputEvent
-     */
-    public function setHourED(string $hourED): self
-    {
-        $this->hourED = $hourED;
+        $this->end = $end;
         return $this;
     }
 

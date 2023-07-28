@@ -16,17 +16,11 @@ class InputEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startBG', DateTimeType::class, [
+            ->add('start', DateTimeType::class, [
                 'label' => "Date de début",
             ])
-            ->add('hourBG', TimeType::class, [
-                'label' => "horaire de début",
-            ])
-            ->add('startED', DateTimeType::class, [
+            ->add('end', DateTimeType::class, [
                 'label' => "Date de fin",
-            ])
-            ->add('hourED', TimeType::class, [
-                'label' => "horaire de fin",
             ])
             ->add('typeEvt', TextType::class)
             ->add('title', TextType::class)
