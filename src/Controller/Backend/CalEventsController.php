@@ -164,7 +164,7 @@ class CalEventsController extends AbstractController
                     }
 
                     $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
-                    return $this->redirectToRoute('bolt_dashboard', [], 301);
+                    return $this->redirectToRoute('bolt_dashboard', [], 303);
                 } else {
                     /** recherche des erreurs dans les sous formulaires */
                     $errors = $this->formatErrors($this->getErrors($form));
