@@ -15,6 +15,7 @@ use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
 use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +26,7 @@ class CalEventsController extends AbstractController
     use UtilitiesTrait;
     use FormErrorsTrait;
 
-    const PARAM_CLE = "SysCalNature";
+    const PARAM_CLE = "SysCalNature"; // nom de la liste de valeur dans Parameters
     const PARAM_VALEUR = "Liste des types d'événements de calendrier";
 
     private $schemaManager;
@@ -39,24 +40,32 @@ class CalEventsController extends AbstractController
     }
 
     #[Route('list', name: 'list')]
+    /** eventLisy : Affichage de la liste des événements, rendez-vous à venir */
     public function eventList()
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
+        $events = [];
 
-        /** contrôle existance table nécessaire à la méthode */
+        /* contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
+            $events = $this->calEventRepo->findAllPaginateFromDate();
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
+
+        return $this->render("@contact-rdv/cal_events/events_list.html.twig", [
+            'events' => $events,
+        ]);
     }
 
     #[Route('input', name: 'input')]
+    /** Sasie d'un événement, un rendez-vous dans le calendrier */
     public function eventInput(Request $request)
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $twig_context = [];
 
-        /** contrôle existance table nécessaire à la méthode */
+        /** contrôle existance table nécessaire à la méthode 'cal_events' */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
             $now = new DateTime('now');
             $date_min = $now->format("d/m/Y");
@@ -86,28 +95,30 @@ class CalEventsController extends AbstractController
     }
 
     #[Route('type_gest', name: 'type-gest')]
+    /** Gestion des types d'événements, rendez-vous : ajout - modification - suppression */
     public function eventTypeGest(Request $request)
     {
+        /** récupération du préfix de création des table dans Bolt CMS */
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $twig_context = [];
         $dbEvtKeys = [];
 
-        /** contrôle existance table nécessaire à la méthode */
+        /** contrôle existance table nécessaire à la méthode 'parameters' */
         if ($this->existsTable($dbPrefix . 'parameters') == true) {
-            /** rrecherche des informations de base */
+            /** recherche des informations de base */
             $calEventEntete = $this->parameterRepo->findOneBy(['cle' => self::PARAM_CLE, 'ord' => 0]);
             $calEventItems = $this->parameterRepo->findItemsByCle(self::PARAM_CLE);
             $errors = [];
 
             if (!$calEventEntete) {
-                /** par encore de liste de paramètre SysCalEvent = création */
+                /** pas encore de liste de paramètres SysCalEvent => création entête */
                 $calEventEntete = new Parameter();
                 $calEventEntete->setCle(self::PARAM_CLE)->setOrd(0)->setValeur(self::PARAM_VALEUR);
                 $this->em->persist($calEventEntete);
                 $this->em->flush();
             }
 
-            /** mise en place du formulaire à partir de $calEventItems */
+            /** mise en place du formulaire à partir de $calEventItems trouvés en base */
             $items = new CalEventItems();
             if ($calEventItems) {
                 foreach ($calEventItems as $calEventItem) {
@@ -124,10 +135,12 @@ class CalEventsController extends AbstractController
 
             if ($form->isSubmitted()) {
                 if ($form->isValid()) {
+                    /** traitement du formulaire soumis et validé par Symfony */
                     $idx = 0;
                     /** @var CalEventItem $item */
                     foreach ($items->getItems() as $item) {
                         $idx++;
+                        /* recherche de l'tem de la liste de paramètres pour modification */
                         $calEvtItem = $this->parameterRepo->findByPartialFields(['valeur' => $item->getCle()]);
                         if (!$calEvtItem) {
                             $calEvtItem = new Parameter();
