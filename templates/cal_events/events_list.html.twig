@@ -14,6 +14,27 @@
 {% endblock %}
 
 {% block main %}
+    <div class="container-fluid">
+        <table class="col-12 row">
+            <thead class="row">
+                <tr class="col-12 row">
+                    <td class="col-2">Du</td>
+                    <td class="col-2">Au</td>
+                    <td class="col-4">&Acute; propos</td>
+                </tr>
+            </thead>
+            <tbody class="row">
+            {% for event in events.datas %}
+                <tr class="row">
+                    <td class="col-2">{{ event.start_at|date("d/m/Y") }}</td>
+                    <td class="col-2">{{ event.end_at|date("d/m/Y") }}</td>
+                    <td class="col-4">{{ event.subject }}</td>
+                </tr>                
+            {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
 {% endblock %}
 
 {% block javascripts %}
