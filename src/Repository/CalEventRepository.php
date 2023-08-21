@@ -97,6 +97,27 @@ class CalEventRepository extends ServiceEntityRepository
         return $this->formatEvents($results, $type);
     }
 
+    public function findAllEventFromToDate(DateTime $from, DateTime $to, string $type = "array")
+    {
+        $type = strtoupper($type);
+        if ($type != "ARRAY" && $type != "JSON") $type = "ARRAY";
+        $qb = $this->createQueryBuilder('rdv')
+        ->where('rdv.time_at >= :from')
+        ->andWhere("rdv.time_at <= :to")
+        ->setParameter('from', $from->format("Y-m-d"))
+        ->setParameter('to', $to->format("Y-m-d"))
+        ->getQuery()
+        ->getResult()
+        ;
+
+        $result = [
+            'datas' => $qb,
+            'page' => 1,
+            'pages' => 1,
+        ];
+        return $this->formatEvents($result, $type);
+    }
+
 //    /**
 //     * @return CalEvent[] Returns an array of CalEvent objects
 //     */

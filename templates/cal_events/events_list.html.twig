@@ -1,4 +1,5 @@
 {% extends "@contact-rdv/events_layout.html.twig" %}
+{% import "@contact-core/macros/pagination.html.twig" as pagination %}
 
 {% block shoulder %}
     Futurs rendez-vous, évènements
@@ -33,10 +34,18 @@
             {% endfor %}
             </tbody>
         </table>
-        
+        {{ pagination.paginate_navbar({
+            page: event.page,
+            pages: event.pages,
+            route: 'evt-list',
+            prefix: 'RL',
+        }) }}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+
+    {{ pagination.goPageJS('evt-list') }}
+    {{ pagination.paginateJS('evt-list', {0: 'EL'}) }}
 {% endblock %}

@@ -15,7 +15,6 @@ use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
 use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
 use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,14 +40,16 @@ class CalEventsController extends AbstractController
 
     #[Route('list', name: 'list')]
     /** eventLisy : Affichage de la liste des événements, rendez-vous à venir */
-    public function eventList()
+    public function eventList(Request $request)
     {
         $dbPrefix = $this->getParameter('bolt.table_prefix');
         $events = [];
+        $page = $request->query->get("ELPage") ?? 1;
+        $limit = $page ? 10 : 0;
 
         /* contrôle existance table nécessaire à la méthode */
         if ($this->existsTable($dbPrefix . 'cal_events') == true) {
-            $events = $this->calEventRepo->findAllPaginateFromDate();
+            $events = $this->calEventRepo->findAllPaginateFromDate($page, $limit);
         } else {
             $this->addFlash('danger', "La table {$dbPrefix}cal_events n'existe pas, veuillez en avertir l'administrateur");
         }
@@ -140,7 +141,7 @@ class CalEventsController extends AbstractController
                     /** @var CalEventItem $item */
                     foreach ($items->getItems() as $item) {
                         $idx++;
-                        /* recherche de l'tem de la liste de paramètres pour modification */
+                        /* recherche de l'item de la liste de paramètres pour modification */
                         $calEvtItem = $this->parameterRepo->findByPartialFields(['valeur' => $item->getCle()]);
                         if (!$calEvtItem) {
                             $calEvtItem = new Parameter();
@@ -176,7 +177,7 @@ class CalEventsController extends AbstractController
                         $this->em->flush();
                     }
 
-                    $this->addFlash('success', "Table des type d'évèment de calendrier bien enregitrée en base");
+                    $this->addFlash('success', "Table des types d'évèments de calendrier a été bien enregitrée en base");
                     return $this->redirectToRoute('bolt_dashboard', [], 303);
                 } else {
                     /** recherche des erreurs dans les sous formulaires */

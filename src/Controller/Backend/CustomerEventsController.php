@@ -60,7 +60,7 @@ class CustomerEventsController extends AbstractController
             // -> reprise date, heure et objet rendez-vous
             // -> ajout de 2 liens : 
             //      => un pour confirmer le RDV Téléphonique
-            //      => un pour que le femandeur puisse prendre directement le dit RDV (annulant le précédent)
+            //      => un pour que le demandeur puisse prendre directement le dit RDV (annulant le précédent)
         }
 
         return $this->render('@contact-rdv/customer-events/new-meeting.html.twig', [

@@ -91,14 +91,31 @@
             themeSystem: 'bootstrap5',
             locale: "{{ app.user.locale|default() }}",
             buttonText: {
-                prev: '<<',
-                next: '>>',
                 today:'Aujourd\'hui',
                 title:'Titre : ',
                 dayGridMonth: 'Mois',
                 timeGridWeek: 'Semaine',
                 timeGridDay: 'Jour',
             },
+            // custom button
+            customButtons: {
+                prev: {
+                    // text: 'Prev', // you can choose to use text or icon to your button
+                    icon: 'left-single-arrow',
+                    click: function() {
+                        console.log('Prev');
+                        // appel ajax pour recherche prochaine page events à afficher
+                    }
+                },
+                next: {
+                    // text: 'Next', // you can choose to use text or icon to your button
+                    icon: 'right-single-arrow',
+                    click: function() {
+                        console.log('Next');
+                        // appel ajax pour recherche précédente page events à afficher
+                    }
+                },
+            }
         });
         calendar.render();
     </script>
