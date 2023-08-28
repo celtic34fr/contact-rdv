@@ -37,16 +37,22 @@
                         }) }}
                     </div>
                     <div class="col-6 row m-0 p-0">
+                        {#
                         {{ datetimepickerBlk.datetimepickerField(form.start, "", {
                             'date_min': date_min,
                             'hour_min': hour_min,
                         }) }}
+                        #}
+                        {{ datetimepickerBlk.datetimepickerField(form.start, "", {} ) }}
                     </div>
                     <div class="col-6 rox m-0 p-0">
+                        {#
                         {{ datetimepickerBlk.datetimepickerField(form.end, "", {
                             'date_min': date_min,
                             'hour_min': hour_min,
                         }) }}
+                        #}
+                        {{ datetimepickerBlk.datetimepickerField(form.end, "", {} ) }}
                     </div>
                 </div>
 
