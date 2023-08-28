@@ -88,14 +88,17 @@
     <script src="{{ asset('contact-assets/js/fullcalendar/index.locales-all.global.js') }}"></script>
 
     {{ datetimepickerBlk.datetimepickerJSinit({
-        'format': 'dd/mm/yyyy',
-        'autohide': true,
-        'weekStart': 1,
-        'calendarWeeks': true,
-        'clearBtn': true,
-        'daysOfWeekHighlighted': "1,2,3,4,5",
-        'autohide': true,
-        'orientation': 'bottom' 
+        datepicker: {
+            'format': 'dd/mm/yyyy',
+            'autohide': true,
+            'weekStart': 1,
+            'calendarWeeks': true,
+            'clearBtn': true,
+            'daysOfWeekHighlighted': "1,2,3,4,5",
+            'autohide': true,
+            'orientation': 'bottom' 
+        },
+        timepicker: {},
     }) }}
 
     <script>
