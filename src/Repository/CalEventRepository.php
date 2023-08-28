@@ -2,13 +2,13 @@
 
 namespace Celtic34fr\ContactRendezVous\Repository;
 
-use DateTime;
-use Doctrine\Persistence\ManagerRegistry;
 use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Enum\EventEnums;
-use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactCore\Traits\DbPaginateTrait;
+use Celtic34fr\ContactRendezVous\Entity\CalEvent;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<CalEvent>
@@ -74,7 +74,7 @@ class CalEventRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ce')
             ->where("ce.nature = :nature")
             ->setParameter('nature', $category)
-            ->orderBy('start_at', 'DESC')
+            ->orderBy('ce.start_at', 'DESC')
             ->getQuery()
             ->getResult()
         ;
