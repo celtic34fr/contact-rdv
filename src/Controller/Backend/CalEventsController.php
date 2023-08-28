@@ -139,6 +139,9 @@ class CalEventsController extends AbstractController
                     /** traitement du formulaire soumis et validé par Symfony */
                     $idx = 0;
                     $formItems = $this->getFormItems($_POST);
+
+                    dd($formItems);
+
                     /** @var CalEventItem $item */
                     foreach ($formItems->getItems() as $item) {
                         $idx++;
@@ -216,15 +219,17 @@ class CalEventsController extends AbstractController
         return $formatedErrors;
     }
 
-    private function getFormItems(array $post): CalEventItem
+    private function getFormItems(array $post): CalEventItems
     {
-        $formItems = new CalEventItem();
+        $formItems = new CalEventItems();
 
         $post = $post['cal_event_items'] ?? [];
         $post = $post['items'] ?? [];
-        $item = new CalEventItem();
-        $item->hydratefromArray($post);
-        $formItems->addItem($item);
+        foreach ($post as $type) {
+            $item = new CalEventItem();
+            $item->hydratefromArray($post);
+            $formItems->addItem($item);
+        }
 
         return $formItems;
     }

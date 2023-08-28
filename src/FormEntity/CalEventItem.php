@@ -30,9 +30,13 @@ class CalEventItem
         return false;
     }
 
-    public function hydratefromArray(array $datas)
+    public function hydratefromArray(array $datas): self
     {
-        dd($datas);
+        foreach ($datas as $key => $data) {
+            $method = "set" . ucfirst($key);
+            $this->$method($data);
+        }
+        return $this;
     }
 
     /**
