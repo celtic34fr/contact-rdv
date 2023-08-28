@@ -163,8 +163,6 @@ class CalEventsController extends AbstractController
                     }
                     $this->em->flush();
 
-                    dd($dbEvtKeys);
-
                     /** traitement des clé non reconduites */
                     if ($dbEvtKeys) {
                         foreach ($dbEvtKeys as $dbEvtKey => $dbId) {
