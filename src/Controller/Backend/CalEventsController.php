@@ -2,22 +2,22 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use DateTime;
-use Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Repository\ParameterRepository;
+use Celtic34fr\ContactCore\Traits\FormErrorsTrait;
+use Celtic34fr\ContactCore\Traits\UtilitiesTrait;
+use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
+use Celtic34fr\ContactRendezVous\Form\InputEventType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
+use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
+use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Celtic34fr\ContactCore\Traits\UtilitiesTrait;
-use Celtic34fr\ContactCore\Traits\FormErrorsTrait;
-use Celtic34fr\ContactRendezVous\Form\InputEventType;
-use Celtic34fr\ContactRendezVous\FormEntity\InputEvent;
-use Celtic34fr\ContactRendezVous\Form\CalEventItemsType;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventItem;
-use Celtic34fr\ContactCore\Repository\ParameterRepository;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventItems;
-use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('events_', name: 'evt-')]
 class CalEventsController extends AbstractController
@@ -138,8 +138,9 @@ class CalEventsController extends AbstractController
                 if ($form->isValid()) {
                     /** traitement du formulaire soumis et validé par Symfony */
                     $idx = 0;
+                    $formItems = $this->getFormItems($_POST);
                     /** @var CalEventItem $item */
-                    foreach ($items->getItems() as $item) {
+                    foreach ($formItems->getItems() as $item) {
                         $idx++;
                         /* recherche de l'item de la liste de paramètres pour modification */
                         $calEvtItem = $this->parameterRepo->findByPartialFields(['valeur' => $item->getCle()]);
@@ -213,5 +214,18 @@ class CalEventsController extends AbstractController
             }
         }
         return $formatedErrors;
+    }
+
+    private function getFormItems(array $post): CalEventItem
+    {
+        $formItems = new CalEventItem();
+
+        $post = $post['cal_event_type'] ?? {};
+        $post = $post['items'] ?? [];
+        $item = new CalEventItem();
+        $item->hydratefromArray($post);
+        $items->addItem($item);
+
+        return $formItems;
     }
 }

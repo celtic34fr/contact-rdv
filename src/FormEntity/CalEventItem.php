@@ -30,10 +30,15 @@ class CalEventItem
         return false;
     }
 
+    public function hydratefromArray(array $datas)
+    {
+        dd($datas);
+    }
+
     /**
      * @return bool|string
      */ 
-    public function getValaur(): bool|string
+    public function getValeur(): bool|string
     {
         $jsonArray = [
             'cle' => $this->getCle(),
