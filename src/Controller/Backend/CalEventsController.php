@@ -226,7 +226,7 @@ class CalEventsController extends AbstractController
         $post = $post['items'] ?? [];
         $item = new CalEventItem();
         $item->hydratefromArray($post);
-        $items->addItem($item);
+        $formItems->addItem($item);
 
         return $formItems;
     }
