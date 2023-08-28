@@ -226,7 +226,7 @@ class CalEventsController extends AbstractController
         $post = $post['cal_event_items'] ?? [];
         $post = $post['items'] ?? [];
 
-        dd($post):
+        dd($post);
 
         foreach ($post as $type) {
             $item = new CalEventItem();
