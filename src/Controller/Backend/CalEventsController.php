@@ -140,8 +140,6 @@ class CalEventsController extends AbstractController
                     $idx = 0;
                     $formItems = $this->getFormItems($_POST);
 
-                    dd($formItems);
-
                     /** @var CalEventItem $item */
                     foreach ($formItems->getItems() as $item) {
                         $idx++;
@@ -158,12 +156,14 @@ class CalEventsController extends AbstractController
                             unset($dbEvtKeys[$item->getCle()]);
                         }
                         $calEvtItem->setOrd($idx);
-                        $calEvtItem->setValeur($item->getValaur());
-                        if (!$item->getId()) {
+                        $calEvtItem->setValeur($item->getValeur());
+                        if (!$calEvtItem->getId()) {
                             $this->em->persist($calEvtItem);
                         }
                     }
                     $this->em->flush();
+
+                    dd($dbEvtKeys);
 
                     /** traitement des clé non reconduites */
                     if ($dbEvtKeys) {
