@@ -32,8 +32,6 @@ class CalEventItem
 
     public function hydratefromArray(array $datas): self
     {
-        dd($datas);
-        
         foreach ($datas as $key => $data) {
             $method = "set" . ucfirst($key);
             $this->$method($data);
