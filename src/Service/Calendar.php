@@ -6,6 +6,10 @@ use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use Celtic34fr\ContactRendezVous\FileEntity\CalendarICS;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Spatie\IcalendarGenerator\Components\Calendar;
+use Spatie\IcalendarGenerator\Components\Timezone;
+use Spatie\IcalendarGenerator\Components\TimezoneEntry;
+use Spatie\IcalendarGenerator\Enums\TimezoneEntryType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -57,17 +61,24 @@ class Calendar
      */
     private function transformEventsICS(array $allEvent): string
     {
-        $icsFileContent = "BEGIN:VCALENDAR\n";
-        $icsFileContent .= "VERSION:2.0\n";
-        $icsFileContent .= "PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n";
+        $calendar = Calendar::create('Extraction Calendars Events')
+                        ->description('Events and meetings with custommers or contacts')
+                        ->;
+        $timeZoneEntry = TimezoneEntry::create(
+            TimezoneEntryType::daylight(),
+            new DateTime(),
+            "+00:00",
+            "-02:00"
+        );
+        $timezone = Timezone::create('Europe/Paris')
+            ->entry($timeZoneEntry);
+        $calendar->timezone($timezone);
 
         /** @var CalEvent $event */
         foreach($allEvent as $event) {
             $eventIcs = new CalendarICS($event);
-            $icsFileContent .= $eventIcs->getEventICS();
+            $calendar->event($eventIcs->getEventICS());
         }
-
-        $icsFileContent .= "END:VCALENDAR\n";
-        return $icsFileContent;
+        return $calendar->get();
     }
 }

@@ -16,7 +16,9 @@
     "celtic34fr/contact-core": "dev-master",
     "celtic34fr/contact-gestion": "dev-master",
     "tattali/calendar-bundle": "^1.2",
-    "symfony/form": "^5.4"
+    "symfony/form": "^5.4",
+    "johngrogg/ics-parser": "^3",
+    "spatie/icalendar-generator": "^2.5"
   },
   "require-dev": {
     "symplify/easy-coding-standard": "^8.3"

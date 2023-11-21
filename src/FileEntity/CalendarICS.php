@@ -2,8 +2,17 @@
 
 namespace Celtic34fr\ContactRendezVous\FileEntity;
 
+use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactCore\Enum\StatusEnums;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use DateTime;
+use Spatie\IcalendarGenerator\Components\Calendar;
+use Spatie\IcalendarGenerator\Components\Event;
+use Spatie\IcalendarGenerator\Components\Timezone;
+use Spatie\IcalendarGenerator\Components\TimezoneEntry;
+use Spatie\IcalendarGenerator\Enums\Classification;
+use Spatie\IcalendarGenerator\Enums\EventStatus;
+use Spatie\IcalendarGenerator\Enums\TimezoneEntryType;
 
 class CalendarICS
 {
@@ -12,6 +21,9 @@ class CalendarICS
     private string $object;
     private string $place;
     private string $details;
+    private bool $allday;
+    private CliInfos $invite;
+    private string $status;
 
     public function __construct(CalEvent $calEvent = null)
     {
@@ -21,19 +33,53 @@ class CalendarICS
             $this->setObject($calEvent->getObjet());
             $this->setPlace("par téléphone");
             $this->setDetails($calEvent->getComplements());
+            $this->setAllday($calEvent->getAllDay());
+            $this->setInvite($calEvent->getInvite());
+            $this->setStatus($calEvent->getStatus());
         }
     }
 
     public function getEventICS()
     {
-        $ics = "";
-        $ics .= "BEGIN:VEVENT\n";
-        $ics .= "DTSTART:".$this->dateStart->format('Ymd')."T".$this->dateStart->format('His')."Z\n";
-        $ics .= "DTEND:".$this->dateEnd->format('Ymd')."T".$this->dateEnd->format('His')."Z\n";
-        $ics .= "SUMMARY:".$this->object."\n";
-        $ics .= "LOCATION:".$this->place."\n";
-        $ics .= "DESCRIPTION:".$this->details."\n";
-        $ics .= "END:VEVENT\n";
+        $uid = uniqid("calevent", true);
+        $created =  new DateTime('now');
+        $organizer = "";
+
+        $ics = Event::create()
+            ->name($this->object)
+            ->description($this->details)
+            ->uniqueIdentifier($uid)
+            ->createdAt($created)
+            ->startsAt($this->dateStart)
+            ->endsAt($this->dateEnd)
+            ->organizer($organizer)
+        ;
+
+        /** traitement des participant ici 1 seul */
+        $ics->attendee($this->invite->getClient()->getCourriel(), $this->invite->getFullName());
+
+        if ($this->isAllday()) {
+            $ics->fullDay();
+        }
+
+        $ics->classification(Classification::public());
+
+        /** gestion du status de l'événement dans le calendrier */
+        switch($this->getStatus()) {
+            case StatusEnums::WaitResponse->_toString():
+                $ics->status(EventStatus::tentative());
+                break;
+            case StatusEnums::Accepted->_toString():
+                $ics->status(EventStatus::confirmed());
+                break;
+            case StatusEnums::Refused->_toString():
+                $ics->status(EventStatus::cancelled());
+                break;
+            case StatusEnums::Reported->_toString():
+                $ics->status(EventStatus::tentative());
+                break;
+        }
+
         return $ics;
     }
 
@@ -143,6 +189,64 @@ class CalendarICS
     public function setDetails(string $details): self
     {
         $this->details = $details;
+        return $this;
+    }
+
+    /**
+     * Get the value of allday
+     * 
+     * @return bool
+     */
+    public function isAllday(): bool
+    {
+        return $this->allday ?? false;
+    }
+
+    /**
+     * Set the value of allday
+     * 
+     * @param bool $allday
+     * @return CalendarICS
+     */
+    public function setAllday(bool $allday): self
+    {
+        $this->allday = $allday;
+        return $this;
+    }
+
+    /**
+     * Get the value of invite
+     */
+    public function getInvite(): CliInfos
+    {
+        return $this->invite;
+    }
+
+    /**
+     * Set the value of invite
+     */
+    public function setInvite(CliInfos $invite): self
+    {
+        $this->invite = $invite;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of status
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
         return $this;
     }
 }

@@ -4,6 +4,7 @@ namespace Celtic34fr\ContactRendezVous\Entity;
 
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactCore\Entity\Parameter;
+use Celtic34fr\ContactCore\Enum\StatusEnums;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -66,10 +67,14 @@ class CalEvent
     #[Assert\Type('boolean')]
     private ?bool $all_day = false;
 
+    #[ORM\Column(type: Types::TEXT, length: 7)]
+    #[Assert\Type('string')]
+    private ?string $status = null;
+
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
     #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
     #[ORM\InverseJoinColumn(name: 'calevent_id', referencedColumnName: 'id', unique: true)]
-    #[ORM\JoinTable(name: 'cliinfos_calecents')]
+    #[ORM\JoinTable(name: 'cliinfos_calevents')]
     #[Assert\Type(CliInfos::class)]
     private ?CliInfos $invite = null;
 
@@ -77,6 +82,13 @@ class CalEvent
     #[Assert\Type(CompteRendu::class)]
     private ?CompteRendu $compte_rendu = null;
 
+
+    public function __construct()
+    {
+        $this->setStatus(StatusEnums::WaitResponse->_toString());
+    }
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -232,5 +244,30 @@ class CalEvent
         $this->all_day = $all_day;
 
         return $this;
+    }
+
+    /**
+     * Get the value of status of the event
+     * 
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     * 
+     * @param string $status
+     * @return CalEvent|bool
+     */
+    public function setStatus(string $status): mixed
+    {
+        if (StatusEnums::isValid($status)) {
+            $this->status = $status;
+            return $this;
+        }
+        return false;
     }
 }
