@@ -6,7 +6,7 @@ use DateTime;
 use Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactCore\Enum\EventEnums;
+use Celtic34fr\ContactRendezVous\Enum\EventEnums;
 use Celtic34fr\ContactGestion\Entity\Contact;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

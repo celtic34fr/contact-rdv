@@ -1,6 +1,6 @@
 <?php
 
-namespace Celtic34fr\ContactCore\Enum;
+namespace Celtic34fr\ContactRendezVous\Enum;
 
 use Celtic34fr\ContactCore\Traits\EnumToArray;
 

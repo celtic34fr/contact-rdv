@@ -3,7 +3,7 @@
 namespace Celtic34fr\ContactRendezVous\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Celtic34fr\ContactCore\Enum\EventEnums;
+use Celtic34fr\ContactRendezVous\Enum\EventEnums;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

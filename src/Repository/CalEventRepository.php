@@ -3,9 +3,9 @@
 namespace Celtic34fr\ContactRendezVous\Repository;
 
 use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Enum\EventEnums;
 use Celtic34fr\ContactCore\Traits\DbPaginateTrait;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
+use Celtic34fr\ContactRendezVous\Enum\EventEnums;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

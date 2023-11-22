@@ -3,7 +3,7 @@
 namespace Celtic34fr\ContactRendezVous\FormEntity;
 
 use DateTime;
-use Celtic34fr\ContactCore\Enum\EventEnums;
+use Celtic34fr\ContactRendezVous\Enum\EventEnums;
 use phpDocumentor\Reflection\Types\Mixed_;
 
 class CalEventFE

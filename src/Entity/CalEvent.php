@@ -4,7 +4,7 @@ namespace Celtic34fr\ContactRendezVous\Entity;
 
 use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactCore\Entity\Parameter;
-use Celtic34fr\ContactCore\Enum\StatusEnums;
+use Celtic34fr\ContactRendezVous\Enum\StatusEnums;
 use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
