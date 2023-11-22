@@ -6,13 +6,9 @@ use Celtic34fr\ContactCore\Entity\CliInfos;
 use Celtic34fr\ContactCore\Enum\StatusEnums;
 use Celtic34fr\ContactRendezVous\Entity\CalEvent;
 use DateTime;
-use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
-use Spatie\IcalendarGenerator\Components\Timezone;
-use Spatie\IcalendarGenerator\Components\TimezoneEntry;
 use Spatie\IcalendarGenerator\Enums\Classification;
 use Spatie\IcalendarGenerator\Enums\EventStatus;
-use Spatie\IcalendarGenerator\Enums\TimezoneEntryType;
 
 class CalendarICS
 {

@@ -20,6 +20,14 @@ class CalEvent
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
+    #[Assert\DateTime]
+    private ?DateTime $created_at;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    private ?DateTime $last_updated = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Assert\DateTime]
     private ?DateTime $start_at = null;
@@ -67,7 +75,7 @@ class CalEvent
     #[Assert\Type('boolean')]
     private ?bool $all_day = false;
 
-    #[ORM\Column(type: Types::TEXT, length: 7)]
+    #[ORM\Column(type: Types::TEXT, length: 4)]
     #[Assert\Type('string')]
     private ?string $status = null;
 
@@ -82,6 +90,10 @@ class CalEvent
     #[Assert\Type(CompteRendu::class)]
     private ?CompteRendu $compte_rendu = null;
 
+    #[ORM\Column(type: Types::TEXT, length: 255, nullable: true)]
+    #[Assert\Type('string')]
+    private ?string $uid = null;
+
 
     public function __construct()
     {
@@ -92,6 +104,35 @@ class CalEvent
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * Get the value of created_at
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set the value of created_at
+     */
+    public function setCreatedAt(DateTime $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getLastUpdated(): ?DateTime
+    {
+        return $this->last_updated;
+    }
+
+    public function setLastUpdated(?DateTime $last_updated): self
+    {
+        $this->last_updated = $last_updated;
+        return $this;
     }
 
     public function getStartAt(): ?DateTime
@@ -269,5 +310,23 @@ class CalEvent
             return $this;
         }
         return false;
+    }
+
+    /**
+     * Get the value of uid
+     */
+    public function getUid(): ?string
+    {
+        return $this->uid;
+    }
+
+    /**
+     * Set the value of uid
+     */
+    public function setUid(?string $uid): self
+    {
+        $this->uid = $uid;
+
+        return $this;
     }
 }
