@@ -2,11 +2,11 @@
 
 namespace Celtic34fr\ContactRendezVous\Entity;
 
+use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactRendezVous\Repository\CompteRenduRepository;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactRendezVous\Repository\CompteRenduRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompteRenduRepository::class)]
@@ -29,13 +29,13 @@ class CompteRendu
     private ?string $compte_rendu = null;
 
     #[ORM\ManyToMany(targetEntity: CliInfos::class)]
-    #[ORM\JoinColumn(name: 'cliInfos_id', referencedColumnName: 'id', nullable: false)]
-    #[ORM\InverseJoinColumn(name: 'compterendu_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\JoinColumn(name: 'compoterendu_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\InverseJoinColumn(name: 'cliinfos_id', referencedColumnName: 'id', unique: true)]
     #[ORM\JoinTable(name: 'cliinfos_compterendu')]
     private ?CliInfos $invite = null;
 
-    #[ORM\OneToOne(targetEntity: CalEvent::class, mappedBy: 'compte_rendu')]
-    private ?CalEvent $rendezVous = null;
+    #[ORM\OneToOne(targetEntity: EventRdv::class, mappedBy: 'compte_rendu')]
+    private ?EventRdv $rendezVous = null;
 
 
     public function getId(): ?int
@@ -87,12 +87,12 @@ class CompteRendu
         return $this;
     }
 
-    public function getRendezVous(): ?CalEvent
+    public function getRendezVous(): ?EventRdv
     {
         return $this->rendezVous;
     }
 
-    public function setRendezVous(?CalEvent $rendezVous): self
+    public function setRendezVous(?EventRdv $rendezVous): self
     {
         // unset the owning side of the relation if necessary
         if ($rendezVous === null && $this->rendezVous !== null) {

@@ -2,35 +2,35 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
-use DateTime;
-use Exception;
-use Doctrine\ORM\EntityManagerInterface;
 use Celtic34fr\ContactCore\Entity\CliInfos;
-use Celtic34fr\ContactRendezVous\Enum\EventEnums;
+use Celtic34fr\ContactCore\Repository\CliInfosRepository;
 use Celtic34fr\ContactGestion\Entity\Contact;
+use Celtic34fr\ContactGestion\Repository\ContactRepository;
+use Celtic34fr\ContactRendezVous\Entity\EventRdv;
+use Celtic34fr\ContactRendezVous\Enum\EventEnums;
+use Celtic34fr\ContactRendezVous\Form\CalEventType;
+use Celtic34fr\ContactRendezVous\FormEntity\CalEventFE;
+use Celtic34fr\ContactRendezVous\Repository\EventRdvRepository;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Celtic34fr\ContactRendezVous\Entity\CalEvent;
-use Celtic34fr\ContactRendezVous\Form\CalEventType;
-use Celtic34fr\ContactCore\Repository\CliInfosRepository;
-use Celtic34fr\ContactRendezVous\FormEntity\CalEventFE;
-use Celtic34fr\ContactGestion\Repository\ContactRepository;
-use Celtic34fr\ContactRendezVous\Repository\CalEventRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/customer_evts', name: 'custevts-')]
 class CustomerEventsController extends AbstractController
 {
     private CliInfosRepository $customerRepo;
     private ContactRepository $contactRepo;
-    private CalEventRepository $eventRepo;
+    private EventRdvRepository $eventRepo;
 
     public function __construct(private EntityManagerInterface $entityManager)
     {
         $this->customerRepo     = $entityManager->getRepository(CliInfos::class);
         $this->contactRepo      = $entityManager->getRepository(Contact::class);
-        $this->eventRepo        = $entityManager->getRepository(CalEvent::class);
+        $this->eventRepo        = $entityManager->getRepository(EventRdv::class);
     }
 
     #[Route('/new-meeting/{customer}-{contact}', name: 'new-meeting')]
