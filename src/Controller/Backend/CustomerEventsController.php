@@ -2,7 +2,9 @@
 
 namespace Celtic34fr\ContactRendezVous\Controller\Backend;
 
+use Celtic34fr\CalendarCore\Enum\StatusEnums;
 use Celtic34fr\ContactCore\Entity\CliInfos;
+use Celtic34fr\ContactCore\Entity\Parameter;
 use Celtic34fr\ContactCore\Repository\CliInfosRepository;
 use Celtic34fr\ContactGestion\Entity\Contact;
 use Celtic34fr\ContactGestion\Repository\ContactRepository;
@@ -22,6 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/customer_evts', name: 'custevts-')]
 class CustomerEventsController extends AbstractController
 {
+    const PARAM_CLE = "SysCalNature"; // Clé de la liste des type d'événement dans Parameters
+
     private CliInfosRepository $customerRepo;
     private ContactRepository $contactRepo;
     private EventRdvRepository $eventRepo;
@@ -36,8 +40,8 @@ class CustomerEventsController extends AbstractController
     #[Route('/new-meeting/{customer}-{contact}', name: 'new-meeting')]
     public function index(Request $request, int $customer, int $contact): Response
     {
-        $customer = ($customer > 0) ? $this->entityManager->getRepository(CliInfos::class)->find($customer) : null;
-        $contact = ($contact > 0) ? $this->entityManager->getRepository(Contact::class)->find($contact) : null;
+        $customer = ($customer > 0) ? $this->customerRepo->find($customer) : null;
+        $contact = ($contact > 0) ? $this->contactRepo->find($contact) : null;
         if (!$customer || !$contact) {
             throw new Exception("demandeur ou demande de contact introuvable, veuillez en avertir l'admistrateur");
         } elseif ($customer != $contact->getClient()) {
@@ -56,6 +60,19 @@ class CustomerEventsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // traitement du formulaire pour ajouter un rendez-vous à CalEvents nature : CTEL en temporaire
+            $eventRdv = new EventRdv();
+            $eventRdv->setInvite($customer);
+            $natureCTEL = $this->entityManager->getRepository(Parameter::class)->findByPartialFields([
+                'cle' => self::PARAM_CLE,
+                'value' => 'CTEL'
+            ]);
+            $eventRdv->setNature($natureCTEL);
+            $eventRdv->setStartAt($event->getTimeAt());
+            $eventRdv->setDuration("P1h");
+            $eventRdv->setStatus(StatusEnums::NeedsAction->_toString());
+            $eventRdv->setSubject($event->getObjet());
+            $eventRdv->setDetails($event->getComplements());
+
             // génération d'un courriel de proposition du RDV téléphonique
             // -> reprise date, heure et objet rendez-vous
             // -> ajout de 2 liens : 
