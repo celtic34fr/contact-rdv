@@ -2,6 +2,8 @@
 
 namespace Celtic34fr\ContactRendezVous\Repository;
 
+use Celtic34fr\CalendarCore\Entity\Organizer;
+use Celtic34fr\ContactCore\Service\ExtensionConfig;
 use Celtic34fr\ContactRendezVous\Entity\EventRdv;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,26 +19,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EventRdvRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private ExtensionConfig $extConfig)
     {
         parent::__construct($registry, EventRdv::class);
     }
 
     public function save(EventRdv $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+        $organizer = new Organizer();
+        $entreprise = $this->extConfig->get('celtic34fr-contactcore/entreprise');
+        $organizer->setFullname($entreprise["designation"]);
+        $organizer->setEmail($entreprise['courreil']);
 
-    public function saveAndCalEvent(array $event, EventRdv $entity, bool $flush = false): void
-    {
-        $calEvent = $entity->generateCalEvent($event);
-        $this->getEntityManager()->persist($calEvent);
-
-        $entity->setCalEvent($calEvent);
-        
+        $entity->getCalEvent()->setOrganizer($organizer);
+        $this->getEntityManager()->persist($entity->getCalEvent());
         $this->getEntityManager()->persist($entity);
         if ($flush) {
             $this->getEntityManager()->flush();
