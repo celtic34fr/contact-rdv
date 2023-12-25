@@ -123,7 +123,7 @@ class CustomerEventsController extends AbstractController
      * @param integer $eventRdv
      * @return void
      */
-    public function accepet_rdv(Request $request, int $contact, int $eventRdv)
+    public function accept_rdv(Request $request, int $contact, int $eventRdv)
     {
         $contact = ($contact > 0) ? $this->customerRepo->find($contact) : null;
         $eventRdv = ($eventRdv > 0) ? $this->eventRdvRepo->find($eventRdv) : null;
@@ -138,7 +138,7 @@ class CustomerEventsController extends AbstractController
         return $this->render('@contact-rdv/customer-events/accepted_rdv.html.twig', [
             'contact' => $contact,
             'eventRdv' => $eventRdv,
-        ])
+        ]);
     }
 
     #[Route('/report_rdv/{contact}-{eventRdv}', name: 'new-meeting')]
