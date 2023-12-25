@@ -26,13 +26,17 @@ class EventRdvRepository extends ServiceEntityRepository
 
     public function save(EventRdv $entity, bool $flush = false): void
     {
-        $organizer = new Organizer();
-        $entreprise = $this->extConfig->get('celtic34fr-contactcore/entreprise');
-        $organizer->setFullname($entreprise["designation"]);
-        $organizer->setEmail($entreprise['courreil']);
+        $calEvent = $entity->getCalEvent();
+        if ($calEvent && $calEvent->emptyOrganizer()) {
+            $organizer = new Organizer();
+            $entreprise = $this->extConfig->get('celtic34fr-contactcore/entreprise');
+            $organizer->setFullname($entreprise["designation"]);
+            $organizer->setEmail($entreprise['courreil']);
+            $calEvent()->setOrganizer($organizer);
+            $entity->setCalEvent($calEvent);
+        }
 
-        $entity->getCalEvent()->setOrganizer($organizer);
-        $this->getEntityManager()->persist($entity->getCalEvent());
+        $this->getEntityManager()->persist($calEvent);
         $this->getEntityManager()->persist($entity);
         if ($flush) {
             $this->getEntityManager()->flush();

@@ -1,0 +1,29 @@
+{% extends "@contact-rdv/events_layout.html.twig" %}
+
+{% block shoulder %}
+	{{ 'Evènements dans le calendrier' }}
+{% endblock %}
+
+{% block title %}
+	<i class="fas mr-2 link--icon fa-clipboard-question"></i>
+	Prise de rendez-vous - Rendez-vous accepté
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block main %}
+    <div class="jumbotron text-center">
+        <h1>Demande de rendez-vous pour	{{ contact.getFullname() }}</h1>
+        <h3>Demande de contact du {{ eventRdv.getCreatedAt()|date("d M Y") }}</h3>
+
+        <p></p><p></p>
+        <p>Vous venez d'accpeter le rendez-vous que nous vous avions proposé pour le :</p>
+        <p></p>
+        <p>{{ eventRdv.getStartAt()|date("d M Y") }} à {{ eventRdv.getStartAt()|date("H:i") }}</p>
+    </div>
+{% endblock %} 
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

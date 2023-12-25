@@ -78,15 +78,6 @@ class EventRdv
     }
 
     /**
-     * @return CliInfos|null
-     */
-    public function getInvite(): ?CliInfos
-    {
-        return $this->invite;
-    }
-
-    /**
-     * @param CliInfos|null $invite
      * @return self
      */
     public function setInvite(?CliInfos $invite): self
@@ -100,7 +91,7 @@ class EventRdv
         $attendee->setFullname($invite->getFullname());
         $attendee->setEmail($invite->getClient()->getCourriel());
 
-        $this->addAttendee($attendee);
+        $this->calEvent->addAttendee($attendee);
 
         return $this;
     }
@@ -1065,7 +1056,8 @@ class EventRdv
                 $calEvent->addAttendee($attentee);
             }
         }
-        if (array_key_exists('organizer', $event)) $calEvent->setOrganizer($event['organizer']);
+        if (array_key_exists('organizer', $event) && $event['organizer'] instanceof Organizer)
+            $calEvent->setOrganizer($event['organizer']);
         if (array_key_exists('alarms', $event)) {
             foreach ($event['alarms'] as $alarm) {
                 $calEvent->addAlarm($alarm);
